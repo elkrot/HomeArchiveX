@@ -11,6 +11,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Windows.Media.Imaging;
 using MediaInfoLib;
+using MediaInfoNET;
 
 namespace ConsoleWorkWithDVD
 {
@@ -19,10 +20,7 @@ namespace ConsoleWorkWithDVD
     {
         static void Main()
         {
-            var pathToMdfFileDirectory = Directory.GetCurrentDirectory();// @"d:\temp\";
-            AppDomain.CurrentDomain.SetData("DataDirectory", pathToMdfFileDirectory);
-
-
+            //ReadMediaInfoNet();
             DisplayMediaInfo();
             Console.ReadKey();
 
@@ -70,9 +68,45 @@ namespace ConsoleWorkWithDVD
             Console.ReadKey();
         }
 
+        private static void ReadMediaInfoNet()
+        {
+            MediaInfoNET.MediaFile aviFile = new MediaInfoNET.MediaFile(@"C:\video\Pink Lagoon.mkv");
+            Console.WriteLine();
+            Console.WriteLine("General ---------------------------------");
+            Console.WriteLine();
+            Console.WriteLine("File Name   : {0}", aviFile.Name);
+            Console.WriteLine("Format      : {0}", aviFile.General.Format);
+            Console.WriteLine("Duration    : {0}", aviFile.General.DurationString);
+            Console.WriteLine("Bitrate     : {0}", aviFile.General.Bitrate);
+
+            if (aviFile.Audio.Count > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Audio ---------------------------------");
+                Console.WriteLine();
+                Console.WriteLine("Format      : {0}", aviFile.Audio[0].Format);
+                Console.WriteLine("Bitrate     : {0}", aviFile.Audio[0].Bitrate.ToString());
+                Console.WriteLine("Channels    : {0}", aviFile.Audio[0].Channels.ToString());
+                Console.WriteLine("Sampling    : {0}", aviFile.Audio[0].SamplingRate.ToString());
+            }
+
+            if (aviFile.Video.Count > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Video ---------------------------------");
+                Console.WriteLine();
+                Console.WriteLine("Format      : {0}", aviFile.Video[0].Format);
+                Console.WriteLine("Bit rate    : {0}", aviFile.Video[0].Bitrate.ToString());
+                Console.WriteLine("Frame rate  : {0}", aviFile.Video[0].FrameRate.ToString());
+                Console.WriteLine("Frame size  : {0}", aviFile.Video[0].FrameSize.ToString());
+            }
+
+            Console.ReadLine();
+        }
+
         private static void ReadJpgMetadata()
         {
-            using (FileStream f = File.Open(@"d:\test.jpg", FileMode.Open))
+            using (FileStream f = System.IO.File.Open(@"d:\test.jpg", FileMode.Open))
             {
                 BitmapDecoder decoder = BitmapDecoder.Create(f, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
                 BitmapMetadata metadata = (BitmapMetadata)decoder.Frames[0].Metadata;
@@ -112,7 +146,7 @@ namespace ConsoleWorkWithDVD
         private static string ReadMediaInfo()
         {
             //Initilaizing MediaInfo
-            MediaInfo MI = new MediaInfo();
+            MediaInfoLib.MediaInfo MI = new MediaInfoLib.MediaInfo();
 
             //From: preparing an example file for reading
             FileStream From = new FileStream(@"d:\temp\test.mp4", FileMode.Open, FileAccess.Read);
@@ -151,13 +185,13 @@ namespace ConsoleWorkWithDVD
             MI.Open_Buffer_Finalize(); //This is the end of the stream, MediaInfo must finnish some work
 
             //Get() example
-            return "Container format is " + MI.Get(StreamKind.General, 0, "Format");
+            return "Container format is " + MI.Get(MediaInfoLib.StreamKind.General, 0, "Format");
 
         }
 
         private static void DisplayMediaInfo() {
             String ToDisplay;
-            MediaInfo MI = new MediaInfo();
+            MediaInfoLib.MediaInfo MI = new MediaInfoLib.MediaInfo();
             
             ToDisplay = MI.Option("Info_Version", "0.7.0.0;MediaInfoDLL_Example_CS;0.7.0.0");
             if (ToDisplay.Length == 0)
@@ -201,13 +235,13 @@ namespace ConsoleWorkWithDVD
             ToDisplay += MI.Get(0, 0, 46);
 
             ToDisplay += "\r\n\r\nCount_Get with StreamKind=Stream_Audio\r\n";
-            ToDisplay += MI.Count_Get(StreamKind.Audio);
+            ToDisplay += MI.Count_Get(MediaInfoLib.StreamKind.Audio);
 
             ToDisplay += "\r\n\r\nGet with Stream=General and Parameter='AudioCount'\r\n";
-            ToDisplay += MI.Get(StreamKind.General, 0, "AudioCount");
+            ToDisplay += MI.Get(MediaInfoLib.StreamKind.General, 0, "AudioCount");
 
             ToDisplay += "\r\n\r\nGet with Stream=Audio and Parameter='StreamCount'\r\n";
-            ToDisplay += MI.Get(StreamKind.Audio, 0, "StreamCount");
+            ToDisplay += MI.Get(MediaInfoLib.StreamKind.Audio, 0, "StreamCount");
 
             ToDisplay += "\r\n\r\nClose\r\n";
             MI.Close();
