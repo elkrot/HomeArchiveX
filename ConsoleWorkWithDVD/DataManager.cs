@@ -287,8 +287,8 @@ DriveId=@DriveId and EntityPath=@EntityPath";
         public int IsDriveExist(int hashCode, string title)
         {
             string queryString = @"
-select (SELECT count(1) FROM [HomeArchive].[dbo].[Drive] where 
-Title=@title)+case when ( SELECT count(1) FROM [HomeArchive].[dbo].[Drive] 
+select (SELECT count(1) FROM Drive where 
+Title=@title)+case when ( SELECT count(1) FROM Drive 
 where  HashCode = @HashCode)>0 then 2 else 0 end vl";
             using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
             {

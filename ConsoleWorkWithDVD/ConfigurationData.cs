@@ -18,7 +18,7 @@ namespace ConsoleWorkWithDVD
         /// <returns></returns>
         public string GetConnectionString()
         {
-            return ConfigurationManager.ConnectionStrings["HomeArchive"].ConnectionString;
+            return ConfigurationManager.ConnectionStrings["HomeArchiveXContext"].ConnectionString;
         }
         #endregion
 

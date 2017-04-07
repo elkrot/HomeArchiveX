@@ -18,17 +18,20 @@ namespace ConsoleWorkWithDVD
     //Directory.GetCurrentDirectory ()
     class Program
     {
+      
         static void Main()
         {
-            //ReadMediaInfoNet();
-            DisplayMediaInfo();
-            Console.ReadKey();
+            var pathToMdfFileDirectory = Directory.GetCurrentDirectory();// @"d:\temp\";
+        AppDomain.CurrentDomain.SetData("DataDirectory", pathToMdfFileDirectory);
+           // ReadMediaInfoNet();
+            //DisplayMediaInfo();
+          //  Console.ReadKey();
 
-            return;
+            //return;
 
-            ReadMp3();
+           // ReadMp3();
 
-            ReadJpgMetadata();
+           // ReadJpgMetadata();
 
             var cnf = new ConfigurationData();
             var lg = new Logger();
@@ -70,7 +73,7 @@ namespace ConsoleWorkWithDVD
 
         private static void ReadMediaInfoNet()
         {
-            MediaInfoNET.MediaFile aviFile = new MediaInfoNET.MediaFile(@"C:\video\Pink Lagoon.mkv");
+            MediaFile aviFile = new MediaFile(@"d:\temp\test.mp4");
             Console.WriteLine();
             Console.WriteLine("General ---------------------------------");
             Console.WriteLine();
