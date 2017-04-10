@@ -15,7 +15,7 @@ namespace ConsoleWorkWithDVD
     {
         public string Extension { get; set; }
         public string FilePath { get; set; }
-
+        TagLib.File TagLibFile; 
         public MIFileType miFileType { get; set; }
 
         private string[] PictureExtensions = { "PNG", "BMP", "JPG", "JPEG", "GIF", "TIFF" };
@@ -31,6 +31,7 @@ namespace ConsoleWorkWithDVD
         {
             Extension = extension;
 
+            TagLibFile = TagLib.File.Create(filePath);
 
             if (PictureExtensions.Contains(Extension.ToUpper()))
             {
@@ -44,7 +45,7 @@ namespace ConsoleWorkWithDVD
             {
                 miFileType = MIFileType.AudioFile;
             }
-            else miFileType = MIFileType.UncnownFile;
+            else miFileType = MIFileType.UnknownFile;
             FilePath = filePath;
         }
         abstract public MFileInfo GetMIFileInfo();
@@ -54,7 +55,7 @@ namespace ConsoleWorkWithDVD
         PictureFile,
         VideoFile,
         AudioFile,
-        UncnownFile
+        UnknownFile
     }
     #endregion
 
@@ -293,7 +294,9 @@ private static void ReadJpgMetadata()
 
         private static void ReadMp3()
         {
-            var mp3File = TagLib.File.Create(@"C:\Downloads\!Музыка\Dark Princess - The key.mp3");
+            TagLib.File mp3File = TagLib.File.Create(@"C:\Downloads\!Музыка\Dark Princess - The key.mp3");
+
+            
             Console.WriteLine("Artist: " + String.Join(", ", mp3File.Tag.Performers));
             Console.WriteLine("Track number: " + mp3File.Tag.Track);
             Console.WriteLine("Title: " + mp3File.Tag.Title);
