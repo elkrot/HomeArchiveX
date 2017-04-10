@@ -9,66 +9,77 @@ using System.Windows.Media.Imaging;
 
 namespace ConsoleWorkWithDVD
 {
+
+    #region Базовый класс MIManager
     public abstract class MIManager
     {
         public string Extension { get; set; }
         public string FilePath { get; set; }
-        public MIManager(string extension,string filePath)
+
+        public MIFileType miFileType { get; set; }
+
+        private string[] PictureExtensions = { "PNG", "BMP", "JPG", "JPEG", "GIF", "TIFF" };
+        private string[] VideoExtensions = { "MPEG4", "AVI", "MOV", "MKV" };
+        private string[] AudioExtensions = { "MP3", "OGG", "FLAC", "WAV" };
+        public string[] AllExtension { get { return PictureExtensions.Concat(VideoExtensions).ToArray().Concat(AudioExtensions).ToArray(); } }
+        public bool IsMediaFile(string extension)
+        {
+
+            return AllExtension.Contains(extension);
+        }
+        public MIManager(string extension, string filePath)
         {
             Extension = extension;
+
+
+            if (PictureExtensions.Contains(Extension.ToUpper()))
+            {
+                miFileType = MIFileType.PictureFile;
+            }
+            else if (VideoExtensions.Contains(Extension.ToUpper()))
+            {
+                miFileType = MIFileType.VideoFile;
+            }
+            else if (AudioExtensions.Contains(Extension.ToUpper()))
+            {
+                miFileType = MIFileType.AudioFile;
+            }
+            else miFileType = MIFileType.UncnownFile;
             FilePath = filePath;
         }
         abstract public MFileInfo GetMIFileInfo();
     }
+    public enum MIFileType
+    {
+        PictureFile,
+        VideoFile,
+        AudioFile,
+        UncnownFile
+    }
+    #endregion
 
+    // Конкретные создатели
+
+    #region Создатель описания картинки
     public class PictureFileInfoManager : MIManager
     {
-        public PictureFileInfoManager(string extension, string filePath):base( extension,  filePath)
+        private BitmapMetadata metadata;
+        public PictureFileInfoManager(string extension, string filePath) : base(extension, filePath)
         {
-
+            using (FileStream f = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                BitmapDecoder decoder = BitmapDecoder.Create(f, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
+                metadata = (BitmapMetadata)decoder.Frames[0].Metadata;
+              
+            }
         }
         public override MFileInfo GetMIFileInfo()
         {
-            return new MIPictureFileInfo(Extension, FilePath);
-        }
-    }
-    public class VideoFileInfoManager : MIManager
-    {
-        public VideoFileInfoManager(string extension, string filePath) : base(extension, filePath)
-        {
-
-        }
-        public override MFileInfo GetMIFileInfo()
-        {
-            return new MIVideoFileInfo(Extension, FilePath);
-        }
-    }
-    public class AudioFileInfoManager : MIManager
-    {
-        public AudioFileInfoManager(string extension, string filePath) : base(extension, filePath)
-        {
-
-        }
-        public override MFileInfo GetMIFileInfo()
-        {
-            return new MIAudioFileInfo(Extension, FilePath);
-        }
-    }
-    abstract public class MFileInfo
-    {
-        public MFileInfo(string extension, string filePath)
-        {
-
+            return new MIPictureFileInfo(metadata);
         }
 
-    }
-    public class MIPictureFileInfo: MFileInfo
-    {
-        public MIPictureFileInfo(string extension, string filePath) : base(extension, filePath)
-        {
-
-        }
-        private static void ReadJpgMetadata()
+        #region Example
+private static void ReadJpgMetadata()
         {
             using (FileStream f = System.IO.File.Open(@"d:\test.jpg", FileMode.Open))
             {
@@ -76,6 +87,7 @@ namespace ConsoleWorkWithDVD
                 BitmapMetadata metadata = (BitmapMetadata)decoder.Frames[0].Metadata;
                 // Получаем заголовок через поле класса
                 string title = metadata.Title;
+                
                 Console.WriteLine(title);
             }
 
@@ -88,14 +100,23 @@ namespace ConsoleWorkWithDVD
 
             }
         }
+        #endregion
+        
     }
+    #endregion
 
-    public class MIVideoFileInfo : MFileInfo
+    #region Создатель описания Видео файла
+    public class VideoFileInfoManager : MIManager
     {
-        public MIVideoFileInfo(string extension, string filePath) : base(extension, filePath)
+        public VideoFileInfoManager(string extension, string filePath) : base(extension, filePath)
         {
 
         }
+        public override MFileInfo GetMIFileInfo()
+        {
+            return new MIVideoFileInfo();
+        }
+
         private static void ReadMediaInfoNet()
         {
             MediaFile aviFile = new MediaFile(@"d:\temp\test.mp4");
@@ -255,13 +276,21 @@ namespace ConsoleWorkWithDVD
         };
         #endregion
     }
+    #endregion
 
-    public class MIAudioFileInfo : MFileInfo
+    #region Создатель описания аудио файла
+    public class AudioFileInfoManager : MIManager
     {
-        public MIAudioFileInfo(string extension, string filePath) : base(extension, filePath)
+        public AudioFileInfoManager(string extension, string filePath) : base(extension, filePath)
         {
 
         }
+        public override MFileInfo GetMIFileInfo()
+        {
+            return new MIAudioFileInfo();
+        }
+
+
         private static void ReadMp3()
         {
             var mp3File = TagLib.File.Create(@"C:\Downloads\!Музыка\Dark Princess - The key.mp3");
@@ -275,13 +304,64 @@ namespace ConsoleWorkWithDVD
             Console.WriteLine("Channels: " + mp3File.Properties.AudioChannels);
             Console.WriteLine("Duration: " + mp3File.Properties.Duration.ToString("mm\\:ss"));
         }
+
     }
+    #endregion
 
 
 
-    
+    // Продукты
+    #region Базовый класс продуктов
+    abstract public class MFileInfo
+    {
+        public MFileInfo()
+        {
 
-    
+        }
+
+    }
+    #endregion
+
+    #region Картинки
+    public class MIPictureFileInfo : MFileInfo
+    {
+        BitmapMetadata Metadata;
+        public MIPictureFileInfo(BitmapMetadata metadata) : base()
+        {
+            Metadata = metadata;
+        }
+        
+    }
+    #endregion
+
+    #region Видео
+    public class MIVideoFileInfo : MFileInfo
+    {
+        public MIVideoFileInfo() : base()
+        {
+
+        }
+
+    }
+    #endregion
+
+    #region Аудио
+    public class MIAudioFileInfo : MFileInfo
+    {
+        public MIAudioFileInfo() : base()
+        {
+
+        }
+
+    }
+    #endregion
+
+
+
+
+
+
+
 
 
 
