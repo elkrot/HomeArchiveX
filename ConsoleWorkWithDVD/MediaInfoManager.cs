@@ -15,7 +15,9 @@ namespace ConsoleWorkWithDVD
     {
         public string Extension { get; set; }
         public string FilePath { get; set; }
-        TagLib.File TagLibFile; 
+        protected TagLib.File TagLibFile;
+        protected MediaFile MediaFile;
+        public Dictionary<string, string> MFIDictionary;
         public MIFileType miFileType { get; set; }
 
         private string[] PictureExtensions = { "PNG", "BMP", "JPG", "JPEG", "GIF", "TIFF" };
@@ -29,9 +31,10 @@ namespace ConsoleWorkWithDVD
         }
         public MIManager(string extension, string filePath)
         {
+            MFIDictionary = new Dictionary<string, string>();
             Extension = extension;
 
-            TagLibFile = TagLib.File.Create(filePath);
+
 
             if (PictureExtensions.Contains(Extension.ToUpper()))
             {
@@ -45,17 +48,26 @@ namespace ConsoleWorkWithDVD
             {
                 miFileType = MIFileType.AudioFile;
             }
-            else miFileType = MIFileType.UnknownFile;
+            else miFileType = MIFileType.NoMediaFile;
+
+            if (miFileType != MIFileType.NoMediaFile)
+            {
+                TagLibFile = TagLib.File.Create(filePath);
+                MediaFile = new MediaFile(filePath);
+            }
             FilePath = filePath;
+            FillTheMFIDictionary();
+
         }
         abstract public MFileInfo GetMIFileInfo();
+        abstract public void FillTheMFIDictionary();
     }
     public enum MIFileType
     {
         PictureFile,
         VideoFile,
         AudioFile,
-        UnknownFile
+        NoMediaFile
     }
     #endregion
 
@@ -64,23 +76,23 @@ namespace ConsoleWorkWithDVD
     #region Создатель описания картинки
     public class PictureFileInfoManager : MIManager
     {
-        private BitmapMetadata metadata;
+        BitmapMetadata metadata;
         public PictureFileInfoManager(string extension, string filePath) : base(extension, filePath)
         {
             using (FileStream f = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 BitmapDecoder decoder = BitmapDecoder.Create(f, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
-                metadata = (BitmapMetadata)decoder.Frames[0].Metadata;
-              
+                 metadata = (BitmapMetadata)decoder.Frames[0].Metadata;
+
             }
         }
         public override MFileInfo GetMIFileInfo()
         {
-            return new MIPictureFileInfo(metadata);
+            return new MIPictureFileInfo(MFIDictionary);
         }
 
         #region Example
-private static void ReadJpgMetadata()
+        private static void ReadJpgMetadata()
         {
             using (FileStream f = System.IO.File.Open(@"d:\test.jpg", FileMode.Open))
             {
@@ -88,7 +100,7 @@ private static void ReadJpgMetadata()
                 BitmapMetadata metadata = (BitmapMetadata)decoder.Frames[0].Metadata;
                 // Получаем заголовок через поле класса
                 string title = metadata.Title;
-                
+
                 Console.WriteLine(title);
             }
 
@@ -102,7 +114,13 @@ private static void ReadJpgMetadata()
             }
         }
         #endregion
-        
+        public override void FillTheMFIDictionary()
+        {
+            MFIDictionary.Add("Format",metadata.Format);
+            // .....
+        }
+
+
     }
     #endregion
 
@@ -267,6 +285,8 @@ private static void ReadJpgMetadata()
             Console.Write(ToDisplay);
         }
 
+
+
         [FlagsAttribute]
         public enum Status
         {
@@ -276,7 +296,57 @@ private static void ReadJpgMetadata()
             Finalized = 0x08
         };
         #endregion
+public override void FillTheMFIDictionary()
+    {
+            MFIDictionary.Add("General.Format", aviFile.General.Format);
+            MFIDictionary.Add("General.", "");
+            MFIDictionary.Add("General.", "");
+            MFIDictionary.Add("Audio.", "");
+            MFIDictionary.Add("Video.", "");
+
+
+
+
+
+
+
+            Console.WriteLine("Duration    : {0}", aviFile.General.DurationString);
+            Console.WriteLine("Bitrate     : {0}", aviFile.General.Bitrate);
+
+            if (aviFile.Audio.Count > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Audio ---------------------------------");
+                Console.WriteLine();
+                Console.WriteLine("Format      : {0}", aviFile.Audio[0].Format);
+                Console.WriteLine("Bitrate     : {0}", aviFile.Audio[0].Bitrate.ToString());
+                Console.WriteLine("Channels    : {0}", aviFile.Audio[0].Channels.ToString());
+                Console.WriteLine("Sampling    : {0}", aviFile.Audio[0].SamplingRate.ToString());
+            }
+
+            if (aviFile.Video.Count > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Video ---------------------------------");
+                Console.WriteLine();
+                Console.WriteLine("Format      : {0}", aviFile.Video[0].Format);
+                Console.WriteLine("Bit rate    : {0}", aviFile.Video[0].Bitrate.ToString());
+                Console.WriteLine("Frame rate  : {0}", aviFile.Video[0].FrameRate.ToString());
+                Console.WriteLine("Frame size  : {0}", aviFile.Video[0].FrameSize.ToString());
+            }
+
+
+
+
+
+
+
+
+        }
+
     }
+
+    
     #endregion
 
     #region Создатель описания аудио файла
@@ -296,7 +366,7 @@ private static void ReadJpgMetadata()
         {
             TagLib.File mp3File = TagLib.File.Create(@"C:\Downloads\!Музыка\Dark Princess - The key.mp3");
 
-            
+
             Console.WriteLine("Artist: " + String.Join(", ", mp3File.Tag.Performers));
             Console.WriteLine("Track number: " + mp3File.Tag.Track);
             Console.WriteLine("Title: " + mp3File.Tag.Title);
@@ -328,12 +398,12 @@ private static void ReadJpgMetadata()
     #region Картинки
     public class MIPictureFileInfo : MFileInfo
     {
-        BitmapMetadata Metadata;
-        public MIPictureFileInfo(BitmapMetadata metadata) : base()
+        Dictionary<string, string> MFIDictionary;
+        public MIPictureFileInfo(Dictionary<string, string> mfiDictionary) : base()
         {
-            Metadata = metadata;
+            MFIDictionary = mfiDictionary;
         }
-        
+
     }
     #endregion
 
