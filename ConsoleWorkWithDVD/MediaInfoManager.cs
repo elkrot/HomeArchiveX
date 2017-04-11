@@ -11,6 +11,7 @@ namespace ConsoleWorkWithDVD
 {
 
     #region Базовый класс MIManager
+    
     public abstract class MIManager
     {
         public string Extension { get; set; }
@@ -33,8 +34,6 @@ namespace ConsoleWorkWithDVD
         {
             MFIDictionary = new Dictionary<string, string>();
             Extension = extension;
-
-
 
             if (PictureExtensions.Contains(Extension.ToUpper()))
             {
@@ -82,7 +81,7 @@ namespace ConsoleWorkWithDVD
             using (FileStream f = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 BitmapDecoder decoder = BitmapDecoder.Create(f, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
-                 metadata = (BitmapMetadata)decoder.Frames[0].Metadata;
+                metadata = (BitmapMetadata)decoder.Frames[0].Metadata;
 
             }
         }
@@ -91,33 +90,16 @@ namespace ConsoleWorkWithDVD
             return new MIPictureFileInfo(MFIDictionary);
         }
 
-        #region Example
-        private static void ReadJpgMetadata()
-        {
-            using (FileStream f = System.IO.File.Open(@"d:\test.jpg", FileMode.Open))
-            {
-                BitmapDecoder decoder = BitmapDecoder.Create(f, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
-                BitmapMetadata metadata = (BitmapMetadata)decoder.Frames[0].Metadata;
-                // Получаем заголовок через поле класса
-                string title = metadata.Title;
-
-                Console.WriteLine(title);
-            }
-
-            using (FileStream fs = new FileStream(@"d:\test.jpg", FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                BitmapSource img = BitmapFrame.Create(fs);
-                BitmapMetadata md = (BitmapMetadata)img.Metadata;
-                string title2 = md.Title;
-                Console.WriteLine(title2);
-
-            }
-        }
-        #endregion
+       
+        
         public override void FillTheMFIDictionary()
         {
-            MFIDictionary.Add("Format",metadata.Format);
-            // .....
+            MFIDictionary.Add("Format", metadata.Format);
+            MFIDictionary.Add("Rating", metadata.Rating.ToString());
+            MFIDictionary.Add("Title", metadata.Title);
+            MFIDictionary.Add("Keywords", String.Join(", ", metadata.Keywords));
+            MFIDictionary.Add("PhotoHeight", TagLibFile.Properties.PhotoHeight.ToString().Trim());
+            MFIDictionary.Add("PhotoWidth", TagLibFile.Properties.PhotoWidth.ToString().Trim());
         }
 
 
@@ -133,43 +115,7 @@ namespace ConsoleWorkWithDVD
         }
         public override MFileInfo GetMIFileInfo()
         {
-            return new MIVideoFileInfo();
-        }
-
-        private static void ReadMediaInfoNet()
-        {
-            MediaFile aviFile = new MediaFile(@"d:\temp\test.mp4");
-            Console.WriteLine();
-            Console.WriteLine("General ---------------------------------");
-            Console.WriteLine();
-            Console.WriteLine("File Name   : {0}", aviFile.Name);
-            Console.WriteLine("Format      : {0}", aviFile.General.Format);
-            Console.WriteLine("Duration    : {0}", aviFile.General.DurationString);
-            Console.WriteLine("Bitrate     : {0}", aviFile.General.Bitrate);
-
-            if (aviFile.Audio.Count > 0)
-            {
-                Console.WriteLine();
-                Console.WriteLine("Audio ---------------------------------");
-                Console.WriteLine();
-                Console.WriteLine("Format      : {0}", aviFile.Audio[0].Format);
-                Console.WriteLine("Bitrate     : {0}", aviFile.Audio[0].Bitrate.ToString());
-                Console.WriteLine("Channels    : {0}", aviFile.Audio[0].Channels.ToString());
-                Console.WriteLine("Sampling    : {0}", aviFile.Audio[0].SamplingRate.ToString());
-            }
-
-            if (aviFile.Video.Count > 0)
-            {
-                Console.WriteLine();
-                Console.WriteLine("Video ---------------------------------");
-                Console.WriteLine();
-                Console.WriteLine("Format      : {0}", aviFile.Video[0].Format);
-                Console.WriteLine("Bit rate    : {0}", aviFile.Video[0].Bitrate.ToString());
-                Console.WriteLine("Frame rate  : {0}", aviFile.Video[0].FrameRate.ToString());
-                Console.WriteLine("Frame size  : {0}", aviFile.Video[0].FrameSize.ToString());
-            }
-
-            Console.ReadLine();
+            return new MIVideoFileInfo(MFIDictionary);
         }
 
         #region MediaInfo
@@ -296,57 +242,36 @@ namespace ConsoleWorkWithDVD
             Finalized = 0x08
         };
         #endregion
-public override void FillTheMFIDictionary()
-    {
-            MFIDictionary.Add("General.Format", aviFile.General.Format);
-            MFIDictionary.Add("General.", "");
-            MFIDictionary.Add("General.", "");
-            MFIDictionary.Add("Audio.", "");
-            MFIDictionary.Add("Video.", "");
 
-
-
-
-
-
-
-            Console.WriteLine("Duration    : {0}", aviFile.General.DurationString);
-            Console.WriteLine("Bitrate     : {0}", aviFile.General.Bitrate);
-
-            if (aviFile.Audio.Count > 0)
+        #region Заполнить словарь аттрибутов
+        public override void FillTheMFIDictionary()
+        {
+            MFIDictionary.Add("General.Format", MediaFile.General.Format);
+            MFIDictionary.Add("General.Duration", MediaFile.General.DurationString);
+            MFIDictionary.Add("General.Bitrate", MediaFile.General.Bitrate.ToString());
+            MFIDictionary.Add("General.VideoHeight", TagLibFile.Properties.VideoHeight.ToString().Trim());
+            MFIDictionary.Add("General.VideoWidth", TagLibFile.Properties.VideoWidth.ToString().Trim());
+            if (MediaFile.Audio.Count > 0)
             {
-                Console.WriteLine();
-                Console.WriteLine("Audio ---------------------------------");
-                Console.WriteLine();
-                Console.WriteLine("Format      : {0}", aviFile.Audio[0].Format);
-                Console.WriteLine("Bitrate     : {0}", aviFile.Audio[0].Bitrate.ToString());
-                Console.WriteLine("Channels    : {0}", aviFile.Audio[0].Channels.ToString());
-                Console.WriteLine("Sampling    : {0}", aviFile.Audio[0].SamplingRate.ToString());
+                MFIDictionary.Add("Audio.Format", MediaFile.Audio[0].Format);
+                MFIDictionary.Add("Audio.Bitrate", MediaFile.Audio[0].Bitrate.ToString());
+                MFIDictionary.Add("Audio.Channels", MediaFile.Audio[0].Channels.ToString());
+                MFIDictionary.Add("Audio.Sampling", MediaFile.Audio[0].SamplingRate.ToString());
             }
 
-            if (aviFile.Video.Count > 0)
+            if (MediaFile.Video.Count > 0)
             {
-                Console.WriteLine();
-                Console.WriteLine("Video ---------------------------------");
-                Console.WriteLine();
-                Console.WriteLine("Format      : {0}", aviFile.Video[0].Format);
-                Console.WriteLine("Bit rate    : {0}", aviFile.Video[0].Bitrate.ToString());
-                Console.WriteLine("Frame rate  : {0}", aviFile.Video[0].FrameRate.ToString());
-                Console.WriteLine("Frame size  : {0}", aviFile.Video[0].FrameSize.ToString());
+                MFIDictionary.Add("Video.Format", MediaFile.Video[0].Format);
+                MFIDictionary.Add("Video.Bitrate", MediaFile.Video[0].Bitrate.ToString());
+                MFIDictionary.Add("Video.Framerate", MediaFile.Video[0].FrameRate.ToString());
+                MFIDictionary.Add("Video.Framesize", MediaFile.Video[0].FrameSize.ToString());
             }
-
-
-
-
-
-
-
-
         }
+        #endregion
 
     }
 
-    
+
     #endregion
 
     #region Создатель описания аудио файла
@@ -358,48 +283,34 @@ public override void FillTheMFIDictionary()
         }
         public override MFileInfo GetMIFileInfo()
         {
-            return new MIAudioFileInfo();
+            return new MIAudioFileInfo(MFIDictionary);
         }
-
-
-        private static void ReadMp3()
+        #region Заполнить словарь аттрибутов
+        public override void FillTheMFIDictionary()
         {
-            TagLib.File mp3File = TagLib.File.Create(@"C:\Downloads\!Музыка\Dark Princess - The key.mp3");
-
-
-            Console.WriteLine("Artist: " + String.Join(", ", mp3File.Tag.Performers));
-            Console.WriteLine("Track number: " + mp3File.Tag.Track);
-            Console.WriteLine("Title: " + mp3File.Tag.Title);
-            Console.WriteLine("Album: " + mp3File.Tag.Album);
-            Console.WriteLine("Year: " + mp3File.Tag.Year);
-            Console.WriteLine("Genre: " + mp3File.Tag.FirstGenre);
-            Console.WriteLine("Bitrate: " + mp3File.Properties.AudioBitrate + " kbps");
-            Console.WriteLine("Channels: " + mp3File.Properties.AudioChannels);
-            Console.WriteLine("Duration: " + mp3File.Properties.Duration.ToString("mm\\:ss"));
+            MFIDictionary.Add("Artist",String.Join(", ", TagLibFile.Tag.Performers) );
+            MFIDictionary.Add("Tracknumber", TagLibFile.Tag.Track.ToString().Trim());
+            MFIDictionary.Add("Title", TagLibFile.Tag.Title);
+            MFIDictionary.Add("Album", TagLibFile.Tag.Album);
+            MFIDictionary.Add("Year", TagLibFile.Tag.Year.ToString().Trim());
+            MFIDictionary.Add("Genre", TagLibFile.Tag.FirstGenre);
+            MFIDictionary.Add("Bitrate", TagLibFile.Properties.AudioBitrate.ToString().Trim());
+            MFIDictionary.Add("Channels", TagLibFile.Properties.AudioChannels.ToString().Trim());
+            MFIDictionary.Add("Duration", TagLibFile.Properties.Duration.ToString("mm\\:ss"));
+            
         }
-
+        #endregion
     }
     #endregion
-
-
 
     // Продукты
+
     #region Базовый класс продуктов
+    [Serializable]
     abstract public class MFileInfo
     {
-        public MFileInfo()
-        {
-
-        }
-
-    }
-    #endregion
-
-    #region Картинки
-    public class MIPictureFileInfo : MFileInfo
-    {
         Dictionary<string, string> MFIDictionary;
-        public MIPictureFileInfo(Dictionary<string, string> mfiDictionary) : base()
+        public MFileInfo(Dictionary<string, string> mfiDictionary)
         {
             MFIDictionary = mfiDictionary;
         }
@@ -407,10 +318,24 @@ public override void FillTheMFIDictionary()
     }
     #endregion
 
+    #region Картинки
+    [Serializable]
+    public class MIPictureFileInfo : MFileInfo
+    {
+        Dictionary<string, string> MFIDictionary;
+        public MIPictureFileInfo(Dictionary<string, string> mfiDictionary) : base(mfiDictionary)
+        {
+
+        }
+
+    }
+    #endregion
+
     #region Видео
+    [Serializable]
     public class MIVideoFileInfo : MFileInfo
     {
-        public MIVideoFileInfo() : base()
+        public MIVideoFileInfo(Dictionary<string, string> mfiDictionary) : base(mfiDictionary)
         {
 
         }
@@ -419,9 +344,10 @@ public override void FillTheMFIDictionary()
     #endregion
 
     #region Аудио
+    [Serializable]
     public class MIAudioFileInfo : MFileInfo
     {
-        public MIAudioFileInfo() : base()
+        public MIAudioFileInfo(Dictionary<string, string> mfiDictionary) : base(mfiDictionary)
         {
 
         }
