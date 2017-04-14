@@ -310,6 +310,7 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         #endregion
 
 
+        #region Очистить БД
         public void TruncateTables()
         {
             string sqlExpression = "TruncateTables";
@@ -322,6 +323,8 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
 
             }
         }
+        #endregion
+
 
 
 

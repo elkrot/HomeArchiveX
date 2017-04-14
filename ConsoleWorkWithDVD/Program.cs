@@ -23,15 +23,7 @@ namespace ConsoleWorkWithDVD
         {
             var pathToMdfFileDirectory = Directory.GetCurrentDirectory();// @"d:\temp\";
         AppDomain.CurrentDomain.SetData("DataDirectory", pathToMdfFileDirectory);
-           // ReadMediaInfoNet();
-            //DisplayMediaInfo();
-          //  Console.ReadKey();
 
-            //return;
-
-           // ReadMp3();
-
-           // ReadJpgMetadata();
 
             var cnf = new ConfigurationData();
             var lg = new Logger();

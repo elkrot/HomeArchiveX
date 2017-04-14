@@ -10,56 +10,97 @@ using System.Windows.Media.Imaging;
 namespace ConsoleWorkWithDVD
 {
 
+    #region MIFactory
+    public static class MFIFactory
+    {
+        public static Dictionary<string, string> GetMediaFileInfoDictionary(string extension, string filePath)
+        {
+
+            MIFileType MIFileType = MIManager.GetMediaFileType(extension);
+            MIManager miManager;
+
+
+            switch (MIFileType)
+            {
+                case MIFileType.PictureFile:
+                    miManager = new PictureFileInfoManager(extension, filePath);
+                    return miManager.MFIDictionary;
+                case MIFileType.VideoFile:
+                    miManager = new VideoFileInfoManager(extension, filePath);
+                    return miManager.MFIDictionary;
+                case MIFileType.AudioFile:
+                    miManager = new AudioFileInfoManager(extension, filePath);
+                    return miManager.MFIDictionary;
+                case MIFileType.NoMediaFile:
+                    break;
+                default:
+
+                    break;
+            }
+
+            return null;
+
+
+        }
+    }
+    #endregion
+
+
     #region Базовый класс MIManager
-    
     public abstract class MIManager
     {
-        public string Extension { get; set; }
-        public string FilePath { get; set; }
+        protected string Extension { get; set; }
+        protected string FilePath { get; set; }
         protected TagLib.File TagLibFile;
         protected MediaFile MediaFile;
         public Dictionary<string, string> MFIDictionary;
         public MIFileType miFileType { get; set; }
 
-        private string[] PictureExtensions = { "PNG", "BMP", "JPG", "JPEG", "GIF", "TIFF" };
-        private string[] VideoExtensions = { "MPEG4", "AVI", "MOV", "MKV" };
-        private string[] AudioExtensions = { "MP3", "OGG", "FLAC", "WAV" };
-        public string[] AllExtension { get { return PictureExtensions.Concat(VideoExtensions).ToArray().Concat(AudioExtensions).ToArray(); } }
-        public bool IsMediaFile(string extension)
+        private static string[] PictureExtensions = { "PNG", "BMP", "JPG", "JPEG", "GIF", "TIFF" };
+        private static string[] VideoExtensions = { "MPEG4", "AVI", "MOV", "MKV" };
+        private static string[] AudioExtensions = { "MP3", "OGG", "FLAC", "WAV" };
+        public static string[] AllExtension { get { return PictureExtensions.Concat(VideoExtensions).ToArray().Concat(AudioExtensions).ToArray(); } }
+        public static bool IsMediaFile(string extension)
         {
 
             return AllExtension.Contains(extension);
+        }
+
+        public static MIFileType GetMediaFileType(string extension)
+        {
+            if (PictureExtensions.Contains(extension.ToUpper()))
+            {
+                return MIFileType.PictureFile;
+            }
+            else if (VideoExtensions.Contains(extension.ToUpper()))
+            {
+                return MIFileType.VideoFile;
+            }
+            else if (AudioExtensions.Contains(extension.ToUpper()))
+            {
+                return MIFileType.AudioFile;
+            }
+            else return MIFileType.NoMediaFile;
+
         }
         public MIManager(string extension, string filePath)
         {
             MFIDictionary = new Dictionary<string, string>();
             Extension = extension;
-
-            if (PictureExtensions.Contains(Extension.ToUpper()))
-            {
-                miFileType = MIFileType.PictureFile;
-            }
-            else if (VideoExtensions.Contains(Extension.ToUpper()))
-            {
-                miFileType = MIFileType.VideoFile;
-            }
-            else if (AudioExtensions.Contains(Extension.ToUpper()))
-            {
-                miFileType = MIFileType.AudioFile;
-            }
-            else miFileType = MIFileType.NoMediaFile;
+            miFileType = GetMediaFileType(extension);
 
             if (miFileType != MIFileType.NoMediaFile)
             {
                 TagLibFile = TagLib.File.Create(filePath);
                 MediaFile = new MediaFile(filePath);
             }
+
             FilePath = filePath;
             FillTheMFIDictionary();
 
         }
         abstract public MFileInfo GetMIFileInfo();
-        abstract public void FillTheMFIDictionary();
+        abstract protected void FillTheMFIDictionary();
     }
     public enum MIFileType
     {
@@ -90,9 +131,9 @@ namespace ConsoleWorkWithDVD
             return new MIPictureFileInfo(MFIDictionary);
         }
 
-       
-        
-        public override void FillTheMFIDictionary()
+
+
+        protected override void FillTheMFIDictionary()
         {
             MFIDictionary.Add("Format", metadata.Format);
             MFIDictionary.Add("Rating", metadata.Rating.ToString());
@@ -244,7 +285,7 @@ namespace ConsoleWorkWithDVD
         #endregion
 
         #region Заполнить словарь аттрибутов
-        public override void FillTheMFIDictionary()
+        protected override void FillTheMFIDictionary()
         {
             MFIDictionary.Add("General.Format", MediaFile.General.Format);
             MFIDictionary.Add("General.Duration", MediaFile.General.DurationString);
@@ -286,9 +327,9 @@ namespace ConsoleWorkWithDVD
             return new MIAudioFileInfo(MFIDictionary);
         }
         #region Заполнить словарь аттрибутов
-        public override void FillTheMFIDictionary()
+        protected override void FillTheMFIDictionary()
         {
-            MFIDictionary.Add("Artist",String.Join(", ", TagLibFile.Tag.Performers) );
+            MFIDictionary.Add("Artist", String.Join(", ", TagLibFile.Tag.Performers));
             MFIDictionary.Add("Tracknumber", TagLibFile.Tag.Track.ToString().Trim());
             MFIDictionary.Add("Title", TagLibFile.Tag.Title);
             MFIDictionary.Add("Album", TagLibFile.Tag.Album);
@@ -297,7 +338,7 @@ namespace ConsoleWorkWithDVD
             MFIDictionary.Add("Bitrate", TagLibFile.Properties.AudioBitrate.ToString().Trim());
             MFIDictionary.Add("Channels", TagLibFile.Properties.AudioChannels.ToString().Trim());
             MFIDictionary.Add("Duration", TagLibFile.Properties.Duration.ToString("mm\\:ss"));
-            
+
         }
         #endregion
     }
@@ -309,7 +350,7 @@ namespace ConsoleWorkWithDVD
     [Serializable]
     abstract public class MFileInfo
     {
-        Dictionary<string, string> MFIDictionary;
+        public Dictionary<string, string> MFIDictionary;
         public MFileInfo(Dictionary<string, string> mfiDictionary)
         {
             MFIDictionary = mfiDictionary;
@@ -322,7 +363,7 @@ namespace ConsoleWorkWithDVD
     [Serializable]
     public class MIPictureFileInfo : MFileInfo
     {
-        Dictionary<string, string> MFIDictionary;
+
         public MIPictureFileInfo(Dictionary<string, string> mfiDictionary) : base(mfiDictionary)
         {
 
