@@ -242,6 +242,8 @@ namespace ConsoleWorkWithDVD
         #endregion
 
         public byte[] GetBinaryData<T>(T obj) {
+
+            if (obj == null) return new byte[1];
             using (MemoryStream stream = new MemoryStream())
             {
                 BinaryFormatter formatter = new BinaryFormatter();
@@ -252,6 +254,7 @@ namespace ConsoleWorkWithDVD
 
         public T GetDataFromBinary<T>(byte[] data)
         {
+            if (data == null) return default(T);
             using (MemoryStream stream = new MemoryStream(data))
             {
                 BinaryFormatter formatter = new BinaryFormatter();

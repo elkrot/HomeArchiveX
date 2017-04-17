@@ -66,7 +66,12 @@ namespace ConsoleWorkWithDVD
         public int CreateFile(string path, int driveId)
         {
             FileInfo fi = _fileManager.GetFileInfoByPath(path);
-            int parentId = GetEntityIdByPath(fi.Directory.Parent == null ? null : fi.Directory.Parent.FullName, driveId, EntityType.Folder);
+            int parentId = GetEntityIdByPath(fi.Directory.Parent == null ? null : fi.Directory.Parent.FullName
+                , driveId, EntityType.Folder);
+
+
+           
+
             var id = CreateArchiveEntity<FileInfo>(driveId, fi, fi.Name, fi.GetHashCode(), parentId
                 , EntityType.File, path, fi.Extension, "");
             return id;
@@ -349,9 +354,9 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         {
 
             string queryString = @"insert into ArchiveEntity( 
-ParentEntityKey,DriveId,Title,EntityType ,EntityPath,EntityExtension ,Description ,HashCode ,EntityInfo)
+ParentEntityKey,DriveId,Title,EntityType ,EntityPath,EntityExtension ,Description ,HashCode ,EntityInfo, MFileInfo)
 values ( 
-@ParentEntityKey,@DriveId,@Title,@EntityType,@EntityPath,@EntityExtension,@Description,@HashCode,@EntityInfo);
+@ParentEntityKey,@DriveId,@Title,@EntityType,@EntityPath,@EntityExtension,@Description,@HashCode,@EntityInfo,@MFileInfo);
                 select SCOPE_IDENTITY();";
             using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
             {
@@ -366,9 +371,12 @@ values (
                 command.Parameters.Add("@EntityExtension", SqlDbType.NVarChar, 20);
                 command.Parameters.Add("@Description", SqlDbType.NVarChar, 100);
                 command.Parameters.Add("@HashCode", SqlDbType.Int);
-                command.Parameters.Add("@EntityInfo", SqlDbType.VarBinary, Int32.MaxValue);
+                command.Parameters.Add("@EntityInfo", SqlDbType.VarBinary, Int32.MaxValue); 
+                command.Parameters.Add("@MFileInfo", SqlDbType.VarBinary, Int32.MaxValue);
                 command.Parameters.Add("@Title", SqlDbType.NVarChar, 250);
+                var mfi = MFIFactory.GetMediaFileInfoDictionary(extension, entityPath);
 
+                command.Parameters["@MFileInfo"].Value = _fileManager.GetBinaryData<Dictionary<string,string>>(mfi);
                 command.Parameters["@EntityInfo"].Value = _fileManager.GetBinaryData<T>(entity);
                 command.Parameters["@Title"].Value = title;
                 command.Parameters["@HashCode"].Value = hashCode;
@@ -456,6 +464,26 @@ values (
 
             }
         }
+
+
+
+        public Dictionary<string, string> GetMediaFileInfoById(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            {
+                connection.Open();
+                string sql = "select MFileInfo FROM ArchiveEntity where ArchiveEntityKey=@id and EntityType=2";
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("id", id);
+
+                object obj = command.ExecuteScalar();
+                return _fileManager.GetDataFromBinary<Dictionary<string,string>>((byte[])obj);
+
+            }
+        }
+
+
 
         public DirectoryInfo GetDirectoryInfoById(int id)
         {

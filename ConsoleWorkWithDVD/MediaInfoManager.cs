@@ -53,12 +53,14 @@ namespace ConsoleWorkWithDVD
         protected string FilePath { get; set; }
         protected TagLib.File TagLibFile;
         protected MediaFile MediaFile;
+        protected MediaInfoLib.MediaInfo MI;
+
         public Dictionary<string, string> MFIDictionary;
         public MIFileType miFileType { get; set; }
 
-        private static string[] PictureExtensions = { "PNG", "BMP", "JPG", "JPEG", "GIF", "TIFF" };
-        private static string[] VideoExtensions = { "MPEG4", "AVI", "MOV", "MKV" };
-        private static string[] AudioExtensions = { "MP3", "OGG", "FLAC", "WAV" };
+        private static string[] PictureExtensions = { ".PNG", ".BMP", ".JPG", ".JPEG", ".GIF", ".TIFF" };
+        private static string[] VideoExtensions = { ".MPEG4", ".AVI", ".MOV", ".MKV",".MP4",".WMV" };
+        private static string[] AudioExtensions = { ".MP3", ".OGG", ".FLAC", ".WAV" };
         public static string[] AllExtension { get { return PictureExtensions.Concat(VideoExtensions).ToArray().Concat(AudioExtensions).ToArray(); } }
         public static bool IsMediaFile(string extension)
         {
@@ -92,7 +94,47 @@ namespace ConsoleWorkWithDVD
             if (miFileType != MIFileType.NoMediaFile)
             {
                 TagLibFile = TagLib.File.Create(filePath);
-                MediaFile = new MediaFile(filePath);
+                MI = new MediaInfoLib.MediaInfo();
+
+                #region Media Info Init
+                FileStream From = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+
+                //From: preparing a memory buffer for reading
+                byte[] From_Buffer = new byte[64 * 1024];
+                int From_Buffer_Size; //The size of the read file buffer
+
+                //Preparing to fill MediaInfo with a buffer
+                MI.Open_Buffer_Init(From.Length, 0);
+
+                //The parsing loop
+                do
+                {
+                    //Reading data somewhere, do what you want for this.
+                    From_Buffer_Size = From.Read(From_Buffer, 0, 64 * 1024);
+
+                    //Sending the buffer to MediaInfo
+                    System.Runtime.InteropServices.GCHandle GC = System.Runtime.InteropServices.GCHandle.Alloc(From_Buffer, System.Runtime.InteropServices.GCHandleType.Pinned);
+                    IntPtr From_Buffer_IntPtr = GC.AddrOfPinnedObject();
+                    Status Result = (Status)MI.Open_Buffer_Continue(From_Buffer_IntPtr, (IntPtr)From_Buffer_Size);
+                    GC.Free();
+                    if ((Result & Status.Finalized) == Status.Finalized)
+                        break;
+
+                    //Testing if MediaInfo request to go elsewhere
+                    if (MI.Open_Buffer_Continue_GoTo_Get() != -1)
+                    {
+                        Int64 Position = From.Seek(MI.Open_Buffer_Continue_GoTo_Get(), SeekOrigin.Begin); //Position the file
+                        MI.Open_Buffer_Init(From.Length, Position); //Informing MediaInfo we have seek
+                    }
+                }
+                while (From_Buffer_Size > 0);
+
+                //Finalizing
+                MI.Open_Buffer_Finalize(); //This is the end of the stream, MediaInfo must finnish some work
+                #endregion
+
+
+                //MediaFile = new MediaFile(filePath);
             }
 
             FilePath = filePath;
@@ -109,6 +151,14 @@ namespace ConsoleWorkWithDVD
         AudioFile,
         NoMediaFile
     }
+    [FlagsAttribute]
+    public enum Status
+    {
+        Accepted = 0x01,
+        Filled = 0x02,
+        Updated = 0x04,
+        Finalized = 0x08
+    };
     #endregion
 
     // Конкретные создатели
@@ -135,12 +185,12 @@ namespace ConsoleWorkWithDVD
 
         protected override void FillTheMFIDictionary()
         {
-            MFIDictionary.Add("Format", metadata.Format);
-            MFIDictionary.Add("Rating", metadata.Rating.ToString());
-            MFIDictionary.Add("Title", metadata.Title);
-            MFIDictionary.Add("Keywords", String.Join(", ", metadata.Keywords));
-            MFIDictionary.Add("PhotoHeight", TagLibFile.Properties.PhotoHeight.ToString().Trim());
-            MFIDictionary.Add("PhotoWidth", TagLibFile.Properties.PhotoWidth.ToString().Trim());
+            MFIDictionary.Add("Format", metadata == null ? "" : metadata?.Format??"");
+            MFIDictionary.Add("Rating", metadata == null ? "" : metadata?.Rating.ToString()??"");
+            MFIDictionary.Add("Title", metadata == null ? "" : metadata?.Title??"");
+            MFIDictionary.Add("Keywords", metadata == null?"": String.Join(", ", metadata.Keywords));
+            MFIDictionary.Add("PhotoHeight", TagLibFile==null?"": TagLibFile.Properties.PhotoHeight.ToString().Trim());
+            MFIDictionary.Add("PhotoWidth", TagLibFile == null ? "" : TagLibFile.Properties.PhotoWidth.ToString().Trim());
         }
 
 
@@ -287,25 +337,34 @@ namespace ConsoleWorkWithDVD
         #region Заполнить словарь аттрибутов
         protected override void FillTheMFIDictionary()
         {
-            MFIDictionary.Add("General.Format", MediaFile.General.Format);
-            MFIDictionary.Add("General.Duration", MediaFile.General.DurationString);
-            MFIDictionary.Add("General.Bitrate", MediaFile.General.Bitrate.ToString());
+
+
+            MFIDictionary.Add("General.Format", MI.Get(MediaInfoLib.StreamKind.General, 0, "Format"));
+            MFIDictionary.Add("General.Duration", MI.Get(MediaInfoLib.StreamKind.General, 0, "Duration/String3"));
+            MFIDictionary.Add("General.Bitrate", MI.Get(MediaInfoLib.StreamKind.General, 0, "Bitrate"));
             MFIDictionary.Add("General.VideoHeight", TagLibFile.Properties.VideoHeight.ToString().Trim());
             MFIDictionary.Add("General.VideoWidth", TagLibFile.Properties.VideoWidth.ToString().Trim());
-            if (MediaFile.Audio.Count > 0)
+
+            var strAudioCount = MI.Get(MediaInfoLib.StreamKind.General, 0, "AudioCount");
+            int AudioCount = 0;
+            int.TryParse(strAudioCount, out AudioCount);
+            var strVideoCount = MI.Get(MediaInfoLib.StreamKind.General, 0, "VideoCount");
+            int VideoCount = 0;
+            int.TryParse(strVideoCount, out VideoCount);
+            if (AudioCount > 0)
             {
-                MFIDictionary.Add("Audio.Format", MediaFile.Audio[0].Format);
-                MFIDictionary.Add("Audio.Bitrate", MediaFile.Audio[0].Bitrate.ToString());
-                MFIDictionary.Add("Audio.Channels", MediaFile.Audio[0].Channels.ToString());
-                MFIDictionary.Add("Audio.Sampling", MediaFile.Audio[0].SamplingRate.ToString());
+                MFIDictionary.Add("Audio.Format", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "Format"));
+                MFIDictionary.Add("Audio.Bitrate", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "Bitrate"));
+                MFIDictionary.Add("Audio.Channels", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "Channels"));
+                MFIDictionary.Add("Audio.Sampling", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "SamplingRate"));
             }
 
-            if (MediaFile.Video.Count > 0)
+            if (VideoCount > 0)
             {
-                MFIDictionary.Add("Video.Format", MediaFile.Video[0].Format);
-                MFIDictionary.Add("Video.Bitrate", MediaFile.Video[0].Bitrate.ToString());
-                MFIDictionary.Add("Video.Framerate", MediaFile.Video[0].FrameRate.ToString());
-                MFIDictionary.Add("Video.Framesize", MediaFile.Video[0].FrameSize.ToString());
+                MFIDictionary.Add("Video.Format", MI.Get(MediaInfoLib.StreamKind.Video, 0, "Format"));
+                MFIDictionary.Add("Video.Bitrate", MI.Get(MediaInfoLib.StreamKind.Video, 0, "Bitrate"));
+                MFIDictionary.Add("Video.Framerate", MI.Get(MediaInfoLib.StreamKind.Video, 0, "FrameRate"));
+                MFIDictionary.Add("Video.Framesize", MI.Get(MediaInfoLib.StreamKind.Video, 0, "FrameSize"));
             }
         }
         #endregion
