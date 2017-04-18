@@ -59,7 +59,7 @@ namespace ConsoleWorkWithDVD
         public MIFileType miFileType { get; set; }
 
         private static string[] PictureExtensions = { ".PNG", ".BMP", ".JPG", ".JPEG", ".GIF", ".TIFF" };
-        private static string[] VideoExtensions = { ".MPEG4", ".AVI", ".MOV", ".MKV",".MP4",".WMV" };
+        private static string[] VideoExtensions = { ".MPEG4", ".AVI", ".MOV", ".MKV",".MP4",".WMV", ".MPG" };
         private static string[] AudioExtensions = { ".MP3", ".OGG", ".FLAC", ".WAV" };
         public static string[] AllExtension { get { return PictureExtensions.Concat(VideoExtensions).ToArray().Concat(AudioExtensions).ToArray(); } }
         public static bool IsMediaFile(string extension)
@@ -351,7 +351,7 @@ namespace ConsoleWorkWithDVD
 
             MFIDictionary.Add("General.Format", MI.Get(MediaInfoLib.StreamKind.General, 0, "Format"));
             MFIDictionary.Add("General.Duration", MI.Get(MediaInfoLib.StreamKind.General, 0, "Duration/String3"));
-            MFIDictionary.Add("General.Bitrate", MI.Get(MediaInfoLib.StreamKind.General, 0, "Bitrate"));
+            MFIDictionary.Add("General.Bitrate", MI.Get(MediaInfoLib.StreamKind.General, 0, "OverallBitRate"));
             MFIDictionary.Add("General.VideoHeight", TagLibFile.Properties.VideoHeight.ToString().Trim());
             MFIDictionary.Add("General.VideoWidth", TagLibFile.Properties.VideoWidth.ToString().Trim());
 
@@ -364,7 +364,7 @@ namespace ConsoleWorkWithDVD
             if (AudioCount > 0)
             {
                 MFIDictionary.Add("Audio.Format", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "Format"));
-                MFIDictionary.Add("Audio.Bitrate", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "Bitrate"));
+                MFIDictionary.Add("Audio.Bitrate", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "BitRate"));
                 MFIDictionary.Add("Audio.Channels", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "Channels"));
                 MFIDictionary.Add("Audio.Sampling", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "SamplingRate"));
             }
@@ -372,7 +372,7 @@ namespace ConsoleWorkWithDVD
             if (VideoCount > 0)
             {
                 MFIDictionary.Add("Video.Format", MI.Get(MediaInfoLib.StreamKind.Video, 0, "Format"));
-                MFIDictionary.Add("Video.Bitrate", MI.Get(MediaInfoLib.StreamKind.Video, 0, "Bitrate"));
+                MFIDictionary.Add("Video.Bitrate", MI.Get(MediaInfoLib.StreamKind.Video, 0, "BitRate"));
                 MFIDictionary.Add("Video.Framerate", MI.Get(MediaInfoLib.StreamKind.Video, 0, "FrameRate"));
                 MFIDictionary.Add("Video.Framesize", MI.Get(MediaInfoLib.StreamKind.Video, 0, "FrameSize"));
             }
