@@ -70,7 +70,7 @@ namespace ConsoleWorkWithDVD
                 , driveId, EntityType.Folder);
 
 
-           
+
 
             var id = CreateArchiveEntity<FileInfo>(driveId, fi, fi.Name, fi.GetHashCode(), parentId
                 , EntityType.File, path, fi.Extension, "");
@@ -371,12 +371,12 @@ values (
                 command.Parameters.Add("@EntityExtension", SqlDbType.NVarChar, 20);
                 command.Parameters.Add("@Description", SqlDbType.NVarChar, 100);
                 command.Parameters.Add("@HashCode", SqlDbType.Int);
-                command.Parameters.Add("@EntityInfo", SqlDbType.VarBinary, Int32.MaxValue); 
+                command.Parameters.Add("@EntityInfo", SqlDbType.VarBinary, Int32.MaxValue);
                 command.Parameters.Add("@MFileInfo", SqlDbType.VarBinary, Int32.MaxValue);
                 command.Parameters.Add("@Title", SqlDbType.NVarChar, 250);
                 var mfi = MFIFactory.GetMediaFileInfoDictionary(extension, entityPath);
 
-                command.Parameters["@MFileInfo"].Value = _fileManager.GetBinaryData<Dictionary<string,string>>(mfi);
+                command.Parameters["@MFileInfo"].Value = _fileManager.GetBinaryData<Dictionary<string, string>>(mfi);
                 command.Parameters["@EntityInfo"].Value = _fileManager.GetBinaryData<T>(entity);
                 command.Parameters["@Title"].Value = title;
                 command.Parameters["@HashCode"].Value = hashCode;
@@ -449,6 +449,80 @@ values (
             }
         }
 
+
+        public string[] GetDrives()
+        {
+            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            {
+                var result = new List<string>();
+                connection.Open();
+                string sql = "select concat(rtrim(ltrim(str(DriveId))),'. ',Title) descr FROM Drive ";
+                SqlCommand command = new SqlCommand(sql, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    result.Add(reader.GetString(0));
+                }
+
+                return result.ToArray();
+
+            }
+        }
+
+        public string[] GetDirectories(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            {
+                var result = new List<string>();
+                connection.Open();
+                string sql = @"select concat(rtrim(ltrim(str(ArchiveEntityKey))),'. ',EntityPath) descr 
+                               from ArchiveEntity where EntityType=1 and DriveId = @id";
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("id", id);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    result.Add(reader.GetString(0));
+                }
+
+                return result.ToArray();
+
+            }
+        }
+
+
+        public string[] GetFiles(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            {
+                var result = new List<string>();
+                connection.Open();
+                string sql = @"select concat(rtrim(ltrim(str(ArchiveEntityKey))),'. ',EntityPath) descr 
+                               from ArchiveEntity where EntityType=2 and DriveId = @id";
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("id", id);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    result.Add(reader.GetString(0));
+                }
+
+                return result.ToArray();
+
+            }
+        }
+
+
+
+
+
         public FileInfo GetFileInfoById(int id)
         {
             using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
@@ -478,7 +552,7 @@ values (
                 command.Parameters.AddWithValue("id", id);
 
                 object obj = command.ExecuteScalar();
-                return _fileManager.GetDataFromBinary<Dictionary<string,string>>((byte[])obj);
+                return _fileManager.GetDataFromBinary<Dictionary<string, string>>((byte[])obj);
 
             }
         }

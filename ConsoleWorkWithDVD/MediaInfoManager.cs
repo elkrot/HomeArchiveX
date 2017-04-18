@@ -93,6 +93,9 @@ namespace ConsoleWorkWithDVD
 
             if (miFileType != MIFileType.NoMediaFile)
             {
+
+                try
+                {
                 TagLibFile = TagLib.File.Create(filePath);
                 MI = new MediaInfoLib.MediaInfo();
 
@@ -132,6 +135,13 @@ namespace ConsoleWorkWithDVD
                 //Finalizing
                 MI.Open_Buffer_Finalize(); //This is the end of the stream, MediaInfo must finnish some work
                 #endregion
+                }
+                catch (Exception)
+                {
+
+                    
+                }
+               
 
 
                 //MediaFile = new MediaFile(filePath);
