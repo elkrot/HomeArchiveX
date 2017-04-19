@@ -70,21 +70,44 @@ namespace ConsoleWorkWithDVD
 
         private static void RenderMenu()
         {
+            Console.Clear();
             Console.WriteLine("Сделай выбор");
             Console.WriteLine("1. Очистить данные");
             Console.WriteLine("2. Сохранить данные о диске");
             Console.WriteLine("----------------------------");
-            Console.WriteLine("31. Отобразить данные о дисках");
-            Console.WriteLine("3. Отобразить данные о диске");
-            Console.WriteLine("41. Отобразить данные о Дирректориях");
-            Console.WriteLine("4. Отобразить данные о Дирректории");
-            Console.WriteLine("51. Отобразить данные о файлах");
-            Console.WriteLine("5. Отобразить данные о файле");
+            Console.WriteLine("3. Диски");
+            Console.WriteLine("4. Дирректории");
+            Console.WriteLine("5. Файлы");
             Console.WriteLine("----------------------------");
             Console.WriteLine("8. Очистить экран");
             Console.WriteLine("9. Выход");
         }
+        private static void RenderSubMenu(int kodMenu)
+        {
+            Console.Clear();
+            switch (kodMenu)
+            {
 
+                case 3:
+                    Console.WriteLine("1. Все Диски");
+                    Console.WriteLine("2. Отобразить данные о диске");
+                    Console.WriteLine("0. Назад");
+                    break;
+                case 4:
+                    Console.WriteLine("1. Все Дирректории");
+                    Console.WriteLine("2. Отобразить данные о Дирректории");
+                    Console.WriteLine("0. Назад");
+                    break;
+                case 5:
+                    Console.WriteLine("1. Все файлы");
+                    Console.WriteLine("2. Отобразить данные о файле");
+                    Console.WriteLine("0. Назад");
+                    break;
+                default:
+                    break;
+            }
+
+        }
         private static void GetDirectoryInfoById(DataManager dm, int id)
         {
             DirectoryInfo ri = dm.GetDirectoryInfoById(id);
@@ -129,12 +152,12 @@ namespace ConsoleWorkWithDVD
                 Console.WriteLine(item);
             }
 
-            
+
             Console.WriteLine("------");
         }
 
 
-        private static void RenderDirectories(DataManager dm,int driveId)
+        private static void RenderDirectories(DataManager dm, int driveId)
         {
             string[] drivesList = dm.GetDirectories(driveId);
             Console.WriteLine("------");
@@ -196,42 +219,110 @@ namespace ConsoleWorkWithDVD
                     }
                     break;
                 case 3:
-                    Console.WriteLine("Введите Код Диска");
-                    strid = Console.ReadLine();
-                    int.TryParse(strid, out id);
-                    RenderDriveInfoById(dm, id);
+
+                    RenderSubMenu(choise);
+                    strid = null;
+                    do
+                    {
+                        strid = Console.ReadLine();
+                        int.TryParse(strid, out id);
+                        if (id == 1)
+                        {
+                            RenderDrives(dm);
+                        }
+                        else if (id == 2)
+                        {
+                            Console.WriteLine("Введите Код Диска");
+                            strid = Console.ReadLine();
+                            int.TryParse(strid, out id);
+                            RenderDriveInfoById(dm, id);
+                        }
+                        else
+                        {
+                            strid = null;
+                            RenderMenu();
+                        }
+                    } while (strid != null);
+
+
+
                     break;
                 case 4:
-                    Console.WriteLine("Введите Код Дирректории");
-                    strid = Console.ReadLine();
+                    RenderSubMenu(choise);
+                    strid = null;
+                    do
+                    {
+                        strid = Console.ReadLine();
                     int.TryParse(strid, out id);
-                    GetDirectoryInfoById(dm, id);
+                    if (id == 1)
+                    {
+                        Console.WriteLine("Введите Код Диска");
+                        strid = Console.ReadLine();
+                        int.TryParse(strid, out id);
+                        RenderDirectories(dm, id);
+
+                    }
+                    else if (id == 2)
+                    {
+                        Console.WriteLine("Введите Код Дирректории");
+                        strid = Console.ReadLine();
+                        int.TryParse(strid, out id);
+                        GetDirectoryInfoById(dm, id);
+                    }
+                    else
+                    {
+                            strid = null;
+                            RenderMenu();
+                    }
+                    } while (strid != null);
+
+
+
                     break;
                 case 5:
-                    Console.WriteLine("Введите Код Файла");
-                    strid = Console.ReadLine();
+                    RenderSubMenu(choise);
+                    strid = null;
+                    do
+                    {
+                        strid = Console.ReadLine();
                     int.TryParse(strid, out id);
-                    RenderFileInfoById(dm, id);
+                    if (id == 1)
+                    {
+                        Console.WriteLine("Введите Код Диска");
+                        strid = Console.ReadLine();
+                        int.TryParse(strid, out id);
+                        RenderFiles(dm, id);
+                    }
+                    else if (id == 2)
+                    {
+                        Console.WriteLine("Введите Код Файла");
+                        strid = Console.ReadLine();
+                        int.TryParse(strid, out id);
+                        RenderFileInfoById(dm, id);
+                    }
+                    else
+                    {
+                            strid = null;
+                            RenderMenu();
+                    }
+                    } while (strid != null);
+
+
+
                     break;
                 case 8:
                     Console.Clear();
                     RenderMenu();
                     break;
                 case 31:
-                    RenderDrives(dm);
+
                     break;
                 case 41:
-                    Console.WriteLine("Введите Код Диска");
-                    strid = Console.ReadLine();
-                    int.TryParse(strid, out id);
-                    RenderDirectories(dm,id);
+
 
                     break;
                 case 51:
-                    Console.WriteLine("Введите Код Диска");
-                    strid = Console.ReadLine();
-                    int.TryParse(strid, out id);
-                    RenderFiles(dm, id);
+
                     break;
                 case 9:
                     System.Environment.Exit(-1);

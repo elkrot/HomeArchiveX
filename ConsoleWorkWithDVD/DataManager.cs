@@ -552,6 +552,8 @@ values (
                 command.Parameters.AddWithValue("id", id);
 
                 object obj = command.ExecuteScalar();
+
+                if (obj is System.DBNull) return new Dictionary<string, string>();
                 return _fileManager.GetDataFromBinary<Dictionary<string, string>>((byte[])obj);
 
             }
@@ -570,6 +572,7 @@ values (
                 command.Parameters.AddWithValue("id", id);
 
                 object obj = command.ExecuteScalar();
+                if (obj is System.DBNull) return default(DirectoryInfo);
                 return _fileManager.GetDataFromBinary<DirectoryInfo>((byte[])obj);
 
             }
