@@ -7,53 +7,38 @@ using System.Threading.Tasks;
 
 namespace HomeArchiveX.Infrastructure
 {
-   public class ConfigManager
+    public class ConfigManager
     {
         private static ConfigManager instance;
 
         private Configuration configFile;
         private KeyValueConfigurationCollection settings;
-        public DateTime OrdersStartDate {
-            get
-            {
-                DateTime result;
-                DateTime.TryParse(GetSetting(nameof(OrdersStartDate)), out result);
-                return result;
-            }
-            set { AddUpdateAppSettings(nameof(OrdersStartDate),value.ToShortDateString()); }
-        }
-        public DateTime OrdersEndDate {
-            get
-            {
-                DateTime result;
-                DateTime.TryParse(GetSetting(nameof(OrdersEndDate)), out result);
-                return result;
-            }
-            set { AddUpdateAppSettings(nameof(OrdersEndDate), value.ToShortDateString()); }
-        }
 
-        public DateTime ReportsStartDate
+        #region Свойства Конфигурации
+        public DateTime StartDate
         {
             get
             {
-                DateTime result =DateTime.MinValue;
-                DateTime.TryParse(GetSetting(nameof(ReportsStartDate)), out result);
+                DateTime result;
+                DateTime.TryParse(GetSetting(nameof(StartDate)), out result);
                 return result;
             }
-            set { AddUpdateAppSettings(nameof(ReportsStartDate), value.ToShortDateString()); }
+            set { AddUpdateAppSettings(nameof(StartDate), value.ToShortDateString()); }
         }
-        public DateTime ReportsEndDate
+        public DateTime EndDate
         {
             get
             {
-                DateTime result = DateTime.MinValue;
-                DateTime.TryParse(GetSetting(nameof(ReportsEndDate)), out result);
+                DateTime result;
+                DateTime.TryParse(GetSetting(nameof(EndDate)), out result);
                 return result;
             }
-            set { AddUpdateAppSettings(nameof(ReportsEndDate), value.ToShortDateString()); }
+            set { AddUpdateAppSettings(nameof(EndDate), value.ToShortDateString()); }
         }
 
+        #endregion
 
+        #region Описание класса
         private ConfigManager()
         {
             configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
@@ -73,8 +58,8 @@ namespace HomeArchiveX.Infrastructure
         {
             try
             {
-                return settings[key]==null?"":settings[key].Value ?? "";
-               
+                return settings[key] == null ? "" : settings[key].Value ?? "";
+
             }
             catch (ConfigurationErrorsException)
             {
@@ -99,9 +84,11 @@ namespace HomeArchiveX.Infrastructure
             }
             catch (ConfigurationErrorsException)
             {
-                
+
             }
         }
+        #endregion
+
 
 
     }
