@@ -1,4 +1,6 @@
+using HomeArchiveX.Model;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace HomeArchiveX.DataAccess.Models.Mapping

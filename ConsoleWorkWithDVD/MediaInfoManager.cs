@@ -199,8 +199,8 @@ namespace ConsoleWorkWithDVD
             MFIDictionary.Add("Rating", metadata == null ? "" : metadata?.Rating.ToString()??"");
             MFIDictionary.Add("Title", metadata == null ? "" : metadata?.Title??"");
             MFIDictionary.Add("Keywords", metadata == null?"": String.Join(", ", metadata.Keywords));
-            MFIDictionary.Add("PhotoHeight", TagLibFile==null?"": TagLibFile.Properties.PhotoHeight.ToString().Trim());
-            MFIDictionary.Add("PhotoWidth", TagLibFile == null ? "" : TagLibFile.Properties.PhotoWidth.ToString().Trim());
+            MFIDictionary.Add("PhotoHeight", TagLibFile?.Properties == null?"": TagLibFile.Properties.PhotoHeight.ToString().Trim());
+            MFIDictionary.Add("PhotoWidth", TagLibFile?.Properties == null ? "" : TagLibFile.Properties.PhotoWidth.ToString().Trim());
         }
 
 

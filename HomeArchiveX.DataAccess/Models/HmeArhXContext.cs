@@ -3,7 +3,7 @@ using System.Data.Entity.Infrastructure;
 using HomeArchiveX.DataAccess.Models.Mapping;
 using HomeArchiveX.Model;
 
-namespace HomeArchiveX.DataAccess.Models
+namespace HomeArchiveX.DataAccess
 {
     public partial class HmeArhXContext : DbContext
     {

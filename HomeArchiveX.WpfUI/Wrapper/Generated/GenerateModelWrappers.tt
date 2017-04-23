@@ -1,13 +1,13 @@
 ﻿<#@ template debug="false" hostspecific="true" language="C#" #>
 <#@ assembly name="System.Core" #>
-<#@ assembly name="$(SolutionDir)\HomeArchiveX.WpfU.Model\bin\Debug\HomeArchiveX.WpfU.Model.dll" #>
+<#@ assembly name="$(SolutionDir)\HomeArchiveX.Model\bin\Debug\HomeArchiveX.Model.dll" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Reflection" #>
 <#@ import namespace="System.Collections" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#@ import namespace="HomeArchiveX.WpfU.Model" #>
+<#@ import namespace="HomeArchiveX.Model" #>
 <#@ output extension=".cs" #>
 <#
   foreach (var modelType in GetModelTypes())
@@ -26,9 +26,9 @@
 
 #>using System;   
 using System.Linq;
-using HomeArchiveX.WpfU.Model;
+using HomeArchiveX.Model;
 
-namespace HomeArchiveX.WpfU.Wrapper
+namespace HomeArchiveX.WpfUI.Wrapper
 {
   public partial class <#=modelType.Name#>Wrapper : ModelWrapper<<#=modelType.Name#>>
   {
@@ -52,7 +52,7 @@ namespace HomeArchiveX.WpfU.Wrapper
 <#+ 
   private IEnumerable<Type> GetModelTypes()
   {
-	return typeof(Person).Assembly.GetTypes();
+	return typeof(ArchiveEntity).Assembly.GetTypes();
   }
 
   private void SaveGeneratedCodeAsFile(string fileName)

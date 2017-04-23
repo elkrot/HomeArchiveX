@@ -57,7 +57,7 @@ namespace ConsoleWorkWithDVD
                 }
 
             }
-            return string.IsNullOrWhiteSpace(NewimgPath)?"":Path.Combine(targetDir, fi.Name);
+            return string.IsNullOrWhiteSpace(NewimgPath) ? "" : Path.Combine(targetDir, fi.Name);
         }
         #endregion
 
@@ -70,11 +70,22 @@ namespace ConsoleWorkWithDVD
                                                   Image img = Image.FromStream(fs);
                                                   fs.Close();*/
             decimal h = (img.Height * _configuration.ThumbnailWidth) / img.Width;
-            Bitmap bmp = new Bitmap(img, _configuration.ThumbnailWidth, (int)h);
+            Bitmap bmp;
+            if (h != 0)
+            {
 
+                bmp = new Bitmap(img, _configuration.ThumbnailWidth, (int)h);
+
+            }
+            else { bmp = new Bitmap(img, img.Height, img.Width); }
 
 
             return bmp;
+
+
+
+
+
         }
         #endregion
 
@@ -241,20 +252,21 @@ namespace ConsoleWorkWithDVD
         }
         #endregion
 
-        public byte[] GetBinaryData<T>(T obj) {
+        public byte[] GetBinaryData<T>(T obj)
+        {
 
             if (obj == null) return new byte[1];
             using (MemoryStream stream = new MemoryStream())
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(stream, obj);
-                return  stream.GetBuffer();
+                return stream.GetBuffer();
             }
         }
 
         public T GetDataFromBinary<T>(byte[] data)
         {
-            if (data == null) return default(T);
+            if (data == null || data.Count()<=1) return default(T);
             using (MemoryStream stream = new MemoryStream(data))
             {
                 BinaryFormatter formatter = new BinaryFormatter();

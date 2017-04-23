@@ -456,7 +456,7 @@ values (
             {
                 var result = new List<string>();
                 connection.Open();
-                string sql = "select concat(rtrim(ltrim(str(DriveId))),'. ',Title) descr FROM Drive ";
+                string sql = " select rtrim(ltrim(str(DriveId))+'. '+Title) descr FROM Drive descr ";
                 SqlCommand command = new SqlCommand(sql, connection);
                 SqlDataReader reader = command.ExecuteReader();
 
@@ -476,7 +476,7 @@ values (
             {
                 var result = new List<string>();
                 connection.Open();
-                string sql = @"select concat(rtrim(ltrim(str(ArchiveEntityKey))),'. ',EntityPath) descr 
+                string sql = @"select rtrim(ltrim(str(ArchiveEntityKey)))+'. '+EntityPath descr 
                                from ArchiveEntity where EntityType=1 and DriveId = @id";
                 SqlCommand command = new SqlCommand(sql, connection);
                 command.Parameters.Clear();
@@ -501,7 +501,7 @@ values (
             {
                 var result = new List<string>();
                 connection.Open();
-                string sql = @"select concat(rtrim(ltrim(str(ArchiveEntityKey))),'. ',EntityPath) descr 
+                string sql = @"select rtrim(ltrim(str(ArchiveEntityKey)))+'. '+EntityPath descr 
                                from ArchiveEntity where EntityType=2 and DriveId = @id";
                 SqlCommand command = new SqlCommand(sql, connection);
                 command.Parameters.Clear();
