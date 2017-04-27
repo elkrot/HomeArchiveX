@@ -1,7 +1,8 @@
 ﻿using Autofac;
-
+using HomeArchiveX.DataAccess;
 using HomeArchiveX.WpfU.DataProvider;
 using HomeArchiveX.WpfU.DataProvider.Lookups;
+using HomeArchiveX.WpfUI.View.Services;
 using Microsoft.Practices.Prism.PubSubEvents;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,9 @@ namespace HomeArchiveX.WpfU.Startup
             var builder = new ContainerBuilder();
 
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
-           /* builder.RegisterType<MessageDialogService>().As<IMessageDialogService>();
+            builder.RegisterType<MessageDialogService>().As<IMessageDialogService>();
             builder.RegisterType<EFDataService>().As<IDataService>();
-            builder.RegisterType<CitiesLookupProvider>().As<ILookupProvider<City>>();
+           /* builder.RegisterType<CitiesLookupProvider>().As<ILookupProvider<City>>();
             builder.RegisterType<StatusLookupProvider>().As<ILookupProvider<Status>>();
             builder.RegisterType<SalesOrderLookupProvider>().As<ILookupProvider<SalesOrderHeader>>();
             builder.RegisterType<SalesPersonLookupProvider>().As<ILookupProvider<SalesPerson>>();

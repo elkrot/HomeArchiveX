@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HomeArchiveX.WpfUI.View;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,17 @@ namespace HomeArchiveX.WpfUI
         public MainWindow()
         {
             InitializeComponent();
+            Main.Content = new DriversPage();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Main.Content = new FilesOnDrivePage();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Main.Content = new DriversPage();
         }
     }
 }
