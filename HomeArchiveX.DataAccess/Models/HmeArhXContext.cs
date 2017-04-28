@@ -2,10 +2,11 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using HomeArchiveX.DataAccess.Models.Mapping;
 using HomeArchiveX.Model;
+using HomeArchiveX.DataAccess.Implementations;
 
 namespace HomeArchiveX.DataAccess
 {
-    public partial class HmeArhXContext : DbContext
+    public partial class HmeArhXContext : DbContext,IDbContext
     {
         static HmeArhXContext()
         {
