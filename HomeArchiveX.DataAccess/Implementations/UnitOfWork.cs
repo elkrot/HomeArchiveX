@@ -21,6 +21,7 @@ namespace HomeArchiveX.DataAccess.Implementations
         /// <param name="context">Контекст</param>
         public UnitOfWork(IDbContext context)
         {
+            RepositoryDictionary = new Dictionary<string, object>();
             _context = context;
             RepositoryDictionary.Add("Drive", new DriveRepository(_context));
             //         RepositoryDictionary.Add("Image", new ImageRepository(_context));

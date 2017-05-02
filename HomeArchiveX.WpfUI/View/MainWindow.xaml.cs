@@ -1,4 +1,5 @@
 ﻿using HomeArchiveX.WpfUI.View;
+using HomeArchiveX.WpfUI.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,12 @@ namespace HomeArchiveX.WpfUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+DrivesViewModel _drivesViewModel;
+        public MainWindow(DrivesViewModel drivesViewModel)
         {
             InitializeComponent();
-            Main.Content = new DriversPage();
+            _drivesViewModel = drivesViewModel;
+            Main.Content = new DriversPage(_drivesViewModel);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -34,7 +37,8 @@ namespace HomeArchiveX.WpfUI
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Main.Content = new DriversPage();
+            
+            Main.Content = new DriversPage(_drivesViewModel);
         }
     }
 }

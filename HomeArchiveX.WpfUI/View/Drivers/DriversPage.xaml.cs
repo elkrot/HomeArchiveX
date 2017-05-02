@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HomeArchiveX.WpfUI.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,13 @@ namespace HomeArchiveX.WpfUI.View
         public DriversPage()
         {
             InitializeComponent();
+        }
+        private DrivesViewModel _drivesViewModel;
+        public DriversPage(DrivesViewModel drivesViewModel)
+        {
+            InitializeComponent();
+            _drivesViewModel = drivesViewModel;
+            DataContext = drivesViewModel;
         }
     }
 }

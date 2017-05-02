@@ -43,15 +43,8 @@
                 </Button>
                 <!--<TextBox Foreground="LightGray" Width="100">Поиск...</TextBox>-->
             </ToolBar>
-            <!--<ToolBar>
-                 <Button>
-                    <StackPanel Orientation="Horizontal">
-                        <Ellipse Width="10" Height="10" Fill="Black"  HorizontalAlignment="Left"/>
-                        <TextBlock HorizontalAlignment="Right" Width="60" Margin="5 0 0 0">Найти</TextBlock>
-                    </StackPanel>
-                </Button>
-            </ToolBar>-->
+            
         </ToolBarTray>
-        <Frame x:Name="Main" Margin="0,60,0,0" NavigationUIVisibility="Hidden" Grid.ColumnSpan="2"/>
+        <Frame x:Name="Main" Margin="0,60,0,0"  Grid.ColumnSpan="2"/>
     </Grid>
 </Window>

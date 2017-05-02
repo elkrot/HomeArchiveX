@@ -15,5 +15,7 @@ namespace HomeArchiveX.DataAccess
         MethodResult<int> DeleteDrive(int id);
         Drive GetDriveById(int id);
         MethodResult<int> SaveDrive(Drive drive);
+        IEnumerable<Drive> GetAllDrives();
+        IEnumerable<Drive> GetDrivesByCondition(Expression<Func<Drive, bool>> where, Expression<Func<Drive, object>> orderby);
     }
 }

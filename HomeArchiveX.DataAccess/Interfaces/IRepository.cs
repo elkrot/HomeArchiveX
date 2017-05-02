@@ -10,10 +10,13 @@ namespace HomeArchiveX.DataAccess.Interfaces
     {
         TEntity Get(params object[] KeyValues);
         IEnumerable<TEntity> GetAll();
-        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicste);
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
 
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, List<string> includes
             , Expression<Func<TEntity, object>> orderby);
+
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate
+    , Expression<Func<TEntity, object>> orderby);
 
         IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties);
         IEnumerable<TEntity> GetWithInclude(Func<TEntity, bool> predicate,

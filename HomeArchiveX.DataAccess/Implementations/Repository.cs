@@ -12,9 +12,9 @@ namespace HomeArchiveX.DataAccess.Implementations
     {
         protected readonly DbContext Context;
 
-        public Repository(DbContext context)
+        public Repository(IDbContext context)
         {
-            Context = context;
+            Context = context as DbContext;
         }
 
         public TEntity Get(params object[] KeyValues)
@@ -106,5 +106,16 @@ namespace HomeArchiveX.DataAccess.Implementations
                 .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
         }
 
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, object>> orderby)
+        {
+            IQueryable<TEntity> ret;
+
+            ret = Context.Set<TEntity>();
+
+            if (orderby != null)
+                ret = ret.OrderBy(orderby);
+
+            return ret.Where(predicate);
+        }
     }
 }
