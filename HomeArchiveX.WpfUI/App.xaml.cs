@@ -1,4 +1,7 @@
 ﻿using Autofac;
+using HomeArchiveX.DataAccess;
+using HomeArchiveX.DataAccess.Implementations;
+using HomeArchiveX.Model;
 using HomeArchiveX.WpfU.Startup;
 using HomeArchiveX.WpfUI.ViewModel;
 using System;
@@ -25,6 +28,11 @@ namespace HomeArchiveX.WpfUI
         {
             var pathToMdfFileDirectory = Directory.GetCurrentDirectory();// @"d:\temp\";
             AppDomain.CurrentDomain.SetData("DataDirectory", pathToMdfFileDirectory);
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<Drive>();
+                var x = repo.GetAll();
+            }
 
             try
             {
@@ -39,7 +47,7 @@ namespace HomeArchiveX.WpfUI
                 //MainWindow = new MainWindow();
                 MainWindow.Show();
                 _driveViewModel.Load();
-
+  base.OnStartup(e);
                 
             }
             catch (Exception ex)
@@ -50,7 +58,7 @@ namespace HomeArchiveX.WpfUI
 
             }
 
-            base.OnStartup(e);
+          
         }
     }
 
