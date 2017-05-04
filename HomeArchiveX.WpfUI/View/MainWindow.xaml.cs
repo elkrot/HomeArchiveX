@@ -23,6 +23,10 @@ namespace HomeArchiveX.WpfUI
     public partial class MainWindow : Window
     {
 DrivesViewModel _drivesViewModel;
+        public MainWindow()
+        {
+
+        }
         public MainWindow(DrivesViewModel drivesViewModel)
         {
             InitializeComponent();

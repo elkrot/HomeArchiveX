@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:HomeArchiveX.WpfUI"
               xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:converters="clr-namespace:HomeArchiveX.WpfU.Converters"
-             StartupUri="View/MainWindow.xaml">
+             >
     <Application.Resources>
         <ResourceDictionary>
             <sys:Double x:Key="DefaultFontSize">18</sys:Double>
