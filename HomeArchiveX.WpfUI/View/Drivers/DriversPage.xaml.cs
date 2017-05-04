@@ -28,9 +28,12 @@ namespace HomeArchiveX.WpfUI.View
         private DrivesViewModel _drivesViewModel;
         public DriversPage(DrivesViewModel drivesViewModel)
         {
-            InitializeComponent();
+InitializeComponent();
             _drivesViewModel = drivesViewModel;
             DataContext = drivesViewModel;
+
+            
+
         }
     }
 }

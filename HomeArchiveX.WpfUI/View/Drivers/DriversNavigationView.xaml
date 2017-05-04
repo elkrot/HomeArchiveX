@@ -15,6 +15,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Grid x:Name="grid" Background="#444444">
+                            <TextBlock>xxxxxxxx</TextBlock>
                             <ContentPresenter Margin="{TemplateBinding Padding}"/>
                         </Grid>
                         <ControlTemplate.Triggers>
@@ -33,7 +34,8 @@
         </Style>
     </UserControl.Resources>
     <ScrollViewer  VerticalScrollBarVisibility="Auto">
-        <ItemsControl ItemsSource="{Binding NavigationItems}" Foreground="White">
+        
+        <ItemsControl ItemsSource="{Binding NavigationItems}" Foreground="White" Background="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button Command="{Binding OpenDriveEditViewCommand}"
