@@ -31,8 +31,7 @@ DrivesViewModel _drivesViewModel;
         {
             InitializeComponent();
             _drivesViewModel = drivesViewModel;
-            Main.Content = new DriversPage(_drivesViewModel);
-        }
+            Main.Content = new DrivesPage(_drivesViewModel);        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -42,7 +41,7 @@ DrivesViewModel _drivesViewModel;
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             
-            Main.Content = new DriversPage(_drivesViewModel);
+            Main.Content = new DrivesPage(_drivesViewModel);
         }
     }
 }

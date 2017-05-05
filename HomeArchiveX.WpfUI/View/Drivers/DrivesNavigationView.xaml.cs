@@ -17,23 +17,14 @@ using System.Windows.Shapes;
 namespace HomeArchiveX.WpfUI.View
 {
     /// <summary>
-    /// Interaction logic for DriversPage.xaml
+    /// Interaction logic for DriversNavigationView.xaml
     /// </summary>
-    public partial class DriversPage : Page
+    public partial class DrivesNavigationView : UserControl
     {
-        public DriversPage()
+        public DrivesNavigationView()
         {
             InitializeComponent();
         }
-        private DrivesViewModel _drivesViewModel;
-        public DriversPage(DrivesViewModel drivesViewModel)
-        {
-InitializeComponent();
-            _drivesViewModel = drivesViewModel;
-            DataContext = drivesViewModel;
-
-            
-
-        }
+        
     }
 }

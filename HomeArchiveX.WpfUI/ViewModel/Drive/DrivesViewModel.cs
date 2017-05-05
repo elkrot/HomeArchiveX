@@ -120,6 +120,6 @@ namespace HomeArchiveX.WpfUI.ViewModel
         public ICommand AddDriveCommand { get; set; }
 
 
-        public IDrivesNavigationViewModel DrivesNavigationViewModel;
+        public IDrivesNavigationViewModel DrivesNavigationViewModel { get; private set; }
     }
 }

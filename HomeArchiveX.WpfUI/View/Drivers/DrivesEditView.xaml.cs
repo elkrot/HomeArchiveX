@@ -18,9 +18,9 @@ namespace HomeArchiveX.WpfUI.View
     /// <summary>
     /// Interaction logic for DriversEditView.xaml
     /// </summary>
-    public partial class DriversEditView : UserControl
+    public partial class DrivesEditView : UserControl
     {
-        public DriversEditView()
+        public DrivesEditView()
         {
             InitializeComponent();
         }

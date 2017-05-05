@@ -109,21 +109,21 @@
       <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
     <Compile Include="Startap\Bootstrapper.cs" />
-    <Compile Include="ViewModel\Drive\DriverEditViewModel.cs" />
-    <Compile Include="ViewModel\Drive\DriversNavigationViewModel.cs" />
-    <Compile Include="ViewModel\Drive\DriversViewModel.cs" />
+    <Compile Include="ViewModel\Drive\DriveEditViewModel.cs" />
+    <Compile Include="ViewModel\Drive\DrivesNavigationViewModel.cs" />
+    <Compile Include="ViewModel\Drive\DrivesViewModel.cs" />
     <Compile Include="ViewModel\FilesOnDrive\FilesOnDriveEditViewModel.cs" />
     <Compile Include="ViewModel\FilesOnDrive\FilesOnDriveNavigationViewModel.cs" />
     <Compile Include="ViewModel\FilesOnDrive\FilesOnDriveViewModel.cs" />
     <Compile Include="ViewModel\Observable.cs" />
-    <Compile Include="View\Drivers\DriversEditView.xaml.cs">
-      <DependentUpon>DriversEditView.xaml</DependentUpon>
+    <Compile Include="View\Drivers\DrivesEditView.xaml.cs">
+      <DependentUpon>DrivesEditView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Drivers\DriversNavigationView.xaml.cs">
-      <DependentUpon>DriversNavigationView.xaml</DependentUpon>
+    <Compile Include="View\Drivers\DrivesNavigationView.xaml.cs">
+      <DependentUpon>DrivesNavigationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Drivers\DriversPage.xaml.cs">
-      <DependentUpon>DriversPage.xaml</DependentUpon>
+    <Compile Include="View\Drivers\DrivesPage.xaml.cs">
+      <DependentUpon>DrivesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Files\FilesOnDriveEditView.xaml.cs">
       <DependentUpon>FilesOnDriveEditView.xaml</DependentUpon>
@@ -157,15 +157,15 @@
     <Compile Include="Wrapper\Generated\ImageWrapper.g.cs" />
     <Compile Include="Wrapper\Generated\TagToEntityWrapper.g.cs" />
     <Compile Include="Wrapper\Generated\TagWrapper.g.cs" />
-    <Page Include="View\Drivers\DriversEditView.xaml">
+    <Page Include="View\Drivers\DrivesEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Drivers\DriversNavigationView.xaml">
+    <Page Include="View\Drivers\DrivesNavigationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Drivers\DriversPage.xaml">
+    <Page Include="View\Drivers\DrivesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
