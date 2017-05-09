@@ -72,10 +72,18 @@ namespace HomeArchiveX.WpfUI.View
 
         private void filesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            System.Windows.Forms.MessageBox.Show(((Node)e.NewValue).Name);
+            
             //  http://www.wpf-tutorial.com/treeview-control/treeview-data-binding-multiple-templates/
             // http://www.wpf-tutorial.com/treeview-control/handling-selection-expansion-state/
             // https://blogs.msdn.microsoft.com/mikehillberg/2009/10/30/treeview-and-hierarchicaldatatemplate-step-by-step/
             //  System.Windows.Forms.MessageBox.Show(((Node)e.OriginalSource).Name);
+        }
+
+        private void treeViewItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+
+            // e.Handled = true;
         }
     }
 }
