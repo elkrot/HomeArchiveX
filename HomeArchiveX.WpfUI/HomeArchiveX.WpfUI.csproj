@@ -98,11 +98,15 @@
     <Compile Include="DataProvider\DriveLookupProvider.cs" />
     <Compile Include="DataProvider\Driver\DriversDataProvider.cs" />
     <Compile Include="DataProvider\Driver\IDriversDataProvider.cs" />
+    <Compile Include="DataProvider\IFilesOnDriveDataProvider.cs" />
     <Compile Include="DataProvider\Lookups\ILookupProvider.cs" />
     <Compile Include="DataProvider\Lookups\LookupItem.cs" />
     <Compile Include="Event\Driver\DriverSavedEvent.cs" />
     <Compile Include="Event\Driver\DriverDeletedEvent.cs" />
     <Compile Include="Event\Driver\OpenDriverEditViewEvent.cs" />
+    <Compile Include="Event\FileOnDrive\FileOnDriveDeletedEvent.cs" />
+    <Compile Include="Event\FileOnDrive\FileOnDriveSavedEvent.cs" />
+    <Compile Include="Event\FileOnDrive\OpenFileOnDriveEvent.cs" />
     <Compile Include="Icons.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

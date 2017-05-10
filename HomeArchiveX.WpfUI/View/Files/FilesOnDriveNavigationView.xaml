@@ -15,9 +15,12 @@
             </TreeView.ItemContainerStyle>
 
             <TreeView.ItemTemplate >
-                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Nodes}" >
-                        <TextBlock Text="{Binding Name}" />
-                    </HierarchicalDataTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Nodes}">
+                        
+                    <Button Command="{Binding OpenFileEditViewCommand}"
+                    Content="{Binding Name}" 
+                    />
+                </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
            
         </TreeView>
