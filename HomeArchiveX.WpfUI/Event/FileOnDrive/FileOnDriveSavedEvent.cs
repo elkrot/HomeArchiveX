@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Prism.PubSubEvents;
+﻿using HomeArchiveX.Model;
+using Microsoft.Practices.Prism.PubSubEvents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HomeArchiveX.WpfUI.Event
 {
-    public class FileOnDriveSavedEvent : PubSubEvent<int>
+    public class FileOnDriveSavedEvent : PubSubEvent<ArchiveEntity>
     {
     }
 }

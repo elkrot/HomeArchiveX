@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace HomeArchiveX.WpfUI.Event
 {
 
-    public class OpenFileOnDriveEvent : PubSubEvent<int>
+    public class OpenFileOnDriveEditViewEvent : PubSubEvent<int>
     {
     }
 }
