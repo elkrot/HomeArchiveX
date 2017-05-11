@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace HomeArchiveX.WpfUI.DataProvider
 {
-    public interface IArchiveEntityDataProvider
+    public interface IFilesOnDriveDataProvider
     {
         ArchiveEntity GetArchiveEntityById(int id);
-
         MethodResult<int> SaveFileOnDrive(ArchiveEntity archiveEntity);
-
         MethodResult<int> DeleteArchiveEntity(int id);
     }
 }

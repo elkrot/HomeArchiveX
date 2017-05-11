@@ -12,6 +12,7 @@ namespace HomeArchiveX.DataAccess
 {
     public class EFDataService : IDataService
     {
+        #region Диски
         public MethodResult<int> DeleteDrive(int id)
         {
 
@@ -26,6 +27,8 @@ namespace HomeArchiveX.DataAccess
             }
         }
 
+      
+
         public void Dispose()
         {
 
@@ -39,6 +42,7 @@ namespace HomeArchiveX.DataAccess
                 return repo.GetAll();
             }
         }
+
 
         public Drive GetDriveById(int id)
         {
@@ -58,6 +62,8 @@ namespace HomeArchiveX.DataAccess
             }
         }
 
+
+
         public MethodResult<int> SaveDrive(Drive drive)
         {
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
@@ -67,5 +73,60 @@ namespace HomeArchiveX.DataAccess
                 return uofw.Complete();
             }
         }
+
+
+        #endregion
+
+        #region Файлы
+
+       
+        public MethodResult<int> DeleteFileOnDriveDrive(int id)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<ArchiveEntity>();
+                var file = repo.Find(x => x.ArchiveEntityKey == id).FirstOrDefault();
+                repo.Remove(file);
+
+                return uofw.Complete();
+            }
+        }
+        public MethodResult<int> SaveFileOnDriveDrive(ArchiveEntity archiveEntity)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<ArchiveEntity>();
+                repo.Add(archiveEntity);
+                return uofw.Complete();
+            }
+        }
+        public ArchiveEntity GetFileOnDriveDriveById(int id)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<ArchiveEntity>();
+                return repo.Find(x => x.ArchiveEntityKey == id).FirstOrDefault();
+            }
+        }
+
+        public IEnumerable<ArchiveEntity> GetFilesOnDriveByCondition(Expression<Func<ArchiveEntity, bool>> where, Expression<Func<ArchiveEntity, object>> orderby)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<ArchiveEntity>();
+                return repo.Find(where);
+            }
+        }
+
+
+        public IEnumerable<ArchiveEntity> GetAllFilesOnDrive()
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<ArchiveEntity>();
+                return repo.GetAll();
+            }
+        }
+        #endregion
     }
 }

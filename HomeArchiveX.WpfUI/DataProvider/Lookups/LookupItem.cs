@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+
 namespace HomeArchiveX.WpfU.DataProvider.Lookups
 {
   public class LookupItem
@@ -6,4 +8,11 @@ namespace HomeArchiveX.WpfU.DataProvider.Lookups
 
     public string DisplayValue { get; set; }
   }
+
+    public class LookupItemNode:LookupItem
+    {
+        public string Name { get; set; }
+        public ObservableCollection<LookupItemNode> Nodes { get; set; }
+    }
+
 }

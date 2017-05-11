@@ -1,4 +1,5 @@
-﻿using HomeArchiveX.WpfUI.View.Services;
+﻿using HomeArchiveX.WpfUI.DataProvider;
+using HomeArchiveX.WpfUI.View.Services;
 using Microsoft.Practices.Prism.PubSubEvents;
 using System;
 using System.Collections.Generic;

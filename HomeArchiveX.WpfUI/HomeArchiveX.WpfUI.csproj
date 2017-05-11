@@ -95,10 +95,12 @@
     <Compile Include="Command\DelegateCommand.cs" />
     <Compile Include="Converters\ComboBoxOriginalValueConverter.cs" />
     <Compile Include="Converters\DatePickerOriginalValueConverter.cs" />
-    <Compile Include="DataProvider\DriveLookupProvider.cs" />
+    <Compile Include="DataProvider\FilesOnDriveLookupProvider.cs" />
+    <Compile Include="DataProvider\FilesOnDrive\FilesOnDriveDataProvider.cs" />
+    <Compile Include="DataProvider\Lookups\DriveLookupProvider.cs" />
     <Compile Include="DataProvider\Driver\DriversDataProvider.cs" />
     <Compile Include="DataProvider\Driver\IDriversDataProvider.cs" />
-    <Compile Include="DataProvider\IFilesOnDriveDataProvider.cs" />
+    <Compile Include="DataProvider\FilesOnDrive\IFilesOnDriveDataProvider.cs" />
     <Compile Include="DataProvider\Lookups\ILookupProvider.cs" />
     <Compile Include="DataProvider\Lookups\LookupItem.cs" />
     <Compile Include="Event\Driver\DriverSavedEvent.cs" />

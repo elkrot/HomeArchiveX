@@ -12,10 +12,22 @@ namespace HomeArchiveX.DataAccess
 {
     public interface IDataService : IDisposable
     {
+        #region Диски
         MethodResult<int> DeleteDrive(int id);
         Drive GetDriveById(int id);
         MethodResult<int> SaveDrive(Drive drive);
         IEnumerable<Drive> GetAllDrives();
         IEnumerable<Drive> GetDrivesByCondition(Expression<Func<Drive, bool>> where, Expression<Func<Drive, object>> orderby);
+        #endregion
+
+        #region Файлы
+        MethodResult<int> DeleteFileOnDriveDrive(int id);
+        ArchiveEntity GetFileOnDriveDriveById(int id);
+        MethodResult<int> SaveFileOnDriveDrive(ArchiveEntity archiveEntity);
+
+        IEnumerable<ArchiveEntity> GetAllFilesOnDrive();
+        IEnumerable<ArchiveEntity> GetFilesOnDriveByCondition(Expression<Func<ArchiveEntity, bool>> where, Expression<Func<ArchiveEntity, object>> orderby);
+        #endregion
+
     }
 }
