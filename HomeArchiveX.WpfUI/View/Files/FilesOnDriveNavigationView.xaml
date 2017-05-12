@@ -15,10 +15,10 @@
             </TreeView.ItemContainerStyle>
 
             <TreeView.ItemTemplate >
-                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Nodes}">
-                        
-                    <Button Command="{Binding OpenFileEditViewCommand}"
-                    Content="{Binding Name}" 
+                    <HierarchicalDataTemplate ItemsSource="{Binding Path=FileOnDriveNavigationViewModel}">
+
+                    <Button Command="{Binding OpenFileOnDriveEditViewCommand}"
+                    Content="{Binding DisplayValue}" 
                     />
                 </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>

@@ -61,7 +61,7 @@ namespace HomeArchiveX.WpfUI.View
             new Node { Name="Америка" },
             new Node { Name="Австралия" }
         };
-            filesTreeView.ItemsSource = nodes;
+           // filesTreeView.ItemsSource = nodes;
         }
 
         public class Node
@@ -72,7 +72,7 @@ namespace HomeArchiveX.WpfUI.View
 
         private void filesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            System.Windows.Forms.MessageBox.Show(((Node)e.NewValue).Name);
+          // System.Windows.Forms.MessageBox.Show(((Node)e.NewValue).Name);
             
             //  http://www.wpf-tutorial.com/treeview-control/treeview-data-binding-multiple-templates/
             // http://www.wpf-tutorial.com/treeview-control/handling-selection-expansion-state/

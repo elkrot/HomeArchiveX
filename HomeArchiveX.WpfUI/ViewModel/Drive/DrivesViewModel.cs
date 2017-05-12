@@ -25,7 +25,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
         public DrivesViewModel(IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService,
-            IDrivesNavigationViewModel drivesNavigationViewModel,
+            IFileOnDrivesNavigationViewModel drivesNavigationViewModel,
             Func<IDriveEditViewModel> drivesEditViewModelCreator, 
             IDrivesDataProvider drivesDataProvider)
         {
@@ -120,6 +120,6 @@ namespace HomeArchiveX.WpfUI.ViewModel
         public ICommand AddDriveCommand { get; set; }
 
 
-        public IDrivesNavigationViewModel DrivesNavigationViewModel { get; private set; }
+        public IFileOnDrivesNavigationViewModel DrivesNavigationViewModel { get; private set; }
     }
 }

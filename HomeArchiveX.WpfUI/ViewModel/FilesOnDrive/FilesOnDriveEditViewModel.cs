@@ -42,7 +42,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             DeleteCommand = new DelegateCommand(OnDeleteExecute, OnDeleteCanExecute);
         }
 
-        IFilesOnDriveDataProvider FileOnDriveDataProvider;
+     //   IFilesOnDriveDataProvider FileOnDriveDataProvider;
         public IFilesOnDriveNavigationViewModel FilesOnDriveNavigationViewModel;
 
         public ArchiveEntityWrapper ArchiveEntity

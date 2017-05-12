@@ -25,15 +25,25 @@ namespace HomeArchiveX.WpfU.Startup
             builder.RegisterType<MessageDialogService>().As<IMessageDialogService>();
 
             builder.RegisterType<EFDataService>().As<IDataService>();
+            #region Drive
             builder.RegisterType<DriveLookupProvider>().As<ILookupProvider<Drive>>();
 
             builder.RegisterType<DriversDataProvider>().As<IDrivesDataProvider>();
             builder.RegisterType<DriveEditViewModel>().As<IDriveEditViewModel>();
-            builder.RegisterType<DrivesNavigationViewModel>().As<IDrivesNavigationViewModel>();
+            builder.RegisterType<DrivesNavigationViewModel>().As<IFileOnDrivesNavigationViewModel>();
            
+            builder.RegisterType<DrivesViewModel>().AsSelf();
+            #endregion
 
- builder.RegisterType<DrivesViewModel>().AsSelf();
+            #region FileOnDrive
+            builder.RegisterType<FilesOnDriveLookupProvider>().As<ITreeViewLookupProvider<ArchiveEntity>>();
 
+            builder.RegisterType<FilesOnDriveDataProvider>().As<IFilesOnDriveDataProvider>();
+            builder.RegisterType<FilesOnDriveEditViewModel>().As<IFilesOnDriveEditViewModel>();
+            builder.RegisterType<FilesOnDriveNavigationViewModel>().As<IFilesOnDriveNavigationViewModel>();
+
+            builder.RegisterType<FilesOnDriveViewModel>().AsSelf();
+            #endregion
             /*  builder.RegisterType<StatusLookupProvider>().As<ILookupProvider<Status>>();
              builder.RegisterType<SalesOrderLookupProvider>().As<ILookupProvider<SalesOrderHeader>>();
              builder.RegisterType<SalesPersonLookupProvider>().As<ILookupProvider<SalesPerson>>();
