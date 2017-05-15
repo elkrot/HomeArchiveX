@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HomeArchiveX.WpfUI.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,13 @@ namespace HomeArchiveX.WpfUI.View
     /// </summary>
     public partial class FilesOnDrivePage : Page
     {
-        public FilesOnDrivePage()
+        FilesOnDriveViewModel _filesOnDriveViewModel;
+        public FilesOnDrivePage(FilesOnDriveViewModel filesOnDriveViewModel)
         {
             InitializeComponent();
+            _filesOnDriveViewModel = filesOnDriveViewModel;
+
+            DataContext = _filesOnDriveViewModel;
         }
     }
 }

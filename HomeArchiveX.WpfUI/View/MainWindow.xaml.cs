@@ -1,4 +1,6 @@
-﻿using HomeArchiveX.WpfUI.View;
+﻿using Autofac;
+using HomeArchiveX.WpfU.Startup;
+using HomeArchiveX.WpfUI.View;
 using HomeArchiveX.WpfUI.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -23,6 +25,7 @@ namespace HomeArchiveX.WpfUI
     public partial class MainWindow : Window
     {
 DrivesViewModel _drivesViewModel;
+        FilesOnDriveViewModel _filesOnDriveViewModel;
         public MainWindow()
         {
 
@@ -35,7 +38,13 @@ DrivesViewModel _drivesViewModel;
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new FilesOnDrivePage();
+
+            var bootstrapper = new Bootstrapper();
+            IContainer container = bootstrapper.Bootstrap();
+
+            _filesOnDriveViewModel = container.Resolve<FilesOnDriveViewModel>();
+
+            Main.Content = new FilesOnDrivePage(_filesOnDriveViewModel);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

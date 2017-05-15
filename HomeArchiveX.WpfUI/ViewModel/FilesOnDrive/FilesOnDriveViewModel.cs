@@ -25,7 +25,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         #region Конструктор
         public FilesOnDriveViewModel(IEventAggregator eventAggregator,
                    IMessageDialogService messageDialogService,
-                   IFileOnDrivesNavigationViewModel fileOnDriveNavigationViewModel,
+                   IFilesOnDriveNavigationViewModel fileOnDriveNavigationViewModel,
                    Func<IFilesOnDriveEditViewModel> fileOnDriveEditViewModelCreator,
                    IFilesOnDriveDataProvider fileOnDriveDataProvider)
         {
@@ -127,7 +127,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
         public ICommand AddFileOnDriveCommand { get; set; }
 
-        public IFileOnDrivesNavigationViewModel FileOnDriveNavigationViewModel { get; private set; }
+        public IFilesOnDriveNavigationViewModel FileOnDriveNavigationViewModel { get; private set; }
 
         public ObservableCollection<IFilesOnDriveEditViewModel> FileOnDriveEditViewModels { get; private set; }
 

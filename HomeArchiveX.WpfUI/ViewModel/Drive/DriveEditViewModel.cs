@@ -32,7 +32,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
         public DriveEditViewModel(IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService,
-            IFileOnDrivesNavigationViewModel drivesNavigationViewModel
+            IDrivesNavigationViewModel drivesNavigationViewModel
             , IDrivesDataProvider driveDataProvider)
         {
             _eventAggregator = eventAggregator;
@@ -48,7 +48,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
 
 
-        public IFileOnDrivesNavigationViewModel DrivesNavigationViewModel;
+        public IDrivesNavigationViewModel DrivesNavigationViewModel;
 
 
         public DriveWrapper Drive

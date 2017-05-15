@@ -28,11 +28,11 @@ namespace HomeArchiveX.WpfUI
         {
             var pathToMdfFileDirectory = Directory.GetCurrentDirectory();// @"d:\temp\";
             AppDomain.CurrentDomain.SetData("DataDirectory", pathToMdfFileDirectory);
-            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+          /*  using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var repo = uofw.GetRepository<Drive>();
                 var x = repo.GetAll();
-            }
+            }*/
 
             try
             {

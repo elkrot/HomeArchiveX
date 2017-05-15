@@ -30,7 +30,7 @@ namespace HomeArchiveX.WpfU.Startup
 
             builder.RegisterType<DriversDataProvider>().As<IDrivesDataProvider>();
             builder.RegisterType<DriveEditViewModel>().As<IDriveEditViewModel>();
-            builder.RegisterType<DrivesNavigationViewModel>().As<IFileOnDrivesNavigationViewModel>();
+            builder.RegisterType<DrivesNavigationViewModel>().As<IDrivesNavigationViewModel>();
            
             builder.RegisterType<DrivesViewModel>().AsSelf();
             #endregion

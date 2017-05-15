@@ -14,12 +14,12 @@ using System.Windows.Input;
 namespace HomeArchiveX.WpfUI.ViewModel
 {
 
-    public interface IFileOnDrivesNavigationViewModel
+    public interface IDrivesNavigationViewModel
     {
         void Load();
     }
 
-    public class DrivesNavigationViewModel : IFileOnDrivesNavigationViewModel
+    public class DrivesNavigationViewModel : IDrivesNavigationViewModel
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly ILookupProvider<Drive> _driveLookupProvider;
