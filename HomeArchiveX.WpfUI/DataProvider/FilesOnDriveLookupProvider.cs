@@ -25,36 +25,37 @@ namespace HomeArchiveX.WpfUI.DataProvider
         {
             using (var service = _dataServiceCreator())
             {
-                return service.GetAllFilesOnDrive()
+                var ret=service.GetAllFilesOnDrive()
                         .Select(f => new LookupItemNode
                         {
                             Id = f.ArchiveEntityKey,
                             DisplayValue = string.Format("{0}", f.Title),
-                            Nodes = GetNodesById(f.ArchiveEntityKey)
+                            Nodes = GetNodesById(f.ArchiveEntityKey,service)
                         })
                         .OrderBy(l => l.DisplayValue)
                         .ToList();
+                return ret;
             }
         }
 
-        private ObservableCollection<LookupItemNode> GetNodesById(int archiveEntityKey)
+        private ObservableCollection<LookupItemNode> GetNodesById(int archiveEntityKey, IDataService service)
         {
-            using (var service = _dataServiceCreator())
-            {
+
                 return new ObservableCollection<LookupItemNode>(
                     service.GetFilesOnDriveByCondition(x => x.ParentEntityKey == archiveEntityKey, o => o.ArchiveEntityKey).Select(
                     f => new LookupItemNode
                     {
                         Id = f.ArchiveEntityKey,
                         DisplayValue = string.Format("{0}", f.Title),
-                        Nodes = GetNodesById(f.ArchiveEntityKey)
+                        Nodes = GetNodesById(f.ArchiveEntityKey,service)
                     }
                     ).OrderBy(l => l.DisplayValue)
                         .ToList());
-            }
+            
         }
 
-        public IEnumerable<LookupItemNode> GetLookupWithCondition(Expression<Func<ArchiveEntity, bool>> where, Expression<Func<ArchiveEntity, object>> orderby)
+        public IEnumerable<LookupItemNode> GetLookupWithCondition(Expression<Func<ArchiveEntity
+            , bool>> where, Expression<Func<ArchiveEntity, object>> orderby)
         {
             using (var service = _dataServiceCreator())
             {
@@ -63,7 +64,7 @@ namespace HomeArchiveX.WpfUI.DataProvider
                         {
                             Id = f.ArchiveEntityKey,
                             DisplayValue = string.Format("{0}", f.Title),
-                            Nodes = GetNodesById(f.ArchiveEntityKey)
+                            Nodes = GetNodesById(f.ArchiveEntityKey,service)
                         })
                         .OrderBy(l => l.DisplayValue)
                         .ToList();
