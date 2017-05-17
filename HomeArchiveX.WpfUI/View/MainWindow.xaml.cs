@@ -43,7 +43,7 @@ DrivesViewModel _drivesViewModel;
             IContainer container = bootstrapper.Bootstrap();
 
             _filesOnDriveViewModel = container.Resolve<FilesOnDriveViewModel>();
-
+            _filesOnDriveViewModel.Load();
             Main.Content = new FilesOnDrivePage(_filesOnDriveViewModel);
         }
 

@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="EFDataService.cs" />
     <Compile Include="IDataService.cs" />
+    <Compile Include="Implementations\ArchiveEntityRepository.cs" />
     <Compile Include="Implementations\DriveRepository.cs" />
     <Compile Include="Implementations\Repository.cs" />
     <Compile Include="Implementations\UnitOfWork.cs" />

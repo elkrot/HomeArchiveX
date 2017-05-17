@@ -320,6 +320,7 @@
     <Resource Include="img\dvd_go.png" />
     <Resource Include="img\dvd_key.png" />
     <Resource Include="img\dvd_link.png" />
+    <Resource Include="LastWork.txt" />
     <Content Include="Wrapper\Generated\GenerateModelWrappers.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>GenerateModelWrappers.cs</LastGenOutput>
