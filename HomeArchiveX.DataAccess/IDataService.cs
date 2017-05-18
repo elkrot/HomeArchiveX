@@ -25,7 +25,7 @@ namespace HomeArchiveX.DataAccess
         ArchiveEntity GetFileOnDriveDriveById(int id);
         MethodResult<int> SaveFileOnDriveDrive(ArchiveEntity archiveEntity);
 
-        IEnumerable<ArchiveEntity> GetAllFilesOnDrive();
+        IEnumerable<ArchiveEntity> GetAllFilesOnDrive(int id);
         IEnumerable<ArchiveEntity> GetFilesOnDriveByCondition(Expression<Func<ArchiveEntity, bool>> where, Expression<Func<ArchiveEntity, object>> orderby);
         #endregion
 

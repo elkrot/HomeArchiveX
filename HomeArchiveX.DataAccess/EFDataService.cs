@@ -119,12 +119,12 @@ namespace HomeArchiveX.DataAccess
         }
 
 
-        public IEnumerable<ArchiveEntity> GetAllFilesOnDrive()
+        public IEnumerable<ArchiveEntity> GetAllFilesOnDrive(int id)
         {
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var repo = uofw.GetRepository<ArchiveEntity>();
-                return repo.GetAll();
+                return repo.Find(x=>x.DriveId==id).ToList();
             }
         }
         #endregion

@@ -15,7 +15,7 @@
             </TreeView.ItemContainerStyle>
 
             <TreeView.ItemTemplate >
-                    <HierarchicalDataTemplate ItemsSource="{Binding Path=FileOnDriveNavigationViewModel}">
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=NavigationItems}">
 
                     <Button Command="{Binding OpenFileOnDriveEditViewCommand}"
                     Content="{Binding DisplayValue}" 
