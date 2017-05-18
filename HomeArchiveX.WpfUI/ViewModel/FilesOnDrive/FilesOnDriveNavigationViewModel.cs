@@ -72,8 +72,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             {
                 NavigationItems.Add(
                   new NavigationTreeItemViewModel(
-                    driveLookupItem.Id,
-                    driveLookupItem.DisplayValue,
+                    driveLookupItem,
                     _eventAggregator));
             }
         }
@@ -86,12 +85,12 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private string _displayValue;
 
         #region Constructor
-        public NavigationTreeItemViewModel(int archiveEntityKey,
-          string displayValue,
+        public NavigationTreeItemViewModel(LookupItemNode itemNode,
           IEventAggregator eventAggregator)
         {
-            ArchiveEntityKey = archiveEntityKey;
-            DisplayValue = displayValue;
+            ArchiveEntityKey = itemNode.Id;
+            DisplayValue = itemNode.DisplayValue;
+            Items = itemNode.Nodes;
             _eventAggregator = eventAggregator;
             OpenFileOnDriveEditViewCommand = new DelegateCommand(OpenFileOnDriveEditViewExecute);
         }
@@ -101,7 +100,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         public ICommand OpenFileOnDriveEditViewCommand { get; set; }
 
         public int ArchiveEntityKey { get; private set; }
-
+        public ObservableCollection<LookupItemNode> Items { get; private set; }
         #region DisplayValue
         public string DisplayValue
         {

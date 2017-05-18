@@ -7,7 +7,18 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <TreeView x:Name="filesTreeView" Background="PaleGoldenrod" SelectedItemChanged="filesTreeView_SelectedItemChanged">
+
+        <TreeView x:Name="filesTreeView" ItemsSource="{Binding Path=NavigationItems}">
+            <TreeView.ItemTemplate >
+                <HierarchicalDataTemplate  ItemsSource="{Binding Path=Items}" >
+                    <Button  Content="{Binding DisplayValue}" />
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+
+
+
+        <!--<TreeView x:Name="filesTreeView" Background="PaleGoldenrod" SelectedItemChanged="filesTreeView_SelectedItemChanged">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <EventSetter Event="MouseLeftButtonUp" Handler="treeViewItem_MouseLeftButtonUp"/>
@@ -24,5 +35,21 @@
                 </TreeView.ItemTemplate>
            
         </TreeView>
+
+
+
+        <ScrollViewer  VerticalScrollBarVisibility="Auto">
+
+            <ItemsControl ItemsSource="{Binding NavigationItems}" Foreground="White" 
+                         >
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button 
+                    Content="{Binding DisplayValue}" 
+                   />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>-->
     </Grid>
 </UserControl>
