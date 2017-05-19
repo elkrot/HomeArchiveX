@@ -90,9 +90,24 @@ namespace HomeArchiveX.WpfUI.ViewModel
         {
             ArchiveEntityKey = itemNode.Id;
             DisplayValue = itemNode.DisplayValue;
-            Items = itemNode.Nodes;
+            NavigationItems = GetItems(itemNode.Nodes);
+                //;
             _eventAggregator = eventAggregator;
             OpenFileOnDriveEditViewCommand = new DelegateCommand(OpenFileOnDriveEditViewExecute);
+        }
+
+        private ObservableCollection<NavigationTreeItemViewModel> GetItems(ObservableCollection<LookupItemNode> nodes)
+        {
+            var retItems = new ObservableCollection<NavigationTreeItemViewModel>();
+                foreach (var item in nodes)
+            {
+                var itm = new  NavigationTreeItemViewModel(
+                    item,
+                    _eventAggregator);
+                retItems.Add(itm);
+
+            }
+            return retItems;
         }
         #endregion
 
@@ -100,7 +115,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         public ICommand OpenFileOnDriveEditViewCommand { get; set; }
 
         public int ArchiveEntityKey { get; private set; }
-        public ObservableCollection<LookupItemNode> Items { get; private set; }
+        public ObservableCollection<NavigationTreeItemViewModel> NavigationItems { get;  set; }
         #region DisplayValue
         public string DisplayValue
         {

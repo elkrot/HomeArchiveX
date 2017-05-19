@@ -8,17 +8,17 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
 
-        <TreeView x:Name="filesTreeView" ItemsSource="{Binding Path=NavigationItems}">
+        <!--<TreeView x:Name="filesTreeView" ItemsSource="{Binding Path=NavigationItems}">
             <TreeView.ItemTemplate >
-                <HierarchicalDataTemplate  ItemsSource="{Binding Path=Items}" >
+                <HierarchicalDataTemplate  ItemsSource="{Binding Path=NavigationItems}" >
                     <Button  Content="{Binding DisplayValue}" />
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
-        </TreeView>
+        </TreeView>-->
 
 
 
-        <!--<TreeView x:Name="filesTreeView" Background="PaleGoldenrod" SelectedItemChanged="filesTreeView_SelectedItemChanged">
+        <TreeView x:Name="filesTreeView" Background="PaleGoldenrod" SelectedItemChanged="filesTreeView_SelectedItemChanged" ItemsSource="{Binding Path=NavigationItems}">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <EventSetter Event="MouseLeftButtonUp" Handler="treeViewItem_MouseLeftButtonUp"/>
@@ -28,7 +28,7 @@
             <TreeView.ItemTemplate >
                 <HierarchicalDataTemplate ItemsSource="{Binding Path=NavigationItems}">
 
-                    <Button Command="{Binding OpenFileOnDriveEditViewCommand}"
+                    <Button Width="200" Command="{Binding OpenFileOnDriveEditViewCommand}"
                     Content="{Binding DisplayValue}" 
                     />
                 </HierarchicalDataTemplate>
@@ -38,18 +38,6 @@
 
 
 
-        <ScrollViewer  VerticalScrollBarVisibility="Auto">
-
-            <ItemsControl ItemsSource="{Binding NavigationItems}" Foreground="White" 
-                         >
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button 
-                    Content="{Binding DisplayValue}" 
-                   />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>-->
+      
     </Grid>
 </UserControl>
