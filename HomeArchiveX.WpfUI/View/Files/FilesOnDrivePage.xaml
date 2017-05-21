@@ -6,7 +6,7 @@
       xmlns:view="clr-namespace:HomeArchiveX.WpfUI.View"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-      Title="FilesOnDrivePage">
+      Title="Файлы на диске" FontSize="{StaticResource DefaultFontSize}">
 
     <Grid Background="YellowGreen">
         <Grid.ColumnDefinitions>

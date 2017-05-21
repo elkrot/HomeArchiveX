@@ -65,26 +65,27 @@ namespace ConsoleWorkWithDVD
         public Bitmap GetThumb(string imgPath)
         {
 
-            var img = Image.FromFile(imgPath);// метод держит файл
+            Bitmap bmp;
+            try
+            {
+var img = Image.FromFile(imgPath);// метод держит файл
                                               /*    FileStream fs = new FileStream(item, FileMode.Open);
                                                   Image img = Image.FromStream(fs);
                                                   fs.Close();*/
             decimal h = (img.Height * _configuration.ThumbnailWidth) / img.Width;
-            Bitmap bmp;
+
             if (h != 0)
             {
-
                 bmp = new Bitmap(img, _configuration.ThumbnailWidth, (int)h);
-
             }
             else { bmp = new Bitmap(img, img.Height, img.Width); }
-
+            }
+            catch (Exception)
+            {
+                bmp = new Bitmap(1, 1);
+            }
 
             return bmp;
-
-
-
-
 
         }
         #endregion

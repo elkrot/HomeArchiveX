@@ -22,7 +22,7 @@ namespace HomeArchiveX.WpfUI.DataProvider
 
             using (var service = _dataServiceCreator())
             {
-                _frchiveEntityCollectionOnDisk = service. GetAllFilesOnDrive(1).ToList();
+                _frchiveEntityCollectionOnDisk = service.GetAllFilesOnDrive(1).ToList();
             }
 
         }
@@ -32,13 +32,14 @@ namespace HomeArchiveX.WpfUI.DataProvider
         {
             
                 var ret= _frchiveEntityCollectionOnDisk.Where(x=>x.ParentEntityKey==null)
+                .OrderBy(l => l.EntityType)
                         .Select(f => new LookupItemNode
                         {
                             Id = f.ArchiveEntityKey,
                             DisplayValue = string.Format("{0}", f.Title),
-                            Nodes = GetNodesById(f.ArchiveEntityKey)
+                            Nodes = GetNodesById(f.ArchiveEntityKey),
+                            EntityType = f.EntityType
                         })
-                        .OrderBy(l => l.DisplayValue)
                         .ToList();
                 return ret;
            
@@ -53,15 +54,17 @@ namespace HomeArchiveX.WpfUI.DataProvider
         {
 
                 return new ObservableCollection<LookupItemNode>(
-                    _frchiveEntityCollectionOnDisk.Where(x => x.ParentEntityKey == archiveEntityKey).Select(
+                    _frchiveEntityCollectionOnDisk.Where(x => x.ParentEntityKey == archiveEntityKey)
+                    .OrderBy(l => l.EntityType)
+                    .Select(
                     f => new LookupItemNode
                     {
                         Id = f.ArchiveEntityKey,
                         DisplayValue = string.Format("{0}", f.Title),
-                        Nodes = GetNodesById(f.ArchiveEntityKey)
+                        Nodes = GetNodesById(f.ArchiveEntityKey),
+                        EntityType = f.EntityType
                     }
-                    ).OrderBy(l => l.DisplayValue)
-                        .ToList());
+                    ).ToList());
             
         }
 

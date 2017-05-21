@@ -91,7 +91,9 @@ namespace HomeArchiveX.WpfUI.ViewModel
             ArchiveEntityKey = itemNode.Id;
             DisplayValue = itemNode.DisplayValue;
             NavigationItems = GetItems(itemNode.Nodes);
-                //;
+            ImagePath = itemNode.EntityType==1? "/HomeArchiveX.WpfUI;component/img/drive_add.png" 
+                : "/HomeArchiveX.WpfUI;component/img/drive.png";
+            //;
             _eventAggregator = eventAggregator;
             OpenFileOnDriveEditViewCommand = new DelegateCommand(OpenFileOnDriveEditViewExecute);
         }
@@ -116,6 +118,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
         public int ArchiveEntityKey { get; private set; }
         public ObservableCollection<NavigationTreeItemViewModel> NavigationItems { get;  set; }
+        public string ImagePath { get; set; }
         #region DisplayValue
         public string DisplayValue
         {

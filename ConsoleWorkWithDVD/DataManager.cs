@@ -16,7 +16,10 @@ namespace ConsoleWorkWithDVD
     /// </summary>
     public class DataManager : IDataManager
     {
-        public Dictionary<string, int> _directoryCash;
+        private Dictionary<string, int> _directoryCash;
+        private Dictionary<string, int> _imagesInDirectory;
+        private const int MAX_IMAGES_IN_DIRECTORY = 2;
+
         private IConfiguration _configuration;
         ILogger _logger;
         IFIleManager _fileManager;
@@ -34,6 +37,7 @@ namespace ConsoleWorkWithDVD
             _logger = logger;
             _fileManager = fileManager;
             _directoryCash = new Dictionary<string, int>();
+            _imagesInDirectory = new Dictionary<string, int>();
         }
         #endregion
 
@@ -66,12 +70,8 @@ namespace ConsoleWorkWithDVD
         public int CreateFile(string path, int driveId)
         {
             FileInfo fi = _fileManager.GetFileInfoByPath(path);
-            int parentId = GetEntityIdByPath(fi.Directory.Parent == null ? null : fi.Directory.Parent.FullName
+            int parentId = GetEntityIdByPath(fi.Directory.Parent == null ? null : fi.Directory.FullName
                 , driveId, EntityType.Folder);
-
-
-
-
             var id = CreateArchiveEntity<FileInfo>(driveId, fi, fi.Name, fi.GetHashCode(), parentId
                 , EntityType.File, path, fi.Extension, "");
             return id;
@@ -115,6 +115,10 @@ namespace ConsoleWorkWithDVD
         public int CreateImage(string imagePath, string targetDir)
         {
             var imgInfo = new FileInfo(imagePath);
+            var imgDirPath = imgInfo.Directory.FullName;
+            int imgCount = 0;
+            imgCount = GetImgCountInDirectory(imgDirPath, imgCount);
+
             string newImgPath = "";
             string queryString = @"insert into Image( Thumbnail,ImagePath,ThumbnailPath,ImageTitle,HashCode) 
 values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
@@ -123,8 +127,10 @@ values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
             byte[] imageData = null;
             try
             {
-                // Will not overwrite if the destination file already exists.
-                newImgPath = _fileManager.CopyImg(imagePath, targetDir);
+                if (!(imgCount > MAX_IMAGES_IN_DIRECTORY))
+                {
+                    newImgPath = _fileManager.CopyImg(imagePath, targetDir);
+                }
 
             }
 
@@ -157,6 +163,22 @@ values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
                 string strid = command.ExecuteScalar().ToString();
                 return int.Parse(strid);
             }
+        }
+
+        private int GetImgCountInDirectory(string imgDirPath, int imgCount)
+        {
+            if (_imagesInDirectory.Keys.Contains(imgDirPath))
+            {
+                _imagesInDirectory.TryGetValue(imgDirPath, out imgCount);
+                imgCount++;
+                _imagesInDirectory[imgDirPath] = imgCount;
+            }
+            else
+            {
+                _imagesInDirectory.Add(imgDirPath, 1);
+            }
+
+            return imgCount;
         }
         #endregion
 
@@ -198,7 +220,7 @@ values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
 
             int id = 0;
             string queryString = @"select ArchiveEntityKey from ArchiveEntity where 
-DriveId=@DriveId and EntityPath=@EntityPath";
+                                    DriveId=@DriveId and EntityPath=@EntityPath";
             using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
             {
                 var command = new SqlCommand(queryString, ce);
@@ -281,7 +303,6 @@ DriveId=@DriveId and EntityPath=@EntityPath";
         }
         #endregion
 
-
         #region Проверка сужествования диска по Наименованию, Хешу
         /// <summary>
         /// Проверка сужествования диска по Наименованию, Хешу
@@ -314,7 +335,6 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         }
         #endregion
 
-
         #region Очистить БД
         public void TruncateTables()
         {
@@ -329,10 +349,6 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
             }
         }
         #endregion
-
-
-
-
 
         #region Создать запись о файле, папке
         /// <summary>
@@ -354,10 +370,10 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         {
 
             string queryString = @"insert into ArchiveEntity( 
-ParentEntityKey,DriveId,Title,EntityType ,EntityPath,EntityExtension ,Description ,HashCode ,EntityInfo, MFileInfo)
-values ( 
-@ParentEntityKey,@DriveId,@Title,@EntityType,@EntityPath,@EntityExtension,@Description,@HashCode,@EntityInfo,@MFileInfo);
-                select SCOPE_IDENTITY();";
+                                    ParentEntityKey,DriveId,Title,EntityType ,EntityPath,EntityExtension ,Description ,HashCode ,EntityInfo, MFileInfo)
+                                    values ( 
+                                    @ParentEntityKey,@DriveId,@Title,@EntityType,@EntityPath,@EntityExtension,@Description,@HashCode,@EntityInfo,@MFileInfo);
+                                     select SCOPE_IDENTITY();";
             using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
             {
                 var command = new SqlCommand(queryString, ce);

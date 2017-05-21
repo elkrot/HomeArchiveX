@@ -59,15 +59,14 @@ namespace ConsoleWorkWithDVD
         public MIFileType miFileType { get; set; }
 
         private static string[] PictureExtensions = { ".PNG", ".BMP", ".JPG", ".JPEG", ".GIF", ".TIFF" };
-        private static string[] VideoExtensions = { ".MPEG4", ".AVI", ".MOV", ".MKV",".MP4",".WMV", ".MPG" };
+        private static string[] VideoExtensions = { ".MPEG4", ".AVI", ".MOV", ".MKV", ".MP4", ".WMV", ".MPG" };
         private static string[] AudioExtensions = { ".MP3", ".OGG", ".FLAC", ".WAV" };
         public static string[] AllExtension { get { return PictureExtensions.Concat(VideoExtensions).ToArray().Concat(AudioExtensions).ToArray(); } }
         public static bool IsMediaFile(string extension)
         {
-
             return AllExtension.Contains(extension);
         }
-
+        #region GetMediaFileType
         public static MIFileType GetMediaFileType(string extension)
         {
             if (PictureExtensions.Contains(extension.ToUpper()))
@@ -85,18 +84,29 @@ namespace ConsoleWorkWithDVD
             else return MIFileType.NoMediaFile;
 
         }
+        #endregion
+
+        #region MIManager
         public MIManager(string extension, string filePath)
         {
             MFIDictionary = new Dictionary<string, string>();
             Extension = extension;
             miFileType = GetMediaFileType(extension);
-
             if (miFileType != MIFileType.NoMediaFile)
             {
+                TrySetTagLibFile(filePath);
+                TrySetMediaInfo(filePath);
+            }
+            FilePath = filePath;
+            FillTheMFIDictionary();
+        }
+        #endregion
 
-                try
-                {
-                TagLibFile = TagLib.File.Create(filePath);
+        #region TrySetMediaInfo
+        private void TrySetMediaInfo(string filePath)
+        {
+            try
+            {
                 MI = new MediaInfoLib.MediaInfo();
 
                 #region Media Info Init
@@ -135,22 +145,31 @@ namespace ConsoleWorkWithDVD
                 //Finalizing
                 MI.Open_Buffer_Finalize(); //This is the end of the stream, MediaInfo must finnish some work
                 #endregion
-                }
-                catch (Exception)
-                {
+            }
+            catch (Exception ex)
+            {
+                var c = ex.Message;
 
-                    
-                }
-               
+            }
+        }
+        #endregion
 
+        #region TrySetTagLibFile
+        private void TrySetTagLibFile(string filePath)
+        {
+            try
+            {
+                TagLibFile = TagLib.File.Create(filePath);
+            }
+            catch (Exception ex)
+            {
 
-                //MediaFile = new MediaFile(filePath);
             }
 
-            FilePath = filePath;
-            FillTheMFIDictionary();
-
         }
+        #endregion
+
+
         abstract public MFileInfo GetMIFileInfo();
         abstract protected void FillTheMFIDictionary();
     }
@@ -195,11 +214,11 @@ namespace ConsoleWorkWithDVD
 
         protected override void FillTheMFIDictionary()
         {
-            MFIDictionary.Add("Format", metadata == null ? "" : metadata?.Format??"");
-            MFIDictionary.Add("Rating", metadata == null ? "" : metadata?.Rating.ToString()??"");
-            MFIDictionary.Add("Title", metadata == null ? "" : metadata?.Title??"");
-            MFIDictionary.Add("Keywords", metadata == null?"": String.Join(", ", metadata.Keywords));
-            MFIDictionary.Add("PhotoHeight", TagLibFile?.Properties == null?"": TagLibFile.Properties.PhotoHeight.ToString().Trim());
+            MFIDictionary.Add("Format", metadata == null ? "" : metadata?.Format ?? "");
+            MFIDictionary.Add("Rating", metadata == null ? "" : metadata?.Rating.ToString() ?? "");
+            MFIDictionary.Add("Title", metadata == null ? "" : metadata?.Title ?? "");
+            MFIDictionary.Add("Keywords", metadata == null ? "" : String.Join(", ", metadata.Keywords));
+            MFIDictionary.Add("PhotoHeight", TagLibFile?.Properties == null ? "" : TagLibFile.Properties.PhotoHeight.ToString().Trim());
             MFIDictionary.Add("PhotoWidth", TagLibFile?.Properties == null ? "" : TagLibFile.Properties.PhotoWidth.ToString().Trim());
         }
 
@@ -347,34 +366,40 @@ namespace ConsoleWorkWithDVD
         #region Заполнить словарь аттрибутов
         protected override void FillTheMFIDictionary()
         {
-
-
-            MFIDictionary.Add("General.Format", MI.Get(MediaInfoLib.StreamKind.General, 0, "Format"));
-            MFIDictionary.Add("General.Duration", MI.Get(MediaInfoLib.StreamKind.General, 0, "Duration/String3"));
-            MFIDictionary.Add("General.Bitrate", MI.Get(MediaInfoLib.StreamKind.General, 0, "OverallBitRate"));
-            MFIDictionary.Add("General.VideoHeight", TagLibFile.Properties.VideoHeight.ToString().Trim());
-            MFIDictionary.Add("General.VideoWidth", TagLibFile.Properties.VideoWidth.ToString().Trim());
-
-            var strAudioCount = MI.Get(MediaInfoLib.StreamKind.General, 0, "AudioCount");
-            int AudioCount = 0;
-            int.TryParse(strAudioCount, out AudioCount);
-            var strVideoCount = MI.Get(MediaInfoLib.StreamKind.General, 0, "VideoCount");
-            int VideoCount = 0;
-            int.TryParse(strVideoCount, out VideoCount);
-            if (AudioCount > 0)
+            if (TagLibFile != null)
             {
-                MFIDictionary.Add("Audio.Format", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "Format"));
-                MFIDictionary.Add("Audio.Bitrate", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "BitRate"));
-                MFIDictionary.Add("Audio.Channels", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "Channels"));
-                MFIDictionary.Add("Audio.Sampling", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "SamplingRate"));
+                MFIDictionary.Add("General.VideoHeight", TagLibFile.Properties.VideoHeight.ToString().Trim());
+                MFIDictionary.Add("General.VideoWidth", TagLibFile.Properties.VideoWidth.ToString().Trim());
             }
-
-            if (VideoCount > 0)
+            if (MI != null)
             {
-                MFIDictionary.Add("Video.Format", MI.Get(MediaInfoLib.StreamKind.Video, 0, "Format"));
-                MFIDictionary.Add("Video.Bitrate", MI.Get(MediaInfoLib.StreamKind.Video, 0, "BitRate"));
-                MFIDictionary.Add("Video.Framerate", MI.Get(MediaInfoLib.StreamKind.Video, 0, "FrameRate"));
-                MFIDictionary.Add("Video.Framesize", MI.Get(MediaInfoLib.StreamKind.Video, 0, "FrameSize"));
+
+                MFIDictionary.Add("General.Format", MI.Get(MediaInfoLib.StreamKind.General, 0, "Format"));
+                MFIDictionary.Add("General.Duration", MI.Get(MediaInfoLib.StreamKind.General, 0, "Duration/String3"));
+                MFIDictionary.Add("General.Bitrate", MI.Get(MediaInfoLib.StreamKind.General, 0, "OverallBitRate"));
+                
+
+                var strAudioCount = MI.Get(MediaInfoLib.StreamKind.General, 0, "AudioCount");
+                int AudioCount = 0;
+                int.TryParse(strAudioCount, out AudioCount);
+                var strVideoCount = MI.Get(MediaInfoLib.StreamKind.General, 0, "VideoCount");
+                int VideoCount = 0;
+                int.TryParse(strVideoCount, out VideoCount);
+                if (AudioCount > 0)
+                {
+                    MFIDictionary.Add("Audio.Format", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "Format"));
+                    MFIDictionary.Add("Audio.Bitrate", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "BitRate"));
+                    MFIDictionary.Add("Audio.Channels", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "Channels"));
+                    MFIDictionary.Add("Audio.Sampling", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "SamplingRate"));
+                }
+
+                if (VideoCount > 0)
+                {
+                    MFIDictionary.Add("Video.Format", MI.Get(MediaInfoLib.StreamKind.Video, 0, "Format"));
+                    MFIDictionary.Add("Video.Bitrate", MI.Get(MediaInfoLib.StreamKind.Video, 0, "BitRate"));
+                    MFIDictionary.Add("Video.Framerate", MI.Get(MediaInfoLib.StreamKind.Video, 0, "FrameRate"));
+                    MFIDictionary.Add("Video.Framesize", MI.Get(MediaInfoLib.StreamKind.Video, 0, "FrameSize"));
+                }
             }
         }
         #endregion
