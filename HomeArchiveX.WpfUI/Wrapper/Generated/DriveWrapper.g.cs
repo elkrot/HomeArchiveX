@@ -22,7 +22,7 @@ namespace HomeArchiveX.WpfUI.Wrapper
 
     public System.String Title
     {
-      get { return GetValue<System.String>(); }
+      get { return GetValue<System.String>().Trim(); }
       set { SetValue(value); }
     }
 

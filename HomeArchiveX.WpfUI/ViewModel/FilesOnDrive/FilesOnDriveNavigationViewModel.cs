@@ -51,7 +51,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
                NavigationItems.SingleOrDefault(item => item.ArchiveEntityKey == savedDrive.ArchiveEntityKey);
             if (navigationItem != null)
             {
-                navigationItem.DisplayValue = string.Format("{0} ", savedDrive.Title
+                navigationItem.DisplayValue = string.Format("{0}", savedDrive.Title.Trim()
                     );
             }
             else
@@ -125,7 +125,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             get { return _displayValue; }
             set
             {
-                _displayValue = value;
+                _displayValue = value.Trim();
                 OnPropertyChanged();
             }
         }

@@ -17,7 +17,6 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             this.Property(t => t.Title)
-                .IsFixedLength()
                 .HasMaxLength(100);
 
             // Table & Column Mappings
