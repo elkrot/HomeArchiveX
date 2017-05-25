@@ -27,5 +27,6 @@ namespace ConsoleWorkWithDVD
         void FillDirectoriesInfo(int driveId, string pathDrive);
         void FillFilesInfo(int driveId, string pathDrive);
         void TruncateTables();
+        void ClearCash();
     }
 }

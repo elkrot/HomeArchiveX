@@ -350,6 +350,7 @@ namespace ConsoleWorkWithDVD
             {
                 dm.FillDirectoriesInfo(driveId, pathDrive);
                 dm.FillFilesInfo(driveId, pathDrive);
+                dm.ClearCash();
             }
             else
             {

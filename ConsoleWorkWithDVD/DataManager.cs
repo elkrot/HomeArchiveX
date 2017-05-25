@@ -40,7 +40,9 @@ namespace ConsoleWorkWithDVD
             _imagesInDirectory = new Dictionary<string, int>();
         }
         #endregion
-
+        public void ClearCash() {
+            _directoryCash.Clear();
+        }
         #region Создать описание папки
         /// <summary>
         /// Создать в БД запись с описанием папки, дирректории
