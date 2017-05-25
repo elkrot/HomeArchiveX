@@ -15,7 +15,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
 {
     public interface IFilesOnDriveNavigationViewModel
     {
-        void Load();
+        void Load(int? DriveId = default(int?));
     }
 
     public class FilesOnDriveNavigationViewModel : IFilesOnDriveNavigationViewModel
@@ -60,11 +60,11 @@ namespace HomeArchiveX.WpfUI.ViewModel
             }
         }
 
-        public void Load()
+        public void Load(int? DriveId = default(int?))
         {
             IEnumerable<LookupItemNode> items;
 
-            items = _fileOnDriveLookupProvider.GetLookup();
+            items = _fileOnDriveLookupProvider.GetLookup(DriveId);
 
             NavigationItems.Clear();
             foreach (var driveLookupItem in

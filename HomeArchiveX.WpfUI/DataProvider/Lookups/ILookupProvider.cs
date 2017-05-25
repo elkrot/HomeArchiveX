@@ -13,6 +13,9 @@ namespace HomeArchiveX.WpfU.DataProvider.Lookups
     public interface ITreeViewLookupProvider<T>
     {
         IEnumerable<LookupItemNode> GetLookup();
+        IEnumerable<LookupItemNode> GetLookup(int? DriveId = default(int?));
+
+        
         IEnumerable<LookupItemNode> GetLookupWithCondition(Expression<Func<T, bool>> where, Expression<Func<T, object>> orderby);
     }
 

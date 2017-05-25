@@ -118,9 +118,9 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
 
 
-        public void Load()
+        public void Load(int? DriveId = default(int?))
         {
-            FileOnDriveNavigationViewModel.Load();
+            FileOnDriveNavigationViewModel.Load(DriveId);
         }
 
         public ICommand CloseFileOnDriveTabCommand { get; private set; }

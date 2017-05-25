@@ -131,6 +131,9 @@
     <Compile Include="View\Drivers\DrivesPage.xaml.cs">
       <DependentUpon>DrivesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Files\FilesOnDriveView.xaml.cs">
+      <DependentUpon>FilesOnDriveView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Files\FilesOnDriveEditView.xaml.cs">
       <DependentUpon>FilesOnDriveEditView.xaml</DependentUpon>
     </Compile>
@@ -172,6 +175,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Drivers\DrivesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Files\FilesOnDriveView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

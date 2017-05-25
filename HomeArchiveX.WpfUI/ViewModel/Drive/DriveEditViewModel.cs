@@ -1,8 +1,11 @@
-﻿using HomeArchiveX.Model;
+﻿using Autofac;
+using HomeArchiveX.Model;
 using HomeArchiveX.WpfU.Command;
+using HomeArchiveX.WpfU.Startup;
 using HomeArchiveX.WpfUI.DataProvider;
 using HomeArchiveX.WpfUI.Event;
 using HomeArchiveX.WpfUI.View.Services;
+using HomeArchiveX.WpfUI.ViewModel;
 using HomeArchiveX.WpfUI.Wrapper;
 using Microsoft.Practices.Prism.PubSubEvents;
 using System;
@@ -27,6 +30,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private readonly IDrivesDataProvider _driveDataProvider;
 
         private DriveWrapper _drive;
+        private FilesOnDriveViewModel _filesOnDriveViewModel;
 
         //        private readonly ILookupProvider<City> _cityLookupProvider;
 
@@ -49,7 +53,9 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
 
         public IDrivesNavigationViewModel DrivesNavigationViewModel;
-
+        public FilesOnDriveViewModel FilesOnDriveViewModel {
+            get { return _filesOnDriveViewModel; }
+        }
 
         public DriveWrapper Drive
         {
@@ -69,6 +75,13 @@ namespace HomeArchiveX.WpfUI.ViewModel
                 new Drive();
 
             _drive = new DriveWrapper(_drv);
+
+
+            var bootstrapper = new Bootstrapper();
+            IContainer container = bootstrapper.Bootstrap();
+
+            _filesOnDriveViewModel = container.Resolve<FilesOnDriveViewModel>();
+            _filesOnDriveViewModel.Load(DriveId);
 
 
             _drive.PropertyChanged += (s, e) =>

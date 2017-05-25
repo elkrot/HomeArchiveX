@@ -14,23 +14,28 @@ namespace HomeArchiveX.WpfUI.DataProvider
     public class FilesOnDriveLookupProvider : ITreeViewLookupProvider<ArchiveEntity>
     {
         private readonly Func<IDataService> _dataServiceCreator;
-        private readonly IEnumerable<ArchiveEntity> _frchiveEntityCollectionOnDisk;
+        private  IEnumerable<ArchiveEntity> _frchiveEntityCollectionOnDisk;
 
         public FilesOnDriveLookupProvider(Func<IDataService> dataServiceCreator)
         {
             _dataServiceCreator = dataServiceCreator;
 
-            using (var service = _dataServiceCreator())
-            {
-                _frchiveEntityCollectionOnDisk = service.GetAllFilesOnDrive(1).ToList();
-            }
+            
 
         }
 
-
         public IEnumerable<LookupItemNode> GetLookup()
         {
-            
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<LookupItemNode> GetLookup(int? DriveId = default(int?))
+        {
+            using (var service = _dataServiceCreator())
+            {
+                _frchiveEntityCollectionOnDisk = service.GetAllFilesOnDrive(DriveId??0).ToList();
+            }
+
                 var ret= _frchiveEntityCollectionOnDisk.Where(x=>x.ParentEntityKey==null)
                 .OrderBy(l => l.EntityType)
                         .Select(f => new LookupItemNode
