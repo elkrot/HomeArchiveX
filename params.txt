@@ -1,4 +1,4 @@
-General 
+General  
 Count                     : Count of objects available in this stream
 Status                    : bit field (0=IsAccepted, 1=IsFilled, 2=IsUpdated, 3=IsFinished)
 StreamCount               : Count of streams of that kind available
