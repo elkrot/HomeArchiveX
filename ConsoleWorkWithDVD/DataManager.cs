@@ -40,7 +40,8 @@ namespace ConsoleWorkWithDVD
             _imagesInDirectory = new Dictionary<string, int>();
         }
         #endregion
-        public void ClearCash() {
+        public void ClearCash()
+        {
             _directoryCash.Clear();
         }
         #region Создать описание папки
@@ -53,7 +54,10 @@ namespace ConsoleWorkWithDVD
         public int CreateFolder(string path, int driveId)
         {
             var di = _fileManager.GetDirectoryInfoByPath(path);
-            int parentId = GetEntityIdByPath(di.Parent == null ? null : di.Parent.FullName, driveId, EntityType.Folder);
+
+            var parentPath = di.Parent == null || di.Root.FullName == di.Parent.FullName ? null : di.Parent.FullName;
+
+            int parentId = GetEntityIdByPath(parentPath, driveId, EntityType.Folder);
 
             var id = CreateArchiveEntity<DirectoryInfo>(driveId, di, di.Name, di.GetHashCode(), parentId
                 , EntityType.Folder, path, "", "");

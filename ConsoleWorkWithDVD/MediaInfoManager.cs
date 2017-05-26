@@ -161,7 +161,7 @@ namespace ConsoleWorkWithDVD
             {
                 TagLibFile = TagLib.File.Create(filePath);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
 
             }
