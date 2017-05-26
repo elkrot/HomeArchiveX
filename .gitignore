@@ -249,5 +249,5 @@ paket-files/
 .idea/
 *.sln.iml
 
-.mdf
-.ldf
+*.mdf
+*.ldf
