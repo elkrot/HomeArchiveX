@@ -1,42 +1,71 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-
-using System.Data.SqlClient;
-using System.Data;
 using System.Linq;
-using System.Data.Common;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Windows.Media.Imaging;
-using MediaInfoLib;
-using MediaInfoNET;
-using System.Threading;
-using System.Globalization;
+using HomeArchiveX.Infrastructure;
+using System.Collections;
+using System.Collections.Generic;
 
-namespace ConsoleWorkWithDVD
+namespace HomeArchiveX
 {
     //Directory.GetCurrentDirectory ()
     class Program
     {
-
-        static void Main()
+        enum StartupInfoParameter
+        {/// <summary>
+         /// Новый диск
+         /// </summary>
+            NewDrive,
+            NoFullSizeImages,
+            SelectFirstDrive
+        }
+        static Dictionary<StartupInfoParameter, string> startupParameters = new Dictionary<StartupInfoParameter, string>();
+        static void Main(string[] args)
         {
+
+            ///new - Добавление
+            ///nofsimg - Не сохранять полноразмерные картинки , только эскизы
+            ///fdrv - Использовать первый привод с индексом 0
+            if (args.Length != 0)
+            {
+                if (args.Contains("/new")) startupParameters.Add(StartupInfoParameter.NewDrive, "");
+
+                if (args.Contains("/nofsimg")) startupParameters.Add(StartupInfoParameter.NoFullSizeImages, "");
+
+                if (args.Contains("/fdrv")) startupParameters.Add(StartupInfoParameter.SelectFirstDrive, "");
+
+
+            }
+
 
             var pathToMdfFileDirectory = Directory.GetCurrentDirectory();// @"d:\temp\";
             AppDomain.CurrentDomain.SetData("DataDirectory", pathToMdfFileDirectory);
 
-            //Console.ReadKey();
-            //return;
+
+
+
 
             var cnf = new ConfigurationData();
             var lg = new Logger();
             var fm = new FileManager(cnf, lg);
-            var dm = new DataManager(cnf, fm, lg);
+            IDataManager dm;
+            if (startupParameters.Keys.Contains(StartupInfoParameter.NoFullSizeImages))
+            {
+                dm = new DataManager(cnf, fm, lg, 0);
+            }
+            else
+            {
+                dm = new DataManager(cnf, fm, lg);
+            }
+            if (startupParameters.Keys.Contains(StartupInfoParameter.NewDrive))
+            {
+                CreateDriveOnStart(dm);
+            }
+            else
+            {
+                RenderMenu();
 
-            RenderMenu();
+            }
+
             string line;
             int choice = 0;
             do
@@ -64,9 +93,37 @@ namespace ConsoleWorkWithDVD
             Console.ReadKey();
         }
 
+        private static void CreateDriveOnStart(IDataManager dm)
+        {
+            
+            DriveInfo[] allDrives = DriveInfo.GetDrives().Where(x => x.DriveType == DriveType.CDRom).ToArray();
+            int i = 0;
+            foreach (DriveInfo d in allDrives)
+            {
+
+                Console.WriteLine("{1}. Диск {0}", d.Name, i);
+                i++;
+
+            }
+
+            if (allDrives.Count() == 0) {
+                Console.WriteLine("Отсутствуют Приводы");
+                return;
+            }
+                var drvLetter = allDrives[0].Name;
 
 
-
+            if (!string.IsNullOrWhiteSpace(drvLetter))
+            {
+                Console.WriteLine("Введите Заголовок описание устройства");
+                string title = Console.ReadLine().ToString();
+                CrtDrv(dm, drvLetter, title);
+            }
+            else
+            {
+                Console.WriteLine("Ошибка при вводе Кода устройства");
+            }
+        }
 
         private static void RenderMenu()
         {
@@ -108,7 +165,7 @@ namespace ConsoleWorkWithDVD
             }
 
         }
-        private static void GetDirectoryInfoById(DataManager dm, int id)
+        private static void GetDirectoryInfoById(IDataManager dm, int id)
         {
             DirectoryInfo ri = dm.GetDirectoryInfoById(id);
             Console.WriteLine("------");
@@ -116,7 +173,7 @@ namespace ConsoleWorkWithDVD
             Console.WriteLine("------");
         }
 
-        private static void RenderFileInfoById(DataManager dm, int id)
+        private static void RenderFileInfoById(IDataManager dm, int id)
         {
             FileInfo fi = dm.GetFileInfoById(id);
             Console.WriteLine("------");
@@ -134,7 +191,7 @@ namespace ConsoleWorkWithDVD
             Console.WriteLine("------");
         }
 
-        private static void RenderDriveInfoById(DataManager dm, int id)
+        private static void RenderDriveInfoById(IDataManager dm, int id)
         {
             DriveInfo di = dm.GetDriveInfoById(id);
             Console.WriteLine("------");
@@ -143,7 +200,7 @@ namespace ConsoleWorkWithDVD
         }
 
 
-        private static void RenderDrives(DataManager dm)
+        private static void RenderDrives(IDataManager dm)
         {
             string[] drivesList = dm.GetDrives();
             Console.WriteLine("------");
@@ -157,7 +214,7 @@ namespace ConsoleWorkWithDVD
         }
 
 
-        private static void RenderDirectories(DataManager dm, int driveId)
+        private static void RenderDirectories(IDataManager dm, int driveId)
         {
             string[] drivesList = dm.GetDirectories(driveId);
             Console.WriteLine("------");
@@ -168,7 +225,7 @@ namespace ConsoleWorkWithDVD
             Console.WriteLine("------");
         }
 
-        private static void RenderFiles(DataManager dm, int driveId)
+        private static void RenderFiles(IDataManager dm, int driveId)
         {
             string[] drivesList = dm.GetFiles(driveId);
             Console.WriteLine("------");
@@ -180,7 +237,7 @@ namespace ConsoleWorkWithDVD
         }
 
 
-        private static void MakeChoice(DataManager dm, int choise)
+        private static void MakeChoice(IDataManager dm, int choise)
         {
             int id = 0;
             string strid = "";
@@ -253,27 +310,27 @@ namespace ConsoleWorkWithDVD
                     do
                     {
                         strid = Console.ReadLine();
-                    int.TryParse(strid, out id);
-                    if (id == 1)
-                    {
-                        Console.WriteLine("Введите Код Диска");
-                        strid = Console.ReadLine();
                         int.TryParse(strid, out id);
-                        RenderDirectories(dm, id);
+                        if (id == 1)
+                        {
+                            Console.WriteLine("Введите Код Диска");
+                            strid = Console.ReadLine();
+                            int.TryParse(strid, out id);
+                            RenderDirectories(dm, id);
 
-                    }
-                    else if (id == 2)
-                    {
-                        Console.WriteLine("Введите Код Дирректории");
-                        strid = Console.ReadLine();
-                        int.TryParse(strid, out id);
-                        GetDirectoryInfoById(dm, id);
-                    }
-                    else
-                    {
+                        }
+                        else if (id == 2)
+                        {
+                            Console.WriteLine("Введите Код Дирректории");
+                            strid = Console.ReadLine();
+                            int.TryParse(strid, out id);
+                            GetDirectoryInfoById(dm, id);
+                        }
+                        else
+                        {
                             strid = null;
                             RenderMenu();
-                    }
+                        }
                     } while (strid != null);
 
 
@@ -285,26 +342,26 @@ namespace ConsoleWorkWithDVD
                     do
                     {
                         strid = Console.ReadLine();
-                    int.TryParse(strid, out id);
-                    if (id == 1)
-                    {
-                        Console.WriteLine("Введите Код Диска");
-                        strid = Console.ReadLine();
                         int.TryParse(strid, out id);
-                        RenderFiles(dm, id);
-                    }
-                    else if (id == 2)
-                    {
-                        Console.WriteLine("Введите Код Файла");
-                        strid = Console.ReadLine();
-                        int.TryParse(strid, out id);
-                        RenderFileInfoById(dm, id);
-                    }
-                    else
-                    {
+                        if (id == 1)
+                        {
+                            Console.WriteLine("Введите Код Диска");
+                            strid = Console.ReadLine();
+                            int.TryParse(strid, out id);
+                            RenderFiles(dm, id);
+                        }
+                        else if (id == 2)
+                        {
+                            Console.WriteLine("Введите Код Файла");
+                            strid = Console.ReadLine();
+                            int.TryParse(strid, out id);
+                            RenderFileInfoById(dm, id);
+                        }
+                        else
+                        {
                             strid = null;
                             RenderMenu();
-                    }
+                        }
                     } while (strid != null);
 
 
