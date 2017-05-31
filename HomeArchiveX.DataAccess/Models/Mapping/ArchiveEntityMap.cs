@@ -10,12 +10,9 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
         public ArchiveEntityMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.ArchiveEntityKey, t.Title, t.EntityType, t.EntityPath, t.CreatedDate });
+            this.HasKey(t => t.ArchiveEntityKey);
 
             // Properties
-            this.Property(t => t.ArchiveEntityKey)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-
             this.Property(t => t.Title)
                 .IsRequired()
                 .HasMaxLength(250);
@@ -42,6 +39,15 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
             this.Property(t => t.EntityInfo).HasColumnName("EntityInfo");
             this.Property(t => t.CreatedDate).HasColumnName("CreatedDate");
             this.Property(t => t.MFileInfo).HasColumnName("MFileInfo");
+
+            // Relationships
+            this.HasOptional(t => t.ArchiveEntity2)
+                .WithMany(t => t.ArchiveEntity1)
+                .HasForeignKey(d => d.ParentEntityKey);
+            this.HasOptional(t => t.Drive)
+                .WithMany(t => t.ArchiveEntities)
+                .HasForeignKey(d => d.DriveId);
+
         }
     }
 }

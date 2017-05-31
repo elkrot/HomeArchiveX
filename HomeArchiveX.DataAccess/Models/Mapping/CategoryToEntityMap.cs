@@ -10,7 +10,7 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
         public CategoryToEntityMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.TargetEntityKey, t.CategoryKey, t.ModifiedDate });
+            this.HasKey(t => new { t.TargetEntityKey, t.CategoryKey });
 
             // Properties
             this.Property(t => t.TargetEntityKey)
@@ -24,6 +24,16 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
             this.Property(t => t.TargetEntityKey).HasColumnName("TargetEntityKey");
             this.Property(t => t.CategoryKey).HasColumnName("CategoryKey");
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+
+            // Relationships
+            this.HasRequired(t => t.ArchiveEntity)
+                .WithMany(t => t.CategoryToEntities)
+                .HasForeignKey(d => d.TargetEntityKey);
+            this.HasRequired(t => t.Category)
+                .WithMany(t => t.CategoryToEntities)
+                .HasForeignKey(d => d.CategoryKey);
+
         }
     }
 }
+

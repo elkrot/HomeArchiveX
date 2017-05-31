@@ -10,12 +10,9 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
         public ImageMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.ImageKey, t.CreatedDate });
+            this.HasKey(t => t.ImageKey);
 
             // Properties
-            this.Property(t => t.ImageKey)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-
             this.Property(t => t.ImagePath)
                 .HasMaxLength(255);
 
@@ -35,5 +32,6 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
             this.Property(t => t.HashCode).HasColumnName("HashCode");
             this.Property(t => t.CreatedDate).HasColumnName("CreatedDate");
         }
+
     }
 }

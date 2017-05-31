@@ -10,12 +10,9 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
         public TagMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.TagKey, t.TagTitle, t.ModififedDate });
+            this.HasKey(t => t.TagKey);
 
             // Properties
-            this.Property(t => t.TagKey)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-
             this.Property(t => t.TagTitle)
                 .IsRequired()
                 .IsFixedLength()

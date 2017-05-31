@@ -12,10 +12,6 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
             // Primary Key
             this.HasKey(t => t.DriveId);
 
-            // Properties
-            this.Property(t => t.DriveId)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-
             this.Property(t => t.Title)
                 .HasMaxLength(100);
 

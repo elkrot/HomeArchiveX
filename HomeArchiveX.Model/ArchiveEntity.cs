@@ -5,6 +5,13 @@ namespace HomeArchiveX.Model
 {
     public partial class ArchiveEntity
     {
+        public ArchiveEntity()
+        {
+            this.ArchiveEntity1 = new List<ArchiveEntity>();
+            this.CategoryToEntities = new List<CategoryToEntity>();
+            this.ImageToEntities = new List<ImageToEntity>();
+        }
+
         public int ArchiveEntityKey { get; set; }
         public Nullable<int> ParentEntityKey { get; set; }
         public Nullable<int> DriveId { get; set; }
@@ -17,5 +24,11 @@ namespace HomeArchiveX.Model
         public byte[] EntityInfo { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public byte[] MFileInfo { get; set; }
+        public virtual ICollection<ArchiveEntity> ArchiveEntity1 { get; set; }
+        public virtual ArchiveEntity ArchiveEntity2 { get; set; }
+        public virtual Drive Drive { get; set; }
+        public virtual ICollection<CategoryToEntity> CategoryToEntities { get; set; }
+        public virtual ICollection<ImageToEntity> ImageToEntities { get; set; }
+        public virtual TagToEntity TagToEntity { get; set; }
     }
 }

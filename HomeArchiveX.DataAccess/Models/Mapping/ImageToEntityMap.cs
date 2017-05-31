@@ -24,6 +24,15 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
             this.Property(t => t.TargetEntityKey).HasColumnName("TargetEntityKey");
             this.Property(t => t.ImageKey).HasColumnName("ImageKey");
             this.Property(t => t.CreatedDate).HasColumnName("CreatedDate");
+
+            // Relationships
+            this.HasRequired(t => t.ArchiveEntity)
+                .WithMany(t => t.ImageToEntities)
+                .HasForeignKey(d => d.TargetEntityKey);
+            this.HasRequired(t => t.Image)
+                .WithMany(t => t.ImageToEntities)
+                .HasForeignKey(d => d.ImageKey);
+
         }
     }
 }

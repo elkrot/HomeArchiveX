@@ -10,13 +10,10 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
         public TagToEntityMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.TargetEntityKey, t.TagKey, t.ModifiedDate });
+            this.HasKey(t => t.TargetEntityKey);
 
             // Properties
             this.Property(t => t.TargetEntityKey)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-
-            this.Property(t => t.TagKey)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // Table & Column Mappings
@@ -24,6 +21,14 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
             this.Property(t => t.TargetEntityKey).HasColumnName("TargetEntityKey");
             this.Property(t => t.TagKey).HasColumnName("TagKey");
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+
+            // Relationships
+            this.HasRequired(t => t.ArchiveEntity)
+                .WithOptional(t => t.TagToEntity);
+            this.HasRequired(t => t.Tag)
+                .WithMany(t => t.TagToEntities)
+                .HasForeignKey(d => d.TagKey);
+
         }
     }
 }

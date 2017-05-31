@@ -12,10 +12,6 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
             // Primary Key
             this.HasKey(t => t.CategoryKey);
 
-            // Properties
-            this.Property(t => t.CategoryKey)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-
             this.Property(t => t.CategoryTitle)
                 .HasMaxLength(100);
 

@@ -69,7 +69,14 @@ namespace HomeArchiveX.DataAccess
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var repo = uofw.GetRepository<Drive>();
-                repo.Add(drive);
+                if (drive.DriveId != 0)
+                {
+                    repo.Update(drive);
+                }
+                else
+                {
+                    repo.Add(drive);
+                }
                 return uofw.Complete();
             }
         }

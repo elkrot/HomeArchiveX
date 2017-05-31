@@ -62,10 +62,15 @@ namespace HomeArchiveX.DataAccess.Implementations
 
         public void Remove(TEntity entity)
         {
+            (Context as DbContext).Entry(entity).State = System.Data.Entity.EntityState.Deleted;
             Context.Set<TEntity>().Remove(entity);
         }
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
+            foreach (var item in entities)
+            {
+                (Context as DbContext).Entry(item).State = System.Data.Entity.EntityState.Deleted;
+            }
             Context.Set<TEntity>().RemoveRange(entities);
         }
 
