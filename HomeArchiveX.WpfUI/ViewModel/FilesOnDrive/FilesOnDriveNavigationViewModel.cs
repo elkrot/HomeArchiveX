@@ -91,8 +91,8 @@ namespace HomeArchiveX.WpfUI.ViewModel
             ArchiveEntityKey = itemNode.Id;
             DisplayValue = itemNode.DisplayValue;
             NavigationItems = GetItems(itemNode.Nodes);
-            ImagePath = itemNode.EntityType==1? "/HomeArchiveX.WpfUI;component/img/drive_add.png" 
-                : "/HomeArchiveX.WpfUI;component/img/drive.png";
+            ImagePath = itemNode.EntityType==1? "/HomeArchiveX.WpfUI;component/img/folder.png" 
+                : "/HomeArchiveX.WpfUI;component/img/document_empty.png";
             //;
             _eventAggregator = eventAggregator;
             OpenFileOnDriveEditViewCommand = new DelegateCommand(OpenFileOnDriveEditViewExecute);
