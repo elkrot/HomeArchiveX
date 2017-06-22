@@ -9,6 +9,7 @@ using HomeArchiveX.WpfUI.ViewModel;
 using Microsoft.Practices.Prism.PubSubEvents;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +45,8 @@ namespace HomeArchiveX.WpfU.Startup
 
             builder.RegisterType<FilesOnDriveViewModel>().AsSelf();
             #endregion
+
+
             /*  builder.RegisterType<StatusLookupProvider>().As<ILookupProvider<Status>>();
              builder.RegisterType<SalesOrderLookupProvider>().As<ILookupProvider<SalesOrderHeader>>();
              builder.RegisterType<SalesPersonLookupProvider>().As<ILookupProvider<SalesPerson>>();

@@ -36,49 +36,10 @@
         <!--Navigation-->
         <view:FilesOnDriveNavigationView DataContext="{Binding FileOnDriveNavigationViewModel}" Grid.Row="2" Margin="0,10,0,0"/>
 
+        <view:FilesOnDriveEditView  Grid.Column="2" Grid.Row="2" Margin="0,0,0,0" />
+       
         <GridSplitter Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Width="3" Background="#FF95DAF3" HorizontalAlignment="Center"/>
 
-        <!--Tabs-->
-        <TabControl ItemsSource="{Binding DriveEditViewModels}"
-                SelectedItem="{Binding SelectedDriveEditViewModel, Mode=TwoWay}" 
-                Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" Margin="5,0,-5,0">
-            <TabControl.ItemContainerStyle>
-                <Style TargetType="TabItem" BasedOn="{StaticResource {x:Type TabItem}}">
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="FontWeight" Value="Bold"/>
-                        </Trigger>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self},
-              Path=Content.Drive.IsChanged}" Value="True">
-                            <Setter Property="Background" Value="{StaticResource IsChangedBackgroundBrush}"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self},
-              Path=Content.Drive.IsValid}" Value="False">
-                            <Setter Property="Background" Value="{StaticResource HasErrorBackgroundBrush}"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TabControl.ItemContainerStyle>
-            <TabControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Drive.Title,ValidatesOnNotifyDataErrors=False}"/>
-
-                        <Button Content="X" Command="{Binding RelativeSource=
-                                  {RelativeSource FindAncestor,
-                                  AncestorType={x:Type TabControl}},
-                                  Path=DataContext.CloseDriveTabCommand}"
-                                CommandParameter="{Binding}"
-                                Width="20" Height="20" FontWeight="Bold" FontSize="12" Padding="0" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </TabControl.ItemTemplate>
-            <TabControl.ContentTemplate>
-                <DataTemplate>
-                    <view:DrivesEditView/>
-                </DataTemplate>
-            </TabControl.ContentTemplate>
-        </TabControl>
 
         <!--Footer-->
         <TextBlock Text="Каталог файлов" Margin="10" Grid.Row="3" Grid.ColumnSpan="3" Foreground="LightGray" />

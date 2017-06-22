@@ -7,6 +7,44 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
+        <TabControl>
+            <TabItem Header="Инфа">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="30"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox  Header="Инфа файла" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3"/>
+                    <GroupBox  Header="Медиа Инфа" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3"/>
+                    <TextBlock Grid.Column="1" Grid.Row="0">path</TextBlock>
+                </Grid>
+                
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel><TextBlock Foreground="Green">Категории</TextBlock></StackPanel> 
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox  Header="Метки" Grid.Column="0" Grid.Row="0" />
+                    <GroupBox  Header="Категории" Grid.Column="0" Grid.Row="1" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Картинки">
+                <StackPanel>
+                    
+                </StackPanel>
+            </TabItem>
             
+        </TabControl>
     </Grid>
 </UserControl>
