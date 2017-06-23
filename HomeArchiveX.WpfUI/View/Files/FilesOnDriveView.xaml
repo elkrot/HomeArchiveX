@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
               xmlns:view="clr-namespace:HomeArchiveX.WpfUI.View"
              FontSize="{StaticResource DefaultFontSize}"
-             d:DesignHeight="300" d:DesignWidth="420">
+             d:DesignHeight="500" d:DesignWidth="520">
     <Grid Background="AntiqueWhite">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>

@@ -33,7 +33,11 @@ namespace HomeArchiveX.WpfUI.ViewModel
             _eventAggregator.GetEvent<FileOnDriveDeletedEvent>().Subscribe(OnFileOnDriveDeleted);
 
             NavigationItems = new ObservableCollection<NavigationTreeItemViewModel>();
+
+            SelectedItemChangedCommand = new DelegateCommand(OnSelectedItemChangedCommandExecute, OnSelectedItemChangedCommandCanExecute);
+
         }
+        public ICommand SelectedItemChangedCommand { get; private set; }
 
         private void OnFileOnDriveDeleted(int archiveEntityKey)
         {
@@ -77,6 +81,19 @@ namespace HomeArchiveX.WpfUI.ViewModel
             }
         }
         public ObservableCollection<NavigationTreeItemViewModel> NavigationItems { get; set; }
+
+
+        private bool OnSelectedItemChangedCommandCanExecute(object arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnSelectedItemChangedCommandExecute(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
     //--------------------------------------------------------------------
     public class NavigationTreeItemViewModel : Observable

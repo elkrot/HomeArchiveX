@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HomeArchiveX.WpfUI.View"
              mc:Ignorable="d" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              d:DesignHeight="300" d:DesignWidth="300">
+    
     <Grid>
 
         <!--<TreeView x:Name="filesTreeView" ItemsSource="{Binding Path=NavigationItems}">
@@ -19,6 +21,13 @@
 
 
         <TreeView x:Name="filesTreeView" Background="PaleGoldenrod" SelectedItemChanged="filesTreeView_SelectedItemChanged" ItemsSource="{Binding Path=NavigationItems}">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectedItemChanged">
+                    <i:InvokeCommandAction Command="{Binding SelectedItemChangedCommand}" CommandParameter="argument"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <EventSetter Event="MouseLeftButtonUp" Handler="treeViewItem_MouseLeftButtonUp"/>

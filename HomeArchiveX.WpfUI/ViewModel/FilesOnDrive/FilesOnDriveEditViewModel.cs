@@ -40,9 +40,10 @@ namespace HomeArchiveX.WpfUI.ViewModel
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             ResetCommand = new DelegateCommand(OnResetExecute, OnResetCanExecute);
             DeleteCommand = new DelegateCommand(OnDeleteExecute, OnDeleteCanExecute);
-        }
+                  }
 
-     //   IFilesOnDriveDataProvider FileOnDriveDataProvider;
+
+        //   IFilesOnDriveDataProvider FileOnDriveDataProvider;
         public IFilesOnDriveNavigationViewModel FilesOnDriveNavigationViewModel;
 
         public ArchiveEntityWrapper ArchiveEntity
@@ -85,7 +86,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
         public ICommand RemoveEmailCommand { get; private set; }
 
-
+        
 
         private void OnSaveExecute(object obj)
         {
