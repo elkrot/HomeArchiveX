@@ -90,7 +90,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
         private void OnSelectedItemChangedCommandExecute(object obj)
         {
-            throw new NotImplementedException();
+            _eventAggregator.GetEvent<SelectedItemChangedEvent>().Publish(0);
         }
 
 
