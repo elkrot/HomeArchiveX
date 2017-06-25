@@ -37,7 +37,21 @@ namespace HomeArchiveX.WpfUI.ViewModel
             SelectedItemChangedCommand = new DelegateCommand(OnSelectedItemChangedCommandExecute, OnSelectedItemChangedCommandCanExecute);
 
         }
+        private bool OnSelectedItemChangedCommandCanExecute(object arg)
+        {
+            return true;
+        }
+
+        private void OnSelectedItemChangedCommandExecute(object obj)
+        {
+            var SelectedItem = 0;
+            int.TryParse(obj.ToString(), out SelectedItem);
+            
+            _eventAggregator.GetEvent<SelectedItemChangedEvent>().Publish(SelectedItem);
+        }
+
         public ICommand SelectedItemChangedCommand { get; private set; }
+
 
         private void OnFileOnDriveDeleted(int archiveEntityKey)
         {
@@ -83,15 +97,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         public ObservableCollection<NavigationTreeItemViewModel> NavigationItems { get; set; }
 
 
-        private bool OnSelectedItemChangedCommandCanExecute(object arg)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void OnSelectedItemChangedCommandExecute(object obj)
-        {
-            _eventAggregator.GetEvent<SelectedItemChangedEvent>().Publish(0);
-        }
+      
 
 
     }
@@ -112,7 +118,10 @@ namespace HomeArchiveX.WpfUI.ViewModel
                 : "/HomeArchiveX.WpfUI;component/img/document_empty.png";
             //;
             _eventAggregator = eventAggregator;
-            OpenFileOnDriveEditViewCommand = new DelegateCommand(OpenFileOnDriveEditViewExecute);
+            //OpenFileOnDriveEditViewCommand = new DelegateCommand(OpenFileOnDriveEditViewExecute);
+
+          
+
         }
 
         private ObservableCollection<NavigationTreeItemViewModel> GetItems(ObservableCollection<LookupItemNode> nodes)
@@ -131,7 +140,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         #endregion
 
 
-        public ICommand OpenFileOnDriveEditViewCommand { get; set; }
+       // public ICommand OpenFileOnDriveEditViewCommand { get; set; }
 
         public int ArchiveEntityKey { get; private set; }
         public ObservableCollection<NavigationTreeItemViewModel> NavigationItems { get;  set; }
@@ -149,10 +158,13 @@ namespace HomeArchiveX.WpfUI.ViewModel
         #endregion
 
         #region OpenDriveEditViewExecute
-        private void OpenFileOnDriveEditViewExecute(object obj)
-        {
-            _eventAggregator.GetEvent<OpenFileOnDriveEditViewEvent>().Publish(ArchiveEntityKey);
-        }
+        //private void OpenFileOnDriveEditViewExecute(object obj)
+        //{
+        //    _eventAggregator.GetEvent<OpenFileOnDriveEditViewEvent>().Publish(ArchiveEntityKey);
+
+        //}
+
+
         #endregion
 
     }

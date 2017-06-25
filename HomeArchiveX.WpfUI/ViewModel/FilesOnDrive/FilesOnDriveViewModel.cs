@@ -34,6 +34,8 @@ namespace HomeArchiveX.WpfUI.ViewModel
             _eventAggregator.GetEvent<OpenFileOnDriveEditViewEvent>().Subscribe(OnOpenFileOnDriveTab);
             _eventAggregator.GetEvent<FileOnDriveDeletedEvent>().Subscribe(OnFileOnDriveDeleted);
 
+            _eventAggregator.GetEvent<SelectedItemChangedEvent>().Subscribe(OnSelectedItemChanged);
+
             FileOnDriveNavigationViewModel = fileOnDriveNavigationViewModel;
 
             _fileOnDriveEditViewModelCreator = fileOnDriveEditViewModelCreator;
@@ -43,6 +45,11 @@ namespace HomeArchiveX.WpfUI.ViewModel
             FileOnDriveEditViewModels = new ObservableCollection<IFilesOnDriveEditViewModel>();
             CloseFileOnDriveTabCommand = new DelegateCommand(OnCloseFileOnDriveTabExecute);
             AddFileOnDriveCommand = new DelegateCommand(OnAddFileOnDriveExecute);
+        }
+
+        private void OnSelectedItemChanged(int obj)
+        {
+           //throw new NotImplementedException();
         }
         #endregion
 

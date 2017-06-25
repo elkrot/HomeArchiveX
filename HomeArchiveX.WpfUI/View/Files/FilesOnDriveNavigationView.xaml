@@ -20,25 +20,27 @@
 
 
 
-        <TreeView x:Name="filesTreeView" Background="PaleGoldenrod" SelectedItemChanged="filesTreeView_SelectedItemChanged" ItemsSource="{Binding Path=NavigationItems}">
+        <TreeView x:Name="filesTreeView" Background="PaleGoldenrod" 
+                  SelectedItemChanged="filesTreeView_SelectedItemChanged" 
+                  ItemsSource="{Binding Path=NavigationItems}"
+                  SelectedValuePath="ArchiveEntityKey">
 
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectedItemChanged">
-                    <i:InvokeCommandAction Command="{Binding SelectedItemChangedCommand}" CommandParameter="argument"/>
+                    <i:InvokeCommandAction Command="{Binding SelectedItemChangedCommand}" CommandParameter="{Binding ElementName=filesTreeView, 
+                          Path=SelectedValue}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             
-            <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}">
-                    <EventSetter Event="MouseLeftButtonUp" Handler="treeViewItem_MouseLeftButtonUp"/>
-                </Style>
-            </TreeView.ItemContainerStyle>
+
 
             <TreeView.ItemTemplate >
                 <HierarchicalDataTemplate ItemsSource="{Binding Path=NavigationItems}">
+                    
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{Binding ImagePath}" Width="50" Margin="0"/>
-                    <TextBlock Text="{Binding DisplayValue}" />                      
+                        <TextBlock Text="{Binding DisplayValue}" />
+                       
                     </StackPanel>
 
                     <!--<Button Width="200" Command="{Binding OpenFileOnDriveEditViewCommand}"
