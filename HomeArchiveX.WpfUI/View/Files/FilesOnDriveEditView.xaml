@@ -22,7 +22,7 @@
                     </Grid.RowDefinitions>
                     <GroupBox  Header="Инфа файла" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3"/>
                     <GroupBox  Header="Медиа Инфа" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3"/>
-                    <TextBlock Text="{Binding EntityPath}" Grid.Column="1" Grid.Row="0">path</TextBlock>
+                    <TextBlock Text="{Binding ArchiveEntity.EntityPath}" Grid.Column="1" Grid.Row="0">path</TextBlock>
                 </Grid>
                 
             </TabItem>
