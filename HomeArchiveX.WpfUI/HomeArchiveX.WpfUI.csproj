@@ -159,7 +159,7 @@
     <Compile Include="Wrapper\Base\IValidatableTrackingObject.cs" />
     <Compile Include="Wrapper\Base\ModelWrapper.cs" />
     <Compile Include="Wrapper\Base\NotifyDataErrorInfoBase.cs" />
-    <Compile Include="Wrapper\Generated\ArchiveEntityWrapper.g.cs" />
+    <Compile Include="Wrapper\Generated\ArchiveEntityWrapper.cs" />
     <Compile Include="Wrapper\Generated\CategoryToEntityWrapper.g.cs" />
     <Compile Include="Wrapper\Generated\CategoryWrapper.g.cs" />
     <Compile Include="Wrapper\Generated\DriveWrapper.g.cs" />

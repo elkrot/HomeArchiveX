@@ -44,10 +44,15 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
         private void OnSelectedItemChangedCommandExecute(object obj)
         {
-            var SelectedItem = 0;
-            int.TryParse(obj.ToString(), out SelectedItem);
-            
-            _eventAggregator.GetEvent<SelectedItemChangedEvent>().Publish(SelectedItem);
+            if (obj != null)
+            {
+
+
+                var SelectedItem = 0;
+                int.TryParse(obj.ToString(), out SelectedItem);
+
+                _eventAggregator.GetEvent<SelectedItemChangedEvent>().Publish(SelectedItem);
+            }
         }
 
         public ICommand SelectedItemChangedCommand { get; private set; }

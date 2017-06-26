@@ -40,7 +40,8 @@ namespace HomeArchiveX.WpfUI.ViewModel
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             ResetCommand = new DelegateCommand(OnResetExecute, OnResetCanExecute);
             DeleteCommand = new DelegateCommand(OnDeleteExecute, OnDeleteCanExecute);
-                  }
+           
+        }
 
 
         //   IFilesOnDriveDataProvider FileOnDriveDataProvider;
@@ -131,7 +132,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private void OnDeleteExecute(object obj)
         {
             var result = _messageDialogService.ShowYesNoDialog(
-                "Удалить заказ?",
+                "Удалить ?",
                 string.Format("Вы действительно хотите удалить {2} '{0} от {1:d}'"
                 , ArchiveEntity.Title, ArchiveEntity.DriveId, Environment.NewLine),
                 MessageDialogResult.No);

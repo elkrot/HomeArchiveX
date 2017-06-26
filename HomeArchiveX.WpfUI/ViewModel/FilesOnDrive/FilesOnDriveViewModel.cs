@@ -31,8 +31,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         {
             _eventAggregator = eventAggregator;
             _messageDialogService = messageDialogService;
-            _eventAggregator.GetEvent<OpenFileOnDriveEditViewEvent>().Subscribe(OnOpenFileOnDriveTab);
-            _eventAggregator.GetEvent<FileOnDriveDeletedEvent>().Subscribe(OnFileOnDriveDeleted);
+
 
             _eventAggregator.GetEvent<SelectedItemChangedEvent>().Subscribe(OnSelectedItemChanged);
 
@@ -42,76 +41,24 @@ namespace HomeArchiveX.WpfUI.ViewModel
             _fileOnDriveDataProvider = fileOnDriveDataProvider;
 
 
-            FileOnDriveEditViewModels = new ObservableCollection<IFilesOnDriveEditViewModel>();
-            CloseFileOnDriveTabCommand = new DelegateCommand(OnCloseFileOnDriveTabExecute);
-            AddFileOnDriveCommand = new DelegateCommand(OnAddFileOnDriveExecute);
         }
 
         private void OnSelectedItemChanged(int obj)
         {
-           //throw new NotImplementedException();
-        }
-        #endregion
 
-        #region При добавлении
-        private void OnAddFileOnDriveExecute(object obj)
-        {
-            IFilesOnDriveEditViewModel fileOnDriveEditVm = _fileOnDriveEditViewModelCreator();
-            FileOnDriveEditViewModels.Add(fileOnDriveEditVm);
-            fileOnDriveEditVm.Load();
-            SelectedFileOnDriveEditViewModel = fileOnDriveEditVm;
-        }
-        #endregion
-
-        #region При закрытии
-        private void OnCloseFileOnDriveTabExecute(object parameter)
-        {
-            var fileOndriveEditVmToClose = parameter as IFilesOnDriveEditViewModel;
-            if (fileOndriveEditVmToClose != null)
+            if (obj != 0)
             {
-                if (fileOndriveEditVmToClose.ArchiveEntity.IsChanged)
-                {
-                    var result = _messageDialogService.ShowYesNoDialog("Закрыть закладку?",
-                      "Изменения будут утеряны. Закрыть ее?",
-                      MessageDialogResult.No);
-                    if (result == MessageDialogResult.No)
-                    {
-                        return;
-                    }
-                }
-                FileOnDriveEditViewModels.Remove(fileOndriveEditVmToClose);
-            }
-        }
-        #endregion
+                int ArchiveEntityKey = 0;
+                int.TryParse(obj.ToString(), out ArchiveEntityKey);
 
-        #region При удалении
-        private void OnFileOnDriveDeleted(int ArchiveEntityKey)
-        {
-            IFilesOnDriveEditViewModel fileOnDriveVmToClose
-              = FileOnDriveEditViewModels.SingleOrDefault(f => f.ArchiveEntity.ArchiveEntityKey == ArchiveEntityKey);
-            if (fileOnDriveVmToClose != null)
-            {
-                FileOnDriveEditViewModels.Remove(fileOnDriveVmToClose);
-            }
-        }
-        #endregion
-
-       
-
-        #region При открытии закладки
-        private void OnOpenFileOnDriveTab(int ArchiveEntityKey)
-        {
-            IFilesOnDriveEditViewModel fileOnDriveVm =
-              FileOnDriveEditViewModels.SingleOrDefault(vm => vm.ArchiveEntity.ArchiveEntityKey == ArchiveEntityKey);
-            if (fileOnDriveVm == null)
-            {
-                fileOnDriveVm = _fileOnDriveEditViewModelCreator();
-                FileOnDriveEditViewModels.Add(fileOnDriveVm);
+                IFilesOnDriveEditViewModel fileOnDriveVm = _fileOnDriveEditViewModelCreator();
                 fileOnDriveVm.Load(ArchiveEntityKey);
+
+                SelectedFileOnDriveEditViewModel = fileOnDriveVm;
             }
-            SelectedFileOnDriveEditViewModel = fileOnDriveVm;
         }
         #endregion
+
 
         public IFilesOnDriveEditViewModel SelectedFileOnDriveEditViewModel
         {
@@ -130,13 +77,12 @@ namespace HomeArchiveX.WpfUI.ViewModel
             FileOnDriveNavigationViewModel.Load(DriveId);
         }
 
-        public ICommand CloseFileOnDriveTabCommand { get; private set; }
 
-        public ICommand AddFileOnDriveCommand { get; set; }
 
-        public IFilesOnDriveNavigationViewModel FileOnDriveNavigationViewModel { get; private set; }
+ public IFilesOnDriveNavigationViewModel FileOnDriveNavigationViewModel { get; private set; }
 
-        public ObservableCollection<IFilesOnDriveEditViewModel> FileOnDriveEditViewModels { get; private set; }
+
+     
 
     }
 }
