@@ -151,7 +151,10 @@ namespace HomeArchiveX.WpfUI.Wrapper
                 using (MemoryStream stream = new MemoryStream(data))
                 {
                     BinaryFormatter formatter = new BinaryFormatter();
-                    return (FileInfo)formatter.Deserialize(stream);
+                    object obj = formatter.Deserialize(stream);
+                    if (!(obj is FileInfo))
+                        return null;
+                    return (FileInfo)obj;
                 }
             }
 

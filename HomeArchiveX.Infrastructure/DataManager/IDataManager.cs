@@ -20,9 +20,9 @@ namespace HomeArchiveX.Infrastructure
         int CreateDrive(string path, string title);
         int CreateArchiveEntity<T>(int driveId, T entity, string title,
         int hashCode, int parentEntityKey, EntityType entityType, string entityPath, string extension, string description);
-        FileInfo GetFileInfoById(int id);
+        Dictionary<string, string> GetFileInfoById(int id);
         DriveInfo GetDriveInfoById(int id);
-        DirectoryInfo GetDirectoryInfoById(int id);
+        Dictionary<string, string> GetDirectoryInfoById(int id);
         int IsDriveExist(int hashCode, string title);
         void FillDirectoriesInfo(int driveId, string pathDrive);
         void FillFilesInfo(int driveId, string pathDrive);

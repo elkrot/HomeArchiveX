@@ -55,12 +55,17 @@ namespace HomeArchiveX.Infrastructure
         public int CreateFolder(string path, int driveId)
         {
             var di = _fileManager.GetDirectoryInfoByPath(path);
-
             var parentPath = di.Parent == null || di.Root.FullName == di.Parent.FullName ? null : di.Parent.FullName;
-
             int parentId = GetEntityIdByPath(parentPath, driveId, EntityType.Folder);
-
-            var id = CreateArchiveEntity<DirectoryInfo>(driveId, di, di.Name, di.GetHashCode(), parentId
+            #region Set Directory Info Dictionary
+            var diDict = new Dictionary<string, string>();
+            diDict.Add("CreationTime", string.Format("{0:dd.MM.yyyy hh:mm:ss}", di.CreationTime));
+            diDict.Add("LastWriteTime", string.Format("{0:dd.MM.yyyy hh:mm:ss}", di.LastWriteTime));
+            diDict.Add("Extension", di.Extension);
+            diDict.Add("FullName", di.FullName);
+            diDict.Add("Name", di.Name);
+            #endregion
+            var id = CreateArchiveEntity<Dictionary<string,string>>(driveId, diDict, di.Name, di.GetHashCode(), parentId
                 , EntityType.Folder, path, "", "");
             _directoryCash.Add(path, id);
             return id;
@@ -79,7 +84,15 @@ namespace HomeArchiveX.Infrastructure
             FileInfo fi = _fileManager.GetFileInfoByPath(path);
             int parentId = GetEntityIdByPath(fi.Directory.Parent == null ? null : fi.Directory.FullName
                 , driveId, EntityType.Folder);
-            var id = CreateArchiveEntity<FileInfo>(driveId, fi, fi.Name, fi.GetHashCode(), parentId
+
+            var fiDict = new Dictionary<string, string>();
+            fiDict.Add("CreationTime", string.Format("{0:dd.MM.yyyy hh:mm:ss}", fi.CreationTime));
+            fiDict.Add("LastWriteTime", string.Format("{0:dd.MM.yyyy hh:mm:ss}", fi.LastWriteTime));
+            fiDict.Add("Extension", fi.Extension);
+            fiDict.Add("FullName", fi.FullName);
+            fiDict.Add("Name", fi.Name);
+            
+            var id = CreateArchiveEntity<Dictionary<string, string>>(driveId, fiDict, fi.Name, fi.GetHashCode(), parentId
                 , EntityType.File, path, fi.Extension, "");
             return id;
         }
@@ -429,17 +442,22 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         #endregion
         /*-------------------------------*/
 
+        #region FillDirectoriesInfo
         public void FillDirectoriesInfo(int driveId, string pathDrive)
         {
             MethodResult<int> result = _fileManager.FillDirectoriesInfo(driveId, pathDrive, CreateFolder);
         }
+        #endregion
 
 
+        #region FillFilesInfo
         public void FillFilesInfo(int driveId, string pathDrive)
         {
             MethodResult<int> result = _fileManager.FillFilesInfo(driveId, pathDrive, CreateFile);
         }
+        #endregion
 
+        #region GetImageById
         public Image GetImageById(int id)
         {
             using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
@@ -455,22 +473,10 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
 
             }
         }
+        #endregion
 
-        public DriveInfo GetDriveInfoById(int id)
-        {
-            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
-            {
-                connection.Open();
-                string sql = "select DriveInfo FROM Drive where DriveId=@id";
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.Clear();
-                command.Parameters.AddWithValue("id", id);
 
-                object obj = command.ExecuteScalar();
-                return _fileManager.GetDataFromBinary<DriveInfo>((byte[])obj);
 
-            }
-        }
 
 
         public string[] GetDrives()
@@ -542,11 +548,27 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
             }
         }
 
+        #region GetDriveInfoById Описание диска по ИД
+        public DriveInfo GetDriveInfoById(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            {
+                connection.Open();
+                string sql = "select DriveInfo FROM Drive where DriveId=@id";
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("id", id);
+
+                object obj = command.ExecuteScalar();
+                return _fileManager.GetDataFromBinary<DriveInfo>((byte[])obj);
+
+            }
+        }
+        #endregion
 
 
-
-
-        public FileInfo GetFileInfoById(int id)
+        #region GetFileInfoById Информация о файле по ИД
+        public Dictionary<string, string> GetFileInfoById(int id)
         {
             using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
             {
@@ -557,13 +579,15 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
                 command.Parameters.AddWithValue("id", id);
 
                 object obj = command.ExecuteScalar();
-                return _fileManager.GetDataFromBinary<FileInfo>((byte[])obj);
+                if (obj is System.DBNull) return default(Dictionary<string, string>);
+                return _fileManager.GetDataFromBinary<Dictionary<string, string>>((byte[])obj);
 
             }
         }
+        #endregion
 
 
-
+        #region GetMediaFileInfoById Медиа информация о файле.
         public Dictionary<string, string> GetMediaFileInfoById(int id)
         {
             using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
@@ -581,10 +605,12 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
 
             }
         }
+        #endregion
 
 
 
-        public DirectoryInfo GetDirectoryInfoById(int id)
+        #region GetDirectoryInfoById Информация о дирректории по Ид
+        public Dictionary<string, string> GetDirectoryInfoById(int id)
         {
             using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
             {
@@ -595,11 +621,14 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
                 command.Parameters.AddWithValue("id", id);
 
                 object obj = command.ExecuteScalar();
-                if (obj is System.DBNull) return default(DirectoryInfo);
-                return _fileManager.GetDataFromBinary<DirectoryInfo>((byte[])obj);
+                if (obj is System.DBNull) return default(Dictionary<string, string>);
+                return _fileManager.GetDataFromBinary<Dictionary<string, string>>((byte[])obj);
 
             }
         }
+        #endregion
+
+
 
 
         private void ReadImageFromDatabase()

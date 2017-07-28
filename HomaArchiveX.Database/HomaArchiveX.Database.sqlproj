@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{10961940-07ab-40f0-b6b1-6ebc7777f83c}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql120DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -74,5 +74,8 @@
     <Build Include="dbo\Tables\Drive.sql" />
     <Build Include="dbo\Stored Procedures\DeleteDrive.sql" />
     <Build Include="dbo\Stored Procedures\TruncateTables.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="HomaArchiveX.Database.publish.xml" />
   </ItemGroup>
 </Project>

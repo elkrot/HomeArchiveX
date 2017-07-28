@@ -33,16 +33,11 @@ namespace HomeArchiveX
 
                 if (args.Contains("/fdrv")) startupParameters.Add(StartupInfoParameter.SelectFirstDrive, "");
 
-
             }
 
 
             var pathToMdfFileDirectory = Directory.GetCurrentDirectory();// @"d:\temp\";
             AppDomain.CurrentDomain.SetData("DataDirectory", pathToMdfFileDirectory);
-
-
-
-
 
             var cnf = new ConfigurationData();
             var lg = new Logger();
@@ -167,18 +162,26 @@ namespace HomeArchiveX
         }
         private static void GetDirectoryInfoById(IDataManager dm, int id)
         {
-            DirectoryInfo ri = dm.GetDirectoryInfoById(id);
+            Dictionary<string,string> ri = dm.GetDirectoryInfoById(id);
             Console.WriteLine("------");
-            Console.WriteLine(ri.FullName);
+            foreach (var item in ri.Keys)
+            {
+                Console.WriteLine(string.Format("{0}-{1}", item, ri[item]));
+            }
             Console.WriteLine("------");
         }
 
         private static void RenderFileInfoById(IDataManager dm, int id)
         {
-            FileInfo fi = dm.GetFileInfoById(id);
+            Dictionary<string, string> fi = dm.GetFileInfoById(id);
             Console.WriteLine("------");
-            Console.WriteLine(fi.FullName);
-            var attr = fi.Attributes;
+            
+            foreach (var item in fi.Keys)
+            {
+                Console.WriteLine(string.Format("{0}-{1}",item,fi[item]));
+            }
+
+
             var mfi = dm.GetMediaFileInfoById(id);
             if (mfi != null)
             {
