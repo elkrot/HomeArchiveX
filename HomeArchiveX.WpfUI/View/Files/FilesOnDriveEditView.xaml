@@ -21,11 +21,24 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <GroupBox  Header="Инфа файла" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3">
-                        <TextBlock Text="{Binding ArchiveEntity.FileInfo.Length}" Grid.Column="1" Grid.Row="0"/>
-                        
+                        <StackPanel>
+                        <TextBlock Text="{Binding ArchiveEntity.FileInfo[Length]}" Grid.Column="1" Grid.Row="0"/>
+                        <TextBlock Text="{Binding ArchiveEntity.FileInfo[CreationTime]}" Grid.Column="1" Grid.Row="0"/>
+                        <TextBlock Text="{Binding ArchiveEntity.FileInfo[LastWriteTime]}" Grid.Column="1" Grid.Row="0"/>
+                        <TextBlock Text="{Binding ArchiveEntity.FileInfo[Extension]}" Grid.Column="1" Grid.Row="0"/>
+                        <TextBlock Text="{Binding ArchiveEntity.FileInfo[FullName]}" Grid.Column="1" Grid.Row="0"/>
+                        <TextBlock Text="{Binding ArchiveEntity.FileInfo[Name]}" Grid.Column="1" Grid.Row="0"/>
+                        <TextBlock Text="{Binding ArchiveEntity.FileInfo[CreationTime]}" Grid.Column="1" Grid.Row="0"/>                           
+                        </StackPanel>
+
+            
                     </GroupBox>
-                    <GroupBox  Header="Медиа Инфа" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3"/>
-                    <TextBlock Text="{Binding ArchiveEntity.EntityPath}" Grid.Column="1" Grid.Row="0"/>
+                    <GroupBox  Header="Медиа Инфа" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
+                        <StackPanel>
+                            <TextBlock Text="{Binding ArchiveEntity.EntityPath}" Grid.Column="1" Grid.Row="0"/>
+                        </StackPanel>
+                    </GroupBox>
+                        
                 </Grid>
                 
             </TabItem>

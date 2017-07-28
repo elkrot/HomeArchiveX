@@ -91,7 +91,8 @@ namespace HomeArchiveX.Infrastructure
             fiDict.Add("Extension", fi.Extension);
             fiDict.Add("FullName", fi.FullName);
             fiDict.Add("Name", fi.Name);
-            
+            fiDict.Add("Length", string.Format("{0}", fi.Length));
+
             var id = CreateArchiveEntity<Dictionary<string, string>>(driveId, fiDict, fi.Name, fi.GetHashCode(), parentId
                 , EntityType.File, path, fi.Extension, "");
             return id;

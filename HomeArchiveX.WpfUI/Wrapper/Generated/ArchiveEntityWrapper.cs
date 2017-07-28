@@ -143,18 +143,18 @@ namespace HomeArchiveX.WpfUI.Wrapper
 
 
         #region FileInfo
-        public FileInfo FileInfo
+        public Dictionary<string, string> FileInfo
         {
             get {
                 var data = EntityInfo;
-                if (data == null || data.Count() <= 1) return default(FileInfo);
+                if (data == null || data.Count() <= 1) return default(Dictionary<string, string>);
                 using (MemoryStream stream = new MemoryStream(data))
                 {
                     BinaryFormatter formatter = new BinaryFormatter();
                     object obj = formatter.Deserialize(stream);
-                    if (!(obj is FileInfo))
+                    if (!(obj is Dictionary<string, string>))
                         return null;
-                    return (FileInfo)obj;
+                    return (Dictionary<string, string>)obj;
                 }
             }
 
