@@ -1,12 +1,11 @@
-﻿//using MediaInfoDotNet;
-using MediaInfoNET;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using MediaInfoLib;
 
 namespace HomeArchiveX.Infrastructure
 {
@@ -53,7 +52,7 @@ namespace HomeArchiveX.Infrastructure
         protected string Extension { get; set; }
         protected string FilePath { get; set; }
         protected TagLib.File TagLibFile;
-        protected MediaFile MediaFile;
+      //  protected MediaFile MediaFile;
         protected MediaInfoLib.MediaInfo MI;
 
         public Dictionary<string, string> MFIDictionary;

@@ -1512,7 +1512,7 @@ Chapters_Pos_Begin        : Used by third-party developers to know about the beg
 Chapters_Pos_End          : Used by third-party developers to know about the end of the chapters list (this position excluded)
 
 
-
+--
 
 General
 Полное имя                               : C:\video\good\As Panteras - Festa do Cabide.mp4

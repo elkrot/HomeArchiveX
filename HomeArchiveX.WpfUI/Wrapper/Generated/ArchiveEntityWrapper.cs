@@ -166,7 +166,7 @@ namespace HomeArchiveX.WpfUI.Wrapper
         {
             get
             {
-                var data = EntityInfo;
+                var data = MFileInfo;
                 if (data == null || data.Count() <= 1) return default(Dictionary<string, string>);
                 using (MemoryStream stream = new MemoryStream(data))
                 {
