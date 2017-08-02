@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using MediaInfoLib;
+using System.Data.SqlClient;
 
 namespace HomeArchiveX.Infrastructure
 {
@@ -59,7 +60,7 @@ namespace HomeArchiveX.Infrastructure
         public MIFileType miFileType { get; set; }
 
         private static string[] PictureExtensions = { ".PNG", ".BMP", ".JPG", ".JPEG", ".GIF", ".TIFF" };
-        private static string[] VideoExtensions = { ".MPEG4", ".AVI", ".MOV", ".MKV", ".MP4", ".WMV", ".MPG" };
+        private static string[] VideoExtensions = { ".MPEG4", ".AVI", ".MOV", ".MKV", ".MP4", ".WMV", ".MPG","VOB"};
         private static string[] AudioExtensions = { ".MP3", ".OGG", ".FLAC", ".WAV" };
         public static string[] AllExtension { get { return PictureExtensions.Concat(VideoExtensions).ToArray().Concat(AudioExtensions).ToArray(); } }
         public static bool IsMediaFile(string extension)
@@ -373,33 +374,77 @@ namespace HomeArchiveX.Infrastructure
             }
             if (MI != null)
             {
+                FillMFDictionary();
+            }
+        }
 
-                MFIDictionary.Add("General.Format", MI.Get(MediaInfoLib.StreamKind.General, 0, "Format"));
-                MFIDictionary.Add("General.Duration", MI.Get(MediaInfoLib.StreamKind.General, 0, "Duration/String3"));
-                MFIDictionary.Add("General.Bitrate", MI.Get(MediaInfoLib.StreamKind.General, 0, "OverallBitRate"));
-                
+        private void FillMFDictionary()
+        {
 
-                var strAudioCount = MI.Get(MediaInfoLib.StreamKind.General, 0, "AudioCount");
-                int AudioCount = 0;
-                int.TryParse(strAudioCount, out AudioCount);
-                var strVideoCount = MI.Get(MediaInfoLib.StreamKind.General, 0, "VideoCount");
-                int VideoCount = 0;
-                int.TryParse(strVideoCount, out VideoCount);
-                if (AudioCount > 0)
+            /*
+1	General
+2	Video
+3	Audio
+4	Image
+5	Text
+6	Menu
+7	Generic
+8	Other
+             */
+
+            FillMIDictionaryByType(1, "General");
+
+            var strAudioCount = MI.Get(MediaInfoLib.StreamKind.General, 0, "AudioCount");
+            int AudioCount = 0;
+            int.TryParse(strAudioCount, out AudioCount);
+            var strVideoCount = MI.Get(MediaInfoLib.StreamKind.General, 0, "VideoCount");
+            int VideoCount = 0;
+            int.TryParse(strVideoCount, out VideoCount);
+            if (AudioCount > 0)
+            {
+                FillMIDictionaryByType(3, "Audio");
+            }
+
+            if (VideoCount > 0)
+            {
+                FillMIDictionaryByType(2, "Video");
+            }
+        }
+
+        private void FillMIDictionaryByType(int idParamsType, string paramTypeTitle)
+        {
+            foreach (var item in GetMIParameters(idParamsType))
+            {
+                var tmp = MI.Get(MediaInfoLib.StreamKind.General, 0, item);
+                if (!string.IsNullOrWhiteSpace(tmp))
                 {
-                    MFIDictionary.Add("Audio.Format", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "Format"));
-                    MFIDictionary.Add("Audio.Bitrate", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "BitRate"));
-                    MFIDictionary.Add("Audio.Channels", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "Channels"));
-                    MFIDictionary.Add("Audio.Sampling", MI.Get(MediaInfoLib.StreamKind.Audio, 0, "SamplingRate"));
+
+                    MFIDictionary.Add(string.Format("{0}.{1}", paramTypeTitle, item), tmp);
+                }
+            }
+        }
+
+        private static string[] GetMIParameters(int id)
+        {
+            IConfiguration _configuration = new ConfigurationData();
+            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            {
+                var result = new List<string>();
+                connection.Open();
+                string sql = @"SELECT Title FROM MediaInfoParameter where MediaInfoTypeId = @id";
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("id", id);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    result.Add(reader.GetString(0));
                 }
 
-                if (VideoCount > 0)
-                {
-                    MFIDictionary.Add("Video.Format", MI.Get(MediaInfoLib.StreamKind.Video, 0, "Format"));
-                    MFIDictionary.Add("Video.Bitrate", MI.Get(MediaInfoLib.StreamKind.Video, 0, "BitRate"));
-                    MFIDictionary.Add("Video.Framerate", MI.Get(MediaInfoLib.StreamKind.Video, 0, "FrameRate"));
-                    MFIDictionary.Add("Video.Framesize", MI.Get(MediaInfoLib.StreamKind.Video, 0, "FrameSize"));
-                }
+               return result.ToArray();
+
             }
         }
         #endregion
