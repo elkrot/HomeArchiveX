@@ -20,13 +20,13 @@ namespace Tmp
 
             SaveLanfFile(path2, "ru");
             SaveLanfFile(path1, "en");
-            SaveParamsFile(path3);
+           // SaveParamsFile(path3);
 
             Console.WriteLine("----");
 
             XDocument xdoc2 = XDocument.Load("ru_lang.xml");
             var items = from xe in xdoc2.Elements("root").Elements()
-                        where xe.Attribute("title").Value == "Text1"
+                        where xe.Attribute("title").Value == "Video_Delay"
                         select new
                         {
                             title = xe.Attribute("title").Value,
@@ -37,7 +37,9 @@ namespace Tmp
             Console.ReadKey();
         }
 
-        private static void SaveParamsFile(string path)
+        #region SaveParamsFile
+   private static void SaveParamsFile(string path)
+
         {
             var roots = new[] { "General", "Video", "Audio", "Text", "Other", "Image", "Menu" };
             XDocument xdoc = new XDocument();
@@ -48,22 +50,50 @@ namespace Tmp
                 {
                     string line;
                     XElement sub = null;
+
+                    string oldsubname = "";
+                    string newsubname = "";
+                    bool isSub = false;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        if (roots.Contains(line))
-                        {
-                            sub = new XElement(line.Trim());
-                        }
-                        var lines = line.Split(':');
-                        XElement row = new XElement((lines[0]??line).Trim(), (lines[1] ?? "").Trim());
 
+
+                        if (roots.Contains(line.Trim()))
+                        {
+                            isSub = true;
+                            newsubname = line.Trim();
+                            if (oldsubname != newsubname && oldsubname != "")
+                            {
+                                oldsubname = newsubname;
+                                root.Add(sub);
+                                sub = null;
+                            }
+                            sub = new XElement(newsubname);
+                        }
+                        else {
+                            isSub = false;
+                        }
+
+
+                        XElement row = default(XElement);
+                        if (line.IndexOf(':') > 0)
+                        {
+                            var lines = line.Split(':');
+                             row = new XElement((lines[0] ?? line).Trim(), (lines[1] ?? "").Trim());
+                        }
+                        else {
+                             row = new XElement(newsubname);
+                        }
                         if (sub != null)
                         {
                             sub.Add(row);
                         }
 
                     }
-
+                    if (sub != null)
+                    {
+                        root.Add(sub);
+                    }
                 }
 
 
@@ -75,6 +105,8 @@ namespace Tmp
             xdoc.Add(root);
             xdoc.Save(string.Format("params.xml"));
         }
+        #endregion
+     
         #region SaveLanfFile
         private static void SaveLanfFile(string path1, string lng)
         {
