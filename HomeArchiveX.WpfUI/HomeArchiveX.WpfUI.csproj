@@ -149,6 +149,9 @@
     <Compile Include="View\Files\FilesOnDrivePage.xaml.cs">
       <DependentUpon>FilesOnDrivePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Files\MediaInfoView.xaml.cs">
+      <DependentUpon>MediaInfoView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Services\IMessageDialogService.cs" />
     <Compile Include="View\Services\MessageDialog.xaml.cs">
       <DependentUpon>MessageDialog.xaml</DependentUpon>
@@ -197,6 +200,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Files\FilesOnDrivePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Files\MediaInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
