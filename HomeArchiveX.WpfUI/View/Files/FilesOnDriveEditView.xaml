@@ -48,13 +48,22 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <GroupBox  Header="Метки" Grid.Column="0" Grid.Row="0" />
-                    <GroupBox  Header="Категории" Grid.Column="0" Grid.Row="1" />
+                   
+                        <GroupBox  Header="Метки" Grid.Column="0" Grid.Row="0">
+                        <StackPanel>
+                            <view:TagsView DataContext="{Binding ArchiveEntity}" Grid.Row="0" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </GroupBox>
+                        <GroupBox  Header="Категории" Grid.Column="0" Grid.Row="1">
+                        <view:CategoriesView DataContext="{Binding ArchiveEntity}" Grid.Row="0" Margin="0,10,0,0"/>
+
+                    </GroupBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Картинки">
                 <StackPanel>
-                    
+                    <view:ImagesView DataContext="{Binding ArchiveEntity}" Grid.Row="0" Margin="0,10,0,0"/>
+
                 </StackPanel>
             </TabItem>
             

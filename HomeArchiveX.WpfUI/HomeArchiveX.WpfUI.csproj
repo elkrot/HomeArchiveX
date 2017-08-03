@@ -137,6 +137,9 @@
     <Compile Include="View\Drivers\DrivesPage.xaml.cs">
       <DependentUpon>DrivesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Files\CategoriesView.xaml.cs">
+      <DependentUpon>CategoriesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Files\FilesOnDriveView.xaml.cs">
       <DependentUpon>FilesOnDriveView.xaml</DependentUpon>
     </Compile>
@@ -149,8 +152,14 @@
     <Compile Include="View\Files\FilesOnDrivePage.xaml.cs">
       <DependentUpon>FilesOnDrivePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Files\ImagesView.xaml.cs">
+      <DependentUpon>ImagesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Files\MediaInfoView.xaml.cs">
       <DependentUpon>MediaInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Files\TagsView.xaml.cs">
+      <DependentUpon>TagsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Services\IMessageDialogService.cs" />
     <Compile Include="View\Services\MessageDialog.xaml.cs">
@@ -187,6 +196,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Files\CategoriesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Files\FilesOnDriveView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -203,7 +216,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Files\ImagesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Files\MediaInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Files\TagsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

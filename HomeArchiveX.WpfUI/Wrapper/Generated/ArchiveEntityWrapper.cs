@@ -178,9 +178,10 @@ namespace HomeArchiveX.WpfUI.Wrapper
         }
 
         #endregion
+
         public ICollection<CategoryToEntity> CategoryToEntities { get; set; }
         public  ICollection<ImageToEntity> ImageToEntities { get; set; }
-        public  TagToEntity TagToEntity { get; set; }
+        public  ICollection<TagToEntity> TagToEntity { get; set; }
 
 
     }

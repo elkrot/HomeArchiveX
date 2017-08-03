@@ -26,6 +26,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private readonly IMessageDialogService _messageDialogService;
         private readonly IFilesOnDriveDataProvider _fileOnDriveDataProvider;
         private ArchiveEntityWrapper _archiveEntity;
+
         public FilesOnDriveEditViewModel(IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService,
             IFilesOnDriveNavigationViewModel filesOnDriveNavigationViewModel
@@ -56,6 +57,11 @@ namespace HomeArchiveX.WpfUI.ViewModel
         }
 
         public void Load(int? FileOnDriveId = null)
+        {
+            ArchiveEntityLoad(FileOnDriveId);
+        }
+
+        private void ArchiveEntityLoad(int? FileOnDriveId)
         {
             var _archEntity = FileOnDriveId.HasValue ?
                 _fileOnDriveDataProvider.GetArchiveEntityById((int)FileOnDriveId) :
