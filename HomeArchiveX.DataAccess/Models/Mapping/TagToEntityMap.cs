@@ -10,7 +10,7 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
         public TagToEntityMap()
         {
             // Primary Key
-            this.HasKey(t => t.TargetEntityKey);
+            this.HasKey( t => new { t.TargetEntityKey, t.TagKey } );
 
             // Properties
             this.Property(t => t.TargetEntityKey)
@@ -24,7 +24,9 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
 
             // Relationships
             this.HasRequired(t => t.ArchiveEntity)
-                .WithOptional(t => t.TagToEntity);
+                .WithMany(t => t.TagToEntities)
+                .HasForeignKey(t => t.TargetEntityKey);
+               
             this.HasRequired(t => t.Tag)
                 .WithMany(t => t.TagToEntities)
                 .HasForeignKey(d => d.TagKey);

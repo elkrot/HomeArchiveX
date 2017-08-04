@@ -10,6 +10,7 @@ namespace HomeArchiveX.Model
             this.ArchiveEntity1 = new List<ArchiveEntity>();
             this.CategoryToEntities = new List<CategoryToEntity>();
             this.ImageToEntities = new List<ImageToEntity>();
+            this.TagToEntities = new List<TagToEntity>();
         }
 
         public int ArchiveEntityKey { get; set; }
@@ -29,6 +30,6 @@ namespace HomeArchiveX.Model
         public virtual Drive Drive { get; set; }
         public virtual ICollection<CategoryToEntity> CategoryToEntities { get; set; }
         public virtual ICollection<ImageToEntity> ImageToEntities { get; set; }
-        public virtual TagToEntity TagToEntity { get; set; }
+        public virtual ICollection<TagToEntity> TagToEntities { get; set; }
     }
 }

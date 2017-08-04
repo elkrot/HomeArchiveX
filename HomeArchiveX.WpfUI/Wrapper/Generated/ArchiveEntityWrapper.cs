@@ -179,9 +179,18 @@ namespace HomeArchiveX.WpfUI.Wrapper
 
         #endregion
 
-        public ICollection<CategoryToEntity> CategoryToEntities { get; set; }
-        public  ICollection<ImageToEntity> ImageToEntities { get; set; }
-        public  ICollection<TagToEntity> TagToEntity { get; set; }
+        public ICollection<CategoryToEntity> CategoryToEntities {
+            get { return GetValue<ICollection<CategoryToEntity>>(); }
+                set { SetValue(value); }
+            }
+
+        public  ICollection<ImageToEntity> ImageToEntities {
+            get { return GetValue<ICollection<ImageToEntity>>(); }
+            set { SetValue(value); }
+        }
+
+        public  ICollection<TagToEntity> TagToEntity { get { return GetValue<ICollection<TagToEntity>>(); }
+            set { SetValue(value); } }
 
 
     }
