@@ -28,8 +28,8 @@ namespace HomeArchiveX.Model
         public virtual ICollection<ArchiveEntity> ArchiveEntity1 { get; set; }
         public virtual ArchiveEntity ArchiveEntity2 { get; set; }
         public virtual Drive Drive { get; set; }
-        public virtual ICollection<CategoryToEntity> CategoryToEntities { get; set; }
-        public virtual ICollection<ImageToEntity> ImageToEntities { get; set; }
-        public virtual ICollection<TagToEntity> TagToEntities { get; set; }
+        public virtual List<CategoryToEntity> CategoryToEntities { get; set; }
+        public virtual List<ImageToEntity> ImageToEntities { get; set; }
+        public virtual List<TagToEntity> TagToEntities { get; set; }
     }
 }

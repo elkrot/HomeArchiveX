@@ -112,7 +112,12 @@ namespace HomeArchiveX.DataAccess
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var repo = uofw.GetRepository<ArchiveEntity>();
-                return repo.Find(x => x.ArchiveEntityKey == id).FirstOrDefault();
+                var includes = new List<string>() { "ImageToEntities","ImageToEntities.Image"
+                    , "CategoryToEntities"
+                    , "TagToEntities"};
+                return repo.Find(x => x.ArchiveEntityKey == id,
+                    includes,
+                    o=>o.Title).FirstOrDefault();
             }
         }
 

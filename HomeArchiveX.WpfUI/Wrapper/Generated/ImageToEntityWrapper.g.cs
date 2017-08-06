@@ -39,5 +39,21 @@ namespace HomeArchiveX.WpfUI.Wrapper
     public System.Nullable<System.DateTime> CreatedDateOriginalValue => GetOriginalValue<System.Nullable<System.DateTime>>(nameof(CreatedDate));
 
     public bool CreatedDateIsChanged => GetIsChanged(nameof(CreatedDate));
-  }
+
+
+
+        public ImageWrapper Image { get; private set; }
+
+       
+
+        protected override void InitializeComplexProperties(ImageToEntity model)
+        {
+            if (model.Image == null)
+            {
+                throw new ArgumentException("Image cannot be null");
+            }
+            Image = new ImageWrapper(model.Image);
+            RegisterComplex(Image);
+        }
+    }
 }

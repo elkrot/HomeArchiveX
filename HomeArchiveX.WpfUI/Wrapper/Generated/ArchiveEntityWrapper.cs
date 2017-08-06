@@ -179,19 +179,24 @@ namespace HomeArchiveX.WpfUI.Wrapper
 
         #endregion
 
-        public ICollection<CategoryToEntity> CategoryToEntities {
-            get { return GetValue<ICollection<CategoryToEntity>>(); }
-                set { SetValue(value); }
+        public ChangeTrackingCollection<CategoryToEntityWrapper> CategoryToEntities { get; private set; }
+
+        public ChangeTrackingCollection<ImageToEntityWrapper> ImageToEntities { get; private set; }
+
+        public ChangeTrackingCollection<TagToEntityWrapper> TagToEntity { get; private set; }
+
+
+        protected override void InitializeCollectionProperties(ArchiveEntity model)
+        {
+            if (model.ImageToEntities == null)
+            {
+                throw new ArgumentException("Images cannot be null");
             }
 
-        public  ICollection<ImageToEntity> ImageToEntities {
-            get { return GetValue<ICollection<ImageToEntity>>(); }
-            set { SetValue(value); }
+            ImageToEntities = new ChangeTrackingCollection<ImageToEntityWrapper>(
+              model.ImageToEntities.Select(e => new ImageToEntityWrapper(e)));
+            RegisterCollection(ImageToEntities, model.ImageToEntities);
         }
-
-        public  ICollection<TagToEntity> TagToEntity { get { return GetValue<ICollection<TagToEntity>>(); }
-            set { SetValue(value); } }
-
 
     }
 }

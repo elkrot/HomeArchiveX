@@ -7,6 +7,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="Honeydew">
-            
+        
+        <ListView Name="List" ItemsSource="{Binding Path=ImageToEntities}"  VerticalContentAlignment="Top" Height="500" 
+          ScrollViewer.VerticalScrollBarVisibility="Visible"
+          ScrollViewer.CanContentScroll="False">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Image.ImageTitle}" Width="300">Название</GridViewColumn>
+                                 </GridView>
+            </ListView.View>
+
+        </ListView>
     </Grid>
 </UserControl>
