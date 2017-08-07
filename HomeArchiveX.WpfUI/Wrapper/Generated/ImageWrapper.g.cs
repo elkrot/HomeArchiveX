@@ -1,6 +1,8 @@
-using System;   
+using System;
 using System.Linq;
 using HomeArchiveX.Model;
+using HomeArchiveX.Infrastructure;
+using System.IO;
 
 namespace HomeArchiveX.WpfUI.Wrapper
 {
@@ -32,7 +34,11 @@ namespace HomeArchiveX.WpfUI.Wrapper
 
     public System.String ThumbnailPath
     {
-      get { return GetValue<System.String>(); }
+      get {
+                var spath = GetValue<System.String>();
+                var conf = new ConfigurationData();
+                var imgdir = conf.GetTargetImagePath();
+                return Path.Combine(imgdir, spath); }
       set { SetValue(value); }
     }
 

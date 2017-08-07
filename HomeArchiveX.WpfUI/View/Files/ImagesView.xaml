@@ -13,8 +13,20 @@
           ScrollViewer.CanContentScroll="False">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Image.ImageTitle}" Width="300">Название</GridViewColumn>
-                                 </GridView>
+                    <!--<GridViewColumn DisplayMemberBinding="{Binding Path=Image.ThumbnailPath}" Width="300">Название</GridViewColumn>-->
+                    <GridViewColumn Header="Описание" Width="300">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Path=Image.ThumbnailPath}"/>
+                                    <Image Source="{Binding Path=Image.ThumbnailPath}"/>
+                                </StackPanel>
+                                
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <!--<Image Source="Images/Blue hills.jpg"></Image>-->
+                </GridView>
             </ListView.View>
 
         </ListView>
