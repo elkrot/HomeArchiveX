@@ -184,6 +184,10 @@
     <Compile Include="Wrapper\Generated\ImageWrapper.g.cs" />
     <Compile Include="Wrapper\Generated\TagToEntityWrapper.g.cs" />
     <Compile Include="Wrapper\Generated\TagWrapper.g.cs" />
+    <Page Include="Styles\ListBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Drivers\DrivesEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
