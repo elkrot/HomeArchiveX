@@ -6,11 +6,13 @@ using HomeArchiveX.WpfUI.View.Services;
 using HomeArchiveX.WpfUI.ViewModel;
 using HomeArchiveX.WpfUI.Wrapper;
 using Microsoft.Practices.Prism.PubSubEvents;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using System.Windows.Input;
 
 namespace HomeArchiveX.WpfUI.ViewModel
@@ -41,7 +43,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             ResetCommand = new DelegateCommand(OnResetExecute, OnResetCanExecute);
             DeleteCommand = new DelegateCommand(OnDeleteExecute, OnDeleteCanExecute);
-           
+            OpenFileDialogCommand = new DelegateCommand(OnOpenFileDialogExecute, OnOpenFileDialogCanExecute);
         }
 
 
@@ -93,7 +95,28 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
         public ICommand RemoveEmailCommand { get; private set; }
 
-        
+        public ICommand OpenFileDialogCommand { get; private set; }
+
+        private void OnOpenFileDialogExecute(object obj)
+        {
+            OpenFileDialog myDialog = new OpenFileDialog();
+            myDialog.Filter = "Картинки(*.JPG;*.GIF;*.PNG)|*.JPG;*.GIF;*.PNG" + "|Все файлы (*.*)|*.* ";
+            myDialog.CheckFileExists = true;
+            myDialog.Multiselect = true;
+            if (myDialog.ShowDialog() == true)
+            {
+                Image img = new Image() { ImageTitle = myDialog.FileName };
+                // _fileOnDriveDataProvider.SaveImageToFileOnDrive(ArchiveEntity.Model,img);
+                //ArchiveEntity.Model.ImageToEntities.Add
+                var imgPath = myDialog.FileName;
+               
+            }
+        }
+
+        private bool OnOpenFileDialogCanExecute(object arg)
+        {//errrororororor
+            return true;
+        }
 
         private void OnSaveExecute(object obj)
         {
@@ -172,7 +195,9 @@ namespace HomeArchiveX.WpfUI.ViewModel
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)ResetCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)DeleteCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand)OpenFileDialogCommand).RaiseCanExecuteChanged();
         }
         #endregion
     }
 }
+

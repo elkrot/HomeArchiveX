@@ -20,48 +20,40 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBox">
-                    <Border Name="Border"
-                  BorderThickness="1"
-                  CornerRadius="2">
+                    <Border Name="Border" Width="500" BorderThickness="1" CornerRadius="2">
                         <Border.Background>
                             <SolidColorBrush Color="{StaticResource ControlLightColor}" />
                         </Border.Background>
                         <Border.BorderBrush>
                             <SolidColorBrush Color="{StaticResource BorderMediumColor}" />
                         </Border.BorderBrush>
-                        <ScrollViewer Margin="0"
-                          Focusable="false">
-                            <StackPanel Margin="2"
-                          IsItemsHost="True" />
-                        </ScrollViewer>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" IsItemsHost="True"/>
+                            
+                        </StackPanel>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled"
-                     Value="false">
-                            <Setter TargetName="Border"
-                      Property="Background">
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Border" Property="Background">
                                 <Setter.Value>
                                     <SolidColorBrush Color="{StaticResource DisabledControlLightColor}" />
                                 </Setter.Value>
                             </Setter>
-                            <Setter TargetName="Border"
-                      Property="BorderBrush">
+                            <Setter TargetName="Border" Property="BorderBrush">
                                 <Setter.Value>
                                     <SolidColorBrush Color="{DynamicResource DisabledBorderLightColor}" />
                                 </Setter.Value>
-
                             </Setter>
                         </Trigger>
-                        <Trigger Property="IsGrouping"
-                     Value="true">
-                            <Setter Property="ScrollViewer.CanContentScroll"
-                      Value="false" />
+                        <Trigger Property="IsGrouping" Value="true">
+                            <Setter Property="ScrollViewer.CanContentScroll"  Value="false" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
 
     <Style x:Key="{x:Type ListBoxItem}"
          TargetType="ListBoxItem">
@@ -74,7 +66,8 @@
                 <ControlTemplate TargetType="ListBoxItem">
                     <Border x:Name="Border"
                   Padding="2"
-                  SnapsToDevicePixels="true"  Width="100" Height="100">
+                  SnapsToDevicePixels="true"  Width="100" Height="100"  
+              Margin="10,10,10,10" BorderThickness="1">
                         <Border.Background>
                             <SolidColorBrush Color="Transparent" />
                         </Border.Background>

@@ -23,7 +23,7 @@
                 <ResourceDictionary Source="Styles/TabItem.xaml"/>
                 <ResourceDictionary Source="Styles/TextBox.xaml"/>
                 <ResourceDictionary Source="Styles/ToolTip.xaml"/>
-                <!--<ResourceDictionary Source="Styles/ListBox.xaml"/>-->
+                <ResourceDictionary Source="Styles/ListBox.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
