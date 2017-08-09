@@ -49,5 +49,14 @@ namespace HomeArchiveX.WpfUI.DataProvider
         }
         #endregion
 
+        #region Добавление картинки
+        public MethodResult<int> AddImageToFileOnDrive(int ArchiveEntityKey,string img)
+        {
+            using (var dataService = _dataServiceCreator())
+            {
+                return dataService.AddImageToFileOnDrive( ArchiveEntityKey,  img);
+            }
+        }
+        #endregion
     }
 }

@@ -106,7 +106,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             if (myDialog.ShowDialog() == true)
             {
                 Image img = new Image() { ImageTitle = myDialog.FileName };
-                // _fileOnDriveDataProvider.SaveImageToFileOnDrive(ArchiveEntity.Model,img);
+                 _fileOnDriveDataProvider.AddImageToFileOnDrive(ArchiveEntity.Model.ArchiveEntityKey,img);
                 //ArchiveEntity.Model.ImageToEntities.Add
                 var imgPath = myDialog.FileName;
                

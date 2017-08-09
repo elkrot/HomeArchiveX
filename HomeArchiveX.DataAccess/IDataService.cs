@@ -29,5 +29,9 @@ namespace HomeArchiveX.DataAccess
         IEnumerable<ArchiveEntity> GetFilesOnDriveByCondition(Expression<Func<ArchiveEntity, bool>> where, Expression<Func<ArchiveEntity, object>> orderby);
         #endregion
 
+        #region Изображения
+        MethodResult<int> AddImageToFileOnDrive(int ArchiveEntityKey, string img);
+        #endregion
+
     }
 }
