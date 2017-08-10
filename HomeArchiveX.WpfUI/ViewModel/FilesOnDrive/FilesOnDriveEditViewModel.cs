@@ -105,10 +105,17 @@ namespace HomeArchiveX.WpfUI.ViewModel
             myDialog.Multiselect = true;
             if (myDialog.ShowDialog() == true)
             {
-                Image img = new Image() { ImageTitle = myDialog.FileName };
-                 _fileOnDriveDataProvider.AddImageToFileOnDrive(ArchiveEntity.Model.ArchiveEntityKey,img);
-                //ArchiveEntity.Model.ImageToEntities.Add
-                var imgPath = myDialog.FileName;
+              
+                var ret = _fileOnDriveDataProvider.AddImageToFileOnDrive(ArchiveEntity.Model.ArchiveEntityKey, myDialog.FileName, (int)ArchiveEntity.Model.DriveId);
+
+                if (ret.Success)
+                {
+                    
+                    Load(ArchiveEntity.Model.ArchiveEntityKey);
+                   
+                }
+                
+                
                
             }
         }

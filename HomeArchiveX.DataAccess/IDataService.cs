@@ -30,7 +30,7 @@ namespace HomeArchiveX.DataAccess
         #endregion
 
         #region Изображения
-        MethodResult<int> AddImageToFileOnDrive(int ArchiveEntityKey, string img);
+        MethodResult<int> AddImageToFileOnDrive(int ArchiveEntityKey, string img,int DriveId);
         #endregion
 
     }

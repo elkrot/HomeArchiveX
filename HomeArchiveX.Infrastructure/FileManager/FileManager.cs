@@ -37,6 +37,12 @@ namespace HomeArchiveX.Infrastructure
         #endregion
 
         #region Копировать картинку 
+        /// <summary>
+        /// Копировать картинку 
+        /// </summary>
+        /// <param name="imgPath"></param>
+        /// <param name="targetDir"></param>
+        /// <returns></returns>
         public string CopyImg(string imgPath, string targetDir)
         {
 
@@ -62,23 +68,28 @@ namespace HomeArchiveX.Infrastructure
         #endregion
 
         #region Создать эскиз
+        /// <summary>
+        /// Создать эскиз
+        /// </summary>
+        /// <param name="imgPath"></param>
+        /// <returns></returns>
         public Bitmap GetThumb(string imgPath)
         {
 
             Bitmap bmp;
             try
             {
-var img = Image.FromFile(imgPath);// метод держит файл
-                                              /*    FileStream fs = new FileStream(item, FileMode.Open);
-                                                  Image img = Image.FromStream(fs);
-                                                  fs.Close();*/
-            decimal h = (img.Height * _configuration.ThumbnailWidth) / img.Width;
+                var img = Image.FromFile(imgPath);// метод держит файл
+                                                  /*    FileStream fs = new FileStream(item, FileMode.Open);
+                                                      Image img = Image.FromStream(fs);
+                                                      fs.Close();*/
+                decimal h = (img.Height * _configuration.ThumbnailWidth) / img.Width;
 
-            if (h != 0)
-            {
-                bmp = new Bitmap(img, _configuration.ThumbnailWidth, (int)h);
-            }
-            else { bmp = new Bitmap(img, img.Height, img.Width); }
+                if (h != 0)
+                {
+                    bmp = new Bitmap(img, _configuration.ThumbnailWidth, (int)h);
+                }
+                else { bmp = new Bitmap(img, img.Height, img.Width); }
             }
             catch (Exception)
             {
@@ -91,6 +102,14 @@ var img = Image.FromFile(imgPath);// метод держит файл
         #endregion
 
         #region Сохранить на диске Эскиз
+        /// <summary>
+        /// Сохранить на диске Эскиз
+        /// </summary>
+        /// <param name="targetRootDir"></param>
+        /// <param name="thumbDir"></param>
+        /// <param name="bmp"></param>
+        /// <param name="thumbName"></param>
+        /// <returns></returns>
         public string SaveThumb(string targetRootDir, string thumbDir, Bitmap bmp, string thumbName)
         {
 
@@ -108,7 +127,6 @@ var img = Image.FromFile(imgPath);// метод держит файл
             if (!File.Exists(Path.Combine(dir_t, thumbName)))
             {
                 if (!Directory.Exists(dir_t))
-
                 {
                     Directory.CreateDirectory(dir_t);
                 }
@@ -120,6 +138,11 @@ var img = Image.FromFile(imgPath);// метод держит файл
         #endregion
 
         #region Является ли файл картинкой
+        /// <summary>
+        /// Является ли файл картинкой
+        /// </summary>
+        /// <param name="ext"></param>
+        /// <returns></returns>
         public bool IsImage(string ext)
         {
             string[] ar = new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
@@ -128,6 +151,13 @@ var img = Image.FromFile(imgPath);// метод держит файл
         #endregion
 
         #region Заполнить информацию о папках
+        /// <summary>
+        /// Заполнить информацию о папках
+        /// </summary>
+        /// <param name="driveId"></param>
+        /// <param name="pathDrive"></param>
+        /// <param name="CreateFolder"></param>
+        /// <returns></returns>
         public MethodResult<int> FillDirectoriesInfo(int driveId, string pathDrive, Func<string, int, int> CreateFolder)
         {
             var result = new MethodResult<int>(0);
@@ -172,7 +202,14 @@ var img = Image.FromFile(imgPath);// метод держит файл
         }
         #endregion
 
-        #region Заполнить информацию о файлах
+        #region Заполнить информацию о файлах в дирректории
+        /// <summary>
+        /// Заполнить информацию о файлах в дирректории
+        /// </summary>
+        /// <param name="driveId"></param>
+        /// <param name="pathDrive"></param>
+        /// <param name="CreateFile"></param>
+        /// <returns></returns>
         public MethodResult<int> FillFilesInfo(int driveId, string pathDrive, Func<string, int, int> CreateFile)
         {
             var result = new MethodResult<int>(0);
@@ -203,6 +240,11 @@ var img = Image.FromFile(imgPath);// метод держит файл
         #endregion
 
         #region Вернуть описание папки
+        /// <summary>
+        /// Вернуть описание папки
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public DirectoryInfo GetDirectoryInfoByPath(string path)
         {
             if (!System.IO.Directory.Exists(path))
@@ -215,6 +257,11 @@ var img = Image.FromFile(imgPath);// метод держит файл
         #endregion
 
         #region Вернуть описание файла
+        /// <summary>
+        /// Вернуть описание файла
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public FileInfo GetFileInfoByPath(string path)
         {
             if (!File.Exists(path))
@@ -235,6 +282,11 @@ var img = Image.FromFile(imgPath);// метод держит файл
         #endregion
 
         #region Вернуть картинку в binary
+        /// <summary>
+        /// Вернуть картинку в binary
+        /// </summary>
+        /// <param name="bmp"></param>
+        /// <returns></returns>
         public byte[] GetImageData(Bitmap bmp)
         {
             //  byte[] imageData = null;
@@ -267,7 +319,7 @@ var img = Image.FromFile(imgPath);// метод держит файл
 
         public T GetDataFromBinary<T>(byte[] data)
         {
-            if (data == null || data.Count()<=1) return default(T);
+            if (data == null || data.Count() <= 1) return default(T);
             using (MemoryStream stream = new MemoryStream(data))
             {
                 BinaryFormatter formatter = new BinaryFormatter();

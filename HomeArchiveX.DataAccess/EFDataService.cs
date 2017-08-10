@@ -7,6 +7,8 @@ using HomeArchiveX.Infrastructure;
 using HomeArchiveX.Model;
 using HomeArchiveX.DataAccess.Implementations;
 using System.Linq.Expressions;
+using System.IO;
+using System.Drawing;
 
 namespace HomeArchiveX.DataAccess
 {
@@ -142,21 +144,24 @@ namespace HomeArchiveX.DataAccess
         #endregion
 
         #region Рисунки
-        public MethodResult<int> AddImageToFileOnDrive(int ArchiveEntityKey, string img)
+        public MethodResult<int> AddImageToFileOnDrive(int ArchiveEntityKey, string img,int DriveId)
         {
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
+                var cnf = new ConfigurationData();
+                var lg = new Logger();
+                var fm = new FileManager(cnf, lg);
 
-                // Сохранить изображение
-                // Сохранить эскиз
-                // Сформировать описание изображения
-                // Сохранить экземпляр Image
-                var im = new Image() { ImagePath = img,ImageTitle="",ThumbnailPath="",HashCode=0 };
+                // Сохранить изображение, Сохранить эскиз
+
+                string targetDir = string.Format(@"drive{0}\img{1}", DriveId, ArchiveEntityKey);
+                var im = CreateImage(img, targetDir, cnf, lg, fm);
+
                 // Сохранить запись об изображении в БД
-                var imageRepo = uofw.GetRepository<Image>();
+                var imageRepo = uofw.GetRepository<HomeArchiveX.Model.Image>();
                 imageRepo.Add(im);
                 var ret = uofw.Complete();
-                if (!ret.Success) return default(MethodResult<int>);
+                if (!ret.Success) return ret;
                 // Создать экземпляр ImageToEntity 
                 var ite = new ImageToEntity()
                 {
@@ -171,6 +176,53 @@ namespace HomeArchiveX.DataAccess
                 return uofw.Complete();
             }
         }
+
+
+
+        #region Создать запись об изображении
+        /// <summary>
+        /// Создать запись об изображении
+        /// </summary>
+        /// <param name="imagePath">Путь к изопражению</param>
+        /// <param name="targetDir">Путь назначение</param>
+        /// <returns>Ключ рисунка</returns>
+        private HomeArchiveX.Model.Image CreateImage(string imagePath, string targetDir, IConfiguration cnf, ILogger lg, IFIleManager fm)
+        {
+            var imgInfo = new FileInfo(imagePath);
+            var imgDirPath = imgInfo.Directory.FullName;
+            string newImgPath = "";
+            byte[] imageData = null;
+            try
+            {
+                newImgPath = fm.CopyImg(imagePath, targetDir);
+            }
+            catch (IOException copyError)
+            {
+                lg.Add(copyError.Message);
+            }
+
+            Bitmap bmp = fm.GetThumb(imagePath);
+            string thumbPath = fm.SaveThumb(targetDir, cnf.GetThumbDirName(), bmp, imgInfo.Name);
+            imageData = fm.GetImageData(bmp);
+
+
+            var im = new HomeArchiveX.Model.Image()
+            {
+                HashCode = imgInfo.GetHashCode()
+                ,
+                ImagePath = newImgPath
+                ,
+                ImageTitle = imgInfo.Name
+                ,
+                ThumbnailPath = thumbPath
+                ,
+                Thumbnail = imageData
+            };
+            return im;
+
+        }
+
+        #endregion
         #endregion
     }
 }
