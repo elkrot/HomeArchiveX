@@ -173,7 +173,10 @@ namespace HomeArchiveX.DataAccess
 
                 var repo = uofw.GetRepository<ImageToEntity>();
                 repo.Add(ite);
-                return uofw.Complete();
+                ret=uofw.Complete();
+                if (!ret.Success)
+                    return ret;
+                return new MethodResult<int>(im.ImageKey);
             }
         }
 
@@ -220,6 +223,26 @@ namespace HomeArchiveX.DataAccess
             };
             return im;
 
+        }
+
+        public Model.Image GetImageById(int id)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<HomeArchiveX.Model.Image>();
+               
+                return repo.Find(x => x.ImageKey == id).FirstOrDefault();
+            }
+        }
+
+        public ImageToEntity GetImageToEntityById(int EntityId, int ImageId)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<HomeArchiveX.Model.ImageToEntity>();
+
+                return repo.Find(x => x.ImageKey == ImageId && x.TargetEntityKey== EntityId).FirstOrDefault();
+            }
         }
 
         #endregion

@@ -14,5 +14,6 @@ namespace HomeArchiveX.WpfUI.DataProvider
         MethodResult<int> SaveFileOnDrive(ArchiveEntity archiveEntity);
         MethodResult<int> DeleteArchiveEntity(int id);
         MethodResult<int> AddImageToFileOnDrive(int id, string img,int driveId);
+        Model.ImageToEntity GetImageToEntityById(int EntityId, int ImageId);
     }
 }

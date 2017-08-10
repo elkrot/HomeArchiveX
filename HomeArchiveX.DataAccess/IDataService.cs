@@ -24,13 +24,15 @@ namespace HomeArchiveX.DataAccess
         MethodResult<int> DeleteFileOnDriveDrive(int id);
         ArchiveEntity GetFileOnDriveDriveById(int id);
         MethodResult<int> SaveFileOnDriveDrive(ArchiveEntity archiveEntity);
-
+        
         IEnumerable<ArchiveEntity> GetAllFilesOnDrive(int id);
         IEnumerable<ArchiveEntity> GetFilesOnDriveByCondition(Expression<Func<ArchiveEntity, bool>> where, Expression<Func<ArchiveEntity, object>> orderby);
         #endregion
 
         #region Изображения
         MethodResult<int> AddImageToFileOnDrive(int ArchiveEntityKey, string img,int DriveId);
+        ImageToEntity GetImageToEntityById(int EntityId, int ImageId);
+        Model.Image GetImageById(int id);
         #endregion
 
     }

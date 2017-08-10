@@ -106,10 +106,15 @@ namespace HomeArchiveX.WpfUI.ViewModel
             if (myDialog.ShowDialog() == true)
             {
               
-                var ret = _fileOnDriveDataProvider.AddImageToFileOnDrive(ArchiveEntity.Model.ArchiveEntityKey, myDialog.FileName, (int)ArchiveEntity.Model.DriveId);
+                var ret = _fileOnDriveDataProvider.AddImageToFileOnDrive(ArchiveEntity.Model.ArchiveEntityKey
+                    , myDialog.FileName, (int)ArchiveEntity.Model.DriveId);
 
                 if (ret.Success)
                 {
+                    var imte = _fileOnDriveDataProvider.GetImageToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
+                        ret.Result);
+                    var imtew = new ImageToEntityWrapper(imte);
+                    ArchiveEntity.ImageToEntities.Add(imtew);
                     
                     Load(ArchiveEntity.Model.ArchiveEntityKey);
                    

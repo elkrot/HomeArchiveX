@@ -58,5 +58,25 @@ namespace HomeArchiveX.WpfUI.DataProvider
             }
         }
         #endregion
+
+        #region Image по ключу
+        public Model.Image GetImageById(int id)
+        {
+            using (var dataService = _dataServiceCreator())
+            {
+                return dataService.GetImageById(id);
+            }
+        }
+        #endregion
+
+        #region ImageToEntity по ключу
+        public Model.ImageToEntity GetImageToEntityById(int EntityId,int ImageId)
+        {
+            using (var dataService = _dataServiceCreator())
+            {
+                return dataService.GetImageToEntityById(EntityId, ImageId);
+            }
+        }
+        #endregion
     }
 }
