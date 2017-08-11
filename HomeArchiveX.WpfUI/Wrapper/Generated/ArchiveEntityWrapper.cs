@@ -183,7 +183,7 @@ namespace HomeArchiveX.WpfUI.Wrapper
 
         public ChangeTrackingCollection<ImageToEntityWrapper> ImageToEntities { get; private set; }
 
-        public ChangeTrackingCollection<TagToEntityWrapper> TagToEntity { get; private set; }
+        public ChangeTrackingCollection<TagToEntityWrapper> TagToEntities { get; private set; }
 
 
         protected override void InitializeCollectionProperties(ArchiveEntity model)

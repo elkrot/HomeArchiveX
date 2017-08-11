@@ -35,5 +35,17 @@ namespace HomeArchiveX.DataAccess
         Model.Image GetImageById(int id);
         #endregion
 
+        #region Метки
+        Tag GetTagById(int TagId);
+        TagToEntity GetTagToEntityById(int EntityId, int TagId);
+        MethodResult<int> AddTagToEntity(int ArchiveEntityKey, string Tag);
+        #endregion
+
+        #region Категории
+        CategoryToEntity GetCategoryToEntityById(int EntityId, int CategoryId);
+        MethodResult<int> AddCategoryToEntity(int ArchiveEntityKey, int CategoryId);
+        #endregion
+
+
     }
 }

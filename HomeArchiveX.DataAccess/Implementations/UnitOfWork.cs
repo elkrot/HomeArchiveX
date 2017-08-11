@@ -25,8 +25,15 @@ namespace HomeArchiveX.DataAccess.Implementations
             _context = context;
             RepositoryDictionary.Add("Drive", new DriveRepository(_context));
             RepositoryDictionary.Add("ArchiveEntity", new ArchiveEntityRepository(_context));
+
             RepositoryDictionary.Add("Image", new ImageRepository(_context));
             RepositoryDictionary.Add("ImageToEntity", new ImageToEntityRepository(_context));
+
+            RepositoryDictionary.Add("Tag", new TagRepository(_context));
+            RepositoryDictionary.Add("TagToEntity", new TagToEntityRepository(_context));
+
+            RepositoryDictionary.Add("Category", new CategoryRepository(_context));
+            RepositoryDictionary.Add("CategoryToEntity", new CategoryToEntityRepository(_context));
 
 
 

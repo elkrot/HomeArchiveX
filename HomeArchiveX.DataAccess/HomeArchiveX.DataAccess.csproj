@@ -54,10 +54,14 @@
     <Compile Include="EFDataService.cs" />
     <Compile Include="IDataService.cs" />
     <Compile Include="Implementations\ArchiveEntityRepository.cs" />
+    <Compile Include="Implementations\CategoryRepository.cs" />
+    <Compile Include="Implementations\CategoryToEntityRepository.cs" />
     <Compile Include="Implementations\DriveRepository.cs" />
     <Compile Include="Implementations\ImageRepository.cs" />
     <Compile Include="Implementations\ImageToEntityRepository.cs" />
     <Compile Include="Implementations\Repository.cs" />
+    <Compile Include="Implementations\TagRepository.cs" />
+    <Compile Include="Implementations\TagToEntityRepository.cs" />
     <Compile Include="Implementations\UnitOfWork.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />

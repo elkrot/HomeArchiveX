@@ -78,5 +78,47 @@ namespace HomeArchiveX.WpfUI.DataProvider
             }
         }
         #endregion
+
+        #region Добавление Метки
+        public MethodResult<int> AddTagToEntity(int ArchiveEntityKey, string Tag)
+        {
+            using (var dataService = _dataServiceCreator())
+            {
+                return dataService.AddTagToEntity(ArchiveEntityKey, Tag);
+            }
+        }
+        #endregion
+
+        #region Метка по ключу
+        public Model.Tag GetTagById( int TagId)
+        {
+            using (var dataService = _dataServiceCreator())
+            {
+                return dataService.GetTagById(TagId);
+            }
+        }
+        #endregion
+
+        #region TagToEntity по ключу
+        public Model.TagToEntity GetTagToEntityById(int EntityId, int TagId)
+        {
+            using (var dataService = _dataServiceCreator())
+            {
+                return dataService.GetTagToEntityById(EntityId, TagId);
+            }
+        }
+        #endregion
+
+
+
+        #region Добавление категрии  
+        public MethodResult<int> AddCategoryToEntity(int ArchiveEntityKey, int CategoryId)
+        {
+            using (var dataService = _dataServiceCreator())
+            {
+                return dataService.AddCategoryToEntity(ArchiveEntityKey, CategoryId);
+            }
+        }
+        #endregion
     }
 }

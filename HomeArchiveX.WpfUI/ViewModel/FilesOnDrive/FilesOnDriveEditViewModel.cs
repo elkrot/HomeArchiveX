@@ -17,7 +17,7 @@ using System.Windows.Input;
 
 namespace HomeArchiveX.WpfUI.ViewModel
 {
-   public interface IFilesOnDriveEditViewModel
+    public interface IFilesOnDriveEditViewModel
     {
         void Load(int? FileOnDriveId = null);
         ArchiveEntityWrapper ArchiveEntity { get; }
@@ -44,6 +44,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             ResetCommand = new DelegateCommand(OnResetExecute, OnResetCanExecute);
             DeleteCommand = new DelegateCommand(OnDeleteExecute, OnDeleteCanExecute);
             OpenFileDialogCommand = new DelegateCommand(OnOpenFileDialogExecute, OnOpenFileDialogCanExecute);
+            AddTagCommand = new DelegateCommand(OnAddTagExecute, OnAddTagCanExecute);
         }
 
 
@@ -97,6 +98,9 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
         public ICommand OpenFileDialogCommand { get; private set; }
 
+        public ICommand AddTagCommand { get; private set; }
+
+        #region OnOpenFileDialog
         private void OnOpenFileDialogExecute(object obj)
         {
             OpenFileDialog myDialog = new OpenFileDialog();
@@ -105,7 +109,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             myDialog.Multiselect = true;
             if (myDialog.ShowDialog() == true)
             {
-              
+
                 var ret = _fileOnDriveDataProvider.AddImageToFileOnDrive(ArchiveEntity.Model.ArchiveEntityKey
                     , myDialog.FileName, (int)ArchiveEntity.Model.DriveId);
 
@@ -115,13 +119,13 @@ namespace HomeArchiveX.WpfUI.ViewModel
                         ret.Result);
                     var imtew = new ImageToEntityWrapper(imte);
                     ArchiveEntity.ImageToEntities.Add(imtew);
-                    
+
                     Load(ArchiveEntity.Model.ArchiveEntityKey);
-                   
+
                 }
-                
-                
-               
+
+
+
             }
         }
 
@@ -129,6 +133,48 @@ namespace HomeArchiveX.WpfUI.ViewModel
         {//errrororororor
             return true;
         }
+
+        #endregion
+
+
+        #region OnAddTag
+        private void OnAddTagExecute(object obj)
+        {
+
+
+            var ret = _fileOnDriveDataProvider.AddTagToEntity(ArchiveEntity.Model.ArchiveEntityKey
+                , "");
+
+            if (ret.Success)
+            {
+                var tte = _fileOnDriveDataProvider.GetTagToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
+                    ret.Result);
+                var imtew = new TagToEntityWrapper(tte);
+                ArchiveEntity.TagToEntities.Add(imtew);
+
+                Load(ArchiveEntity.Model.ArchiveEntityKey);
+
+            }
+        }
+
+        private bool OnAddTagCanExecute(object arg)
+        {//errrororororor
+            return true;
+        }
+        #endregion
+
+        #region OnAddCategory
+
+        #endregion
+
+
+
+
+
+
+
+
+
 
         private void OnSaveExecute(object obj)
         {
@@ -208,8 +254,10 @@ namespace HomeArchiveX.WpfUI.ViewModel
             ((DelegateCommand)ResetCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)DeleteCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)OpenFileDialogCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand)AddTagCommand).RaiseCanExecuteChanged();
         }
         #endregion
     }
 }
+
 
