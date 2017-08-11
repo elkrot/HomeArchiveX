@@ -240,8 +240,8 @@ namespace HomeArchiveX.DataAccess
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var repo = uofw.GetRepository<HomeArchiveX.Model.ImageToEntity>();
-
-                return repo.Find(x => x.ImageKey == ImageId && x.TargetEntityKey== EntityId).FirstOrDefault();
+                var includes = new List<string>() { "Image"};
+                return repo.Find(x => x.ImageKey == ImageId && x.TargetEntityKey== EntityId, includes,null).FirstOrDefault();
             }
         }
 
