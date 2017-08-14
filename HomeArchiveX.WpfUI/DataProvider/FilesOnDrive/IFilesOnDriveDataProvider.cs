@@ -19,7 +19,9 @@ namespace HomeArchiveX.WpfUI.DataProvider
         Model.Tag GetTagById(int TagId);
         Model.TagToEntity GetTagToEntityById(int EntityId, int TagId);
         MethodResult<int> AddTagToEntity(int ArchiveEntityKey, string Tag);
-        MethodResult<int> AddCategoryToEntity(int ArchiveEntityKey, int CategoryId);
 
+        MethodResult<int> AddCategoryToEntity(int ArchiveEntityKey, int CategoryId);
+        Model.Category GetCategoryById(int CategoryId);
+        Model.CategoryToEntity GetCategoryToEntityById(int EntityId, int CategoryId);
     }
 }

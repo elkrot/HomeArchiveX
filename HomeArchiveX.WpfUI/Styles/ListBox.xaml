@@ -20,7 +20,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBox">
-                    <Border Name="Border" Width="500" BorderThickness="1" CornerRadius="2">
+                    <Border Name="Border" Width="Auto" Margin="10" BorderThickness="2" CornerRadius="2">
                         <Border.Background>
                             <SolidColorBrush Color="{StaticResource ControlLightColor}" />
                         </Border.Background>

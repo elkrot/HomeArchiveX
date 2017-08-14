@@ -13,7 +13,8 @@
         <ListBox ItemsSource="{Binding Path=ImageToEntities}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                            <Image Source="{Binding Path=Image.ThumbnailPath}" Width="80" Height="80"/>
+                            <!--<Image Source="{Binding Path=Image.ThumbnailPath}" Width="80" Height="80"/>-->
+                    <MediaElement LoadedBehavior="Play" Source="{Binding Path=Image.ThumbnailPath}" Width="80" Height="80"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>           

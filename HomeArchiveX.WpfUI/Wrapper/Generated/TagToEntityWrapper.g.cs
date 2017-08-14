@@ -39,5 +39,19 @@ namespace HomeArchiveX.WpfUI.Wrapper
     public System.DateTime ModifiedDateOriginalValue => GetOriginalValue<System.DateTime>(nameof(ModifiedDate));
 
     public bool ModifiedDateIsChanged => GetIsChanged(nameof(ModifiedDate));
-  }
+
+        public TagWrapper Tag { get; private set; }
+
+
+
+        protected override void InitializeComplexProperties(TagToEntity model)
+        {
+            if (model.Tag == null)
+            {
+                throw new ArgumentException("Tag cannot be null");
+            }
+            Tag = new TagWrapper(model.Tag);
+            RegisterComplex(Tag);
+        }
+    }
 }

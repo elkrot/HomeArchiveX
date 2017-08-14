@@ -115,8 +115,8 @@ namespace HomeArchiveX.DataAccess
             {
                 var repo = uofw.GetRepository<ArchiveEntity>();
                 var includes = new List<string>() { "ImageToEntities","ImageToEntities.Image"
-                    , "CategoryToEntities"
-                    , "TagToEntities"};
+                    , "CategoryToEntities", "CategoryToEntities.Category"
+                    , "TagToEntities", "TagToEntities.Tag"};
                 return repo.Find(x => x.ArchiveEntityKey == id,
                     includes,
                     o => o.Title).FirstOrDefault();
@@ -308,6 +308,17 @@ namespace HomeArchiveX.DataAccess
         #endregion
 
         #region Категории
+
+        public Category GetCategoryById(int CategoryId)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<HomeArchiveX.Model.Category>();
+                
+                return repo.Find(x => x.CategoryKey == CategoryId).FirstOrDefault();
+            }
+        }
+
         public CategoryToEntity GetCategoryToEntityById(int EntityId, int CategoryId)
         {
             using (var uofw = new UnitOfWork(new HmeArhXContext()))

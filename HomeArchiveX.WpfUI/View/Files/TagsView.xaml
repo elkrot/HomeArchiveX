@@ -6,7 +6,38 @@
              xmlns:local="clr-namespace:HomeArchiveX.WpfUI.View.Files"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Background="LightCoral">
+    <UserControl.Resources>
+        <Style TargetType="StackPanel" x:Key="TagItem">
+            <Setter Property="Margin" Value="15"/>
+            <Setter Property="Background" Value="Aqua"/>
+        </Style>
+        <Style TargetType="StackPanel" BasedOn="{StaticResource TagItem}" x:Key="TagItem2">
             
+        </Style>
+        <Style TargetType="Button" x:Key="CloseItem" >
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                          <ContentPresenter Content="{TemplateBinding Content}" 
+                                              HorizontalAlignment="Center"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid Background="LightCoral">
+        <ListBox ItemsSource="{Binding Path=TagToEntities}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Style="{StaticResource TagItem}">
+                        
+                        <Button Style="{StaticResource CloseItem}">x</Button>
+                        <TextBlock Text="{Binding Path=Tag.TagTitle}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </UserControl>

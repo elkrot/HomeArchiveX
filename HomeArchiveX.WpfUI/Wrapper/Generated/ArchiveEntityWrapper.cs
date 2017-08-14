@@ -196,6 +196,25 @@ namespace HomeArchiveX.WpfUI.Wrapper
             ImageToEntities = new ChangeTrackingCollection<ImageToEntityWrapper>(
               model.ImageToEntities.Select(e => new ImageToEntityWrapper(e)));
             RegisterCollection(ImageToEntities, model.ImageToEntities);
+
+            if (model.TagToEntities == null)
+            {
+                throw new ArgumentException("Tags cannot be null");
+            }
+
+            TagToEntities = new ChangeTrackingCollection<TagToEntityWrapper>(
+              model.TagToEntities.Select(e => new TagToEntityWrapper(e)));
+            RegisterCollection(TagToEntities, model.TagToEntities);
+
+            if (model.CategoryToEntities == null)
+            {
+                throw new ArgumentException("Categorys cannot be null");
+            }
+
+            CategoryToEntities = new ChangeTrackingCollection<CategoryToEntityWrapper>(
+              model.CategoryToEntities.Select(e => new CategoryToEntityWrapper(e)));
+            RegisterCollection(CategoryToEntities, model.CategoryToEntities);
+
         }
 
     }

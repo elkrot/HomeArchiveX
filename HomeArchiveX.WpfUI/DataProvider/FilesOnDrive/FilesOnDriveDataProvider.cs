@@ -49,6 +49,7 @@ namespace HomeArchiveX.WpfUI.DataProvider
         }
         #endregion
 
+
         #region Добавление картинки
         public MethodResult<int> AddImageToFileOnDrive(int ArchiveEntityKey,string img, int DriveId)
         {
@@ -78,6 +79,7 @@ namespace HomeArchiveX.WpfUI.DataProvider
             }
         }
         #endregion
+
 
         #region Добавление Метки
         public MethodResult<int> AddTagToEntity(int ArchiveEntityKey, string Tag)
@@ -110,7 +112,6 @@ namespace HomeArchiveX.WpfUI.DataProvider
         #endregion
 
 
-
         #region Добавление категрии  
         public MethodResult<int> AddCategoryToEntity(int ArchiveEntityKey, int CategoryId)
         {
@@ -120,5 +121,28 @@ namespace HomeArchiveX.WpfUI.DataProvider
             }
         }
         #endregion
+
+        #region Категоря по ключу
+        public Model.Category GetCategoryById(int CategoryId)
+        {
+            using (var dataService = _dataServiceCreator())
+            {
+                return dataService.GetCategoryById(CategoryId);
+            }
+        }
+        #endregion
+
+        #region CategoryToEntity по ключу
+        public Model.CategoryToEntity GetCategoryToEntityById(int EntityId, int CategoryId)
+        {
+            using (var dataService = _dataServiceCreator())
+            {
+                return dataService.GetCategoryToEntityById(EntityId, CategoryId);
+            }
+        }
+        #endregion
+
+
+
     }
 }

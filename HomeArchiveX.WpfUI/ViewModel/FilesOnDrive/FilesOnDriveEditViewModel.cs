@@ -45,6 +45,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             DeleteCommand = new DelegateCommand(OnDeleteExecute, OnDeleteCanExecute);
             OpenFileDialogCommand = new DelegateCommand(OnOpenFileDialogExecute, OnOpenFileDialogCanExecute);
             AddTagCommand = new DelegateCommand(OnAddTagExecute, OnAddTagCanExecute);
+            AddCategoryCommand = new DelegateCommand(OnAddCategoryExecute, OnAddCategoryCanExecute);
         }
 
 
@@ -100,6 +101,8 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
         public ICommand AddTagCommand { get; private set; }
 
+        public ICommand AddCategoryCommand { get; private set; }
+
         #region OnOpenFileDialog
         private void OnOpenFileDialogExecute(object obj)
         {
@@ -140,10 +143,8 @@ namespace HomeArchiveX.WpfUI.ViewModel
         #region OnAddTag
         private void OnAddTagExecute(object obj)
         {
-
-
             var ret = _fileOnDriveDataProvider.AddTagToEntity(ArchiveEntity.Model.ArchiveEntityKey
-                , "");
+                ,"newTag");
 
             if (ret.Success)
             {
@@ -164,7 +165,33 @@ namespace HomeArchiveX.WpfUI.ViewModel
         #endregion
 
         #region OnAddCategory
+        private void OnAddCategoryExecute(object obj)
+        {
+            var CategoryId = 0;
+            var cte = _fileOnDriveDataProvider.GetCategoryToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
+                    CategoryId);
 
+            if (cte == null)
+            {
+                var ret = _fileOnDriveDataProvider.AddCategoryToEntity(ArchiveEntity.Model.ArchiveEntityKey
+                    , CategoryId);
+
+                if (ret.Success)
+                {
+                    cte = _fileOnDriveDataProvider.GetCategoryToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
+                       ret.Result);
+                }
+            }
+                var imtew = new CategoryToEntityWrapper(cte);
+                ArchiveEntity.CategoryToEntities.Add(imtew);
+
+                Load(ArchiveEntity.Model.ArchiveEntityKey);
+        }
+
+        private bool OnAddCategoryCanExecute(object arg)
+        {//errrororororor
+            return true;
+        }
         #endregion
 
 
@@ -255,6 +282,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             ((DelegateCommand)DeleteCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)OpenFileDialogCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)AddTagCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand)AddCategoryCommand).RaiseCanExecuteChanged();
         }
         #endregion
     }

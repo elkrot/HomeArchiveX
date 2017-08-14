@@ -43,6 +43,7 @@ namespace HomeArchiveX.DataAccess
 
         #region Категории
         CategoryToEntity GetCategoryToEntityById(int EntityId, int CategoryId);
+        Category GetCategoryById( int CategoryId);
         MethodResult<int> AddCategoryToEntity(int ArchiveEntityKey, int CategoryId);
         #endregion
 
