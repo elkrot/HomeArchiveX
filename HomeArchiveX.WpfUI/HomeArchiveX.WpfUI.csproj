@@ -89,6 +89,10 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WpfAnimatedGif, Version=1.4.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\WpfAnimatedGif.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -477,6 +481,7 @@
     <Resource Include="img\filter_clear.png" />
     <Resource Include="img\filter_delete.png" />
     <Resource Include="img\filter_reapply.png" />
+    <Content Include="WpfAnimatedGif.dll" />
     <Content Include="Wrapper\Generated\GenerateModelWrappers.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>GenerateModelWrappers.cs</LastGenOutput>

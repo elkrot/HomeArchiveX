@@ -20,7 +20,7 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
             this.Property(t => t.CategoryKey).HasColumnName("CategoryKey");
             this.Property(t => t.CategoryTitle).HasColumnName("CategoryTitle");
             this.Property(t => t.ParentCategoryKey).HasColumnName("ParentCategoryKey");
-            this.Property(t => t.CreatedDate).HasColumnName("CreatedDate");
+            this.Property(t => t.CreatedDate).HasColumnName("CreatedDate2");
         }
     }
 }
