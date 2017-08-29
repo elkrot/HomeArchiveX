@@ -8,23 +8,53 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="Honeydew">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-       
-         
-        <ListBox ItemsSource="{Binding Path=ImageToEntities}">
+
+        <ListBox ItemsSource="{Binding Path=ImageToEntities}" Grid.Row="0"  VerticalContentAlignment="Top" 
+          ScrollViewer.HorizontalScrollBarVisibility="Visible"
+          ScrollViewer.CanContentScroll="True">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                            <!--<Image Source="{Binding Path=Image.ThumbnailPath}" Width="80" Height="80"/>-->
-                    <!--<MediaElement LoadedBehavior="Play" Source="{Binding Path=Image.ThumbnailPath}" Width="80" Height="80" />-->
-
-                    <Image gif:ImageBehavior.RepeatBehavior="Forever"
-               gif:ImageBehavior.AnimatedSource="{Binding Path=Image.ThumbnailPath}" />
                     
-                </DataTemplate>
+                        <Image Source="{Binding Path=Image.ThumbnailPath}" Width="80" Height="80"/>
+                    
+                    <!--<MediaElement LoadedBehavior="Play" Source="{Binding Path=Image.ThumbnailPath}" Width="80" Height="80" />-->
+</DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>           
-            
-    
+        </ListBox>
+
+        <StackPanel Grid.Row="1" >
+            <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left">
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,20">Scrolling is enabled when it is necessary. 
+      Resize the window, making it larger and smaller.</TextBlock>
+                    <Rectangle Fill="Red" Width="500" Height="500"></Rectangle>
+                </StackPanel>
+            </ScrollViewer>
+
+
+
+
+            <!--<ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" >
+                <Canvas Width="{Binding ActualWidth, ElementName=image}" Height="{Binding ActualHeight, ElementName=image}" >
+                    <Canvas.Background>
+                        <VisualBrush  >
+                            <VisualBrush.Visual>
+                                
+                                    <Image Margin="10" x:Name="image" gif:ImageBehavior.RepeatBehavior="Forever" gif:ImageBehavior.AnimatedSource="{Binding Path=ImageToEntities[0].Image.ImagePath}" />
+                               
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Canvas.Background>
+                </Canvas>
+            </ScrollViewer>-->
+
+
+        </StackPanel>
 
 
     </Grid>

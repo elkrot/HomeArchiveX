@@ -24,7 +24,13 @@ namespace HomeArchiveX.WpfUI.Wrapper
 
     public System.String ImagePath
     {
-      get { return GetValue<System.String>(); }
+      get
+            {
+                var spath = GetValue<System.String>();
+                var conf = new ConfigurationData();
+                var imgdir = conf.GetTargetImagePath();
+                return Path.Combine(imgdir, spath);
+            }
       set { SetValue(value); }
     }
 
