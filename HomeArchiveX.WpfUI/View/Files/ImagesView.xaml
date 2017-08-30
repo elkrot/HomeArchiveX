@@ -6,39 +6,65 @@
              xmlns:local="clr-namespace:HomeArchiveX.WpfUI.View.Files"
              xmlns:gif="http://wpfanimatedgif.codeplex.com"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Background="Honeydew">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+             d:DesignHeight="300" d:DesignWidth="275">
+    <Border BorderBrush="#FF1A5AB8" BorderThickness="1" >
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" 
+                          CanContentScroll="True"  VerticalAlignment="Top" HorizontalAlignment="Left"  Margin="10">
+        <Grid Background="Honeydew" >
+            <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
 
-        <ListBox ItemsSource="{Binding Path=ImageToEntities}" Grid.Row="0"  VerticalContentAlignment="Top" 
-          ScrollViewer.HorizontalScrollBarVisibility="Visible"
-          ScrollViewer.CanContentScroll="True">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
+            <ListBox ItemsSource="{Binding Path=ImageToEntities}" Grid.Column="0" >
+                  <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" Background="#FF8D4D4D"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
                     
-                        <Image Source="{Binding Path=Image.ThumbnailPath}" Width="80" Height="80"/>
-                    
-                    <!--<MediaElement LoadedBehavior="Play" Source="{Binding Path=Image.ThumbnailPath}" Width="80" Height="80" />-->
-</DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                    <DataTemplate>
+                            <Border BorderBrush="#FF165FDE">
+                                <Image Source="{Binding Path=Image.ThumbnailPath}" Width="80" Height="80"/>
+                            </Border>
+                        
+                            
 
-        <StackPanel Grid.Row="1" >
-            <ScrollViewer HorizontalScrollBarVisibility="Auto">
-                <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,20">Scrolling is enabled when it is necessary. 
+                           
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                  
+                </ListBox>
+           
+                
+            
+            <StackPanel Grid.Column="1" > 
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                          CanContentScroll="True"  Margin="10"  VerticalAlignment="Top" HorizontalAlignment="Left"  >
+                    <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Height="220" Width="300">
+                        <!--<TextBlock TextWrapping="Wrap" Margin="0,0,0,20">Scrolling is enabled when it is necessary. 
       Resize the window, making it larger and smaller.</TextBlock>
-                    <Rectangle Fill="Red" Width="500" Height="500"></Rectangle>
-                </StackPanel>
-            </ScrollViewer>
+                    <Rectangle Fill="Red" Width="500" Height="500"></Rectangle>-->
+
+                        <Canvas Width="{Binding ActualWidth, ElementName=image}" Height="{Binding ActualHeight, ElementName=image}">
+                            <Canvas.Background>
+                                <VisualBrush  >
+                                    <VisualBrush.Visual>
+
+                                        <Image Margin="10" x:Name="image" gif:ImageBehavior.RepeatBehavior="Forever" gif:ImageBehavior.AnimatedSource="{Binding Path=ImageToEntities[0].Image.ImagePath}" />
+
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Canvas.Background>
+                        </Canvas>
+                    </StackPanel>
+                </ScrollViewer>
 
 
-
-
+            </StackPanel>
+            
             <!--<ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" >
                 <Canvas Width="{Binding ActualWidth, ElementName=image}" Height="{Binding ActualHeight, ElementName=image}" >
                     <Canvas.Background>
@@ -54,8 +80,10 @@
             </ScrollViewer>-->
 
 
-        </StackPanel>
 
 
-    </Grid>
+
+        </Grid>
+    </ScrollViewer>
+    </Border>
 </UserControl>
