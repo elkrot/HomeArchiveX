@@ -41,13 +41,14 @@
 
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel><TextBlock Foreground="Red">Метки</TextBlock></StackPanel> 
+                     <StackPanel><TextBlock Foreground="Red">Метки</TextBlock></StackPanel> 
                 </TabItem.Header>
 
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
                             <TextBox Name="TagValue" Width="300" Margin="10"/>
-                            <Button Content="+" Command="{Binding AddTagCommand}" />                                
+                            <Button Content="+" Command="{Binding AddTagCommand}" 
+                                    CommandParameter="{Binding ElementName=TagValue,Path=Text}"/>                                
                             </StackPanel>
 
                             <view:TagsView DataContext="{Binding ArchiveEntity}" Margin="0,10,0,0"/>

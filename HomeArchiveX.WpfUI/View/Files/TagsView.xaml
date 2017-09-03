@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <Style TargetType="StackPanel" x:Key="TagItem">
-            <Setter Property="Margin" Value="15"/>
+            <Setter Property="Margin" Value="5"/>
             <Setter Property="Background" Value="Aqua"/>
         </Style>
         <Style TargetType="StackPanel" BasedOn="{StaticResource TagItem}" x:Key="TagItem2">

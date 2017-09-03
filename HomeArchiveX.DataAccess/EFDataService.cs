@@ -282,7 +282,7 @@ namespace HomeArchiveX.DataAccess
 
                 if (tg == null)
                 {
-                    tg = new Model.Tag() { TagTitle ="Tag"};
+                    tg = new Model.Tag() { TagTitle = Tag };
                     tagRepo.Add(tg);
                     uofw.Complete();
                 }

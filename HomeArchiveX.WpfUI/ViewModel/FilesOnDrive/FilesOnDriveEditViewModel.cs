@@ -148,7 +148,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private void OnAddTagExecute(object obj)
         {
             var ret = _fileOnDriveDataProvider.AddTagToEntity(ArchiveEntity.Model.ArchiveEntityKey
-                , "newTag");
+                , obj.ToString());
 
             if (ret.Success)
             {
