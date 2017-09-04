@@ -41,7 +41,7 @@ namespace HomeArchiveX.WpfUI.Wrapper
     public bool ModifiedDateIsChanged => GetIsChanged(nameof(ModifiedDate));
 
         public TagWrapper Tag { get; private set; }
-
+        public ArchiveEntityWrapper ArchiveEntity { get; private set; }
 
 
         protected override void InitializeComplexProperties(TagToEntity model)
@@ -52,6 +52,14 @@ namespace HomeArchiveX.WpfUI.Wrapper
             }
             Tag = new TagWrapper(model.Tag);
             RegisterComplex(Tag);
+
+
+            if (model.ArchiveEntity == null)
+            {
+                throw new ArgumentException("ArchiveEntity cannot be null");
+            }
+            ArchiveEntity = new ArchiveEntityWrapper(model.ArchiveEntity);
+            RegisterComplex(ArchiveEntity);
         }
     }
 }

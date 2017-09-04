@@ -47,6 +47,7 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
             this.HasOptional(t => t.Drive)
                 .WithMany(t => t.ArchiveEntities)
                 .HasForeignKey(d => d.DriveId);
+            
 
         }
     }

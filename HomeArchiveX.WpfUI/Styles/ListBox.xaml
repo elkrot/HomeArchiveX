@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:HomeArchiveX.WpfUI.Styles">
     <Style x:Key="MyListBoxStyle"
-         TargetType="ListBox">
+         TargetType="ListView">
         <Setter Property="SnapsToDevicePixels"
             Value="true" />
         <Setter Property="OverridesDefaultStyle"
@@ -55,7 +55,7 @@
     </Style>
 
 
-    <Style x:Key="{x:Type ListBoxItem}"
+    <!--<Style x:Key="{x:Type ListBoxItem}"
          TargetType="ListBoxItem">
         <Setter Property="SnapsToDevicePixels"
             Value="true" />
@@ -101,5 +101,5 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 </ResourceDictionary>
