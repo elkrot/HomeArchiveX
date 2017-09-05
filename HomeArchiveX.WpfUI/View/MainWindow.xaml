@@ -8,17 +8,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid ShowGridLines="False" RenderTransformOrigin="0.503,0.453" Background="White">
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+        
 
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0*"></ColumnDefinition>
-
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-        <ToolBarTray HorizontalAlignment="Left" Height="50" 
+        <!--<ToolBarTray HorizontalAlignment="Left" Height="50" 
                       Margin="0,10,0,0" VerticalAlignment="Top" Width="230" Grid.Column="1">
             <ToolBar Height="50" VerticalAlignment="Top" Margin="0,0,-515,0">
                 <Button Click="Button_Click_1" VerticalAlignment="Top" Height="40" >
@@ -41,10 +33,10 @@
                 <Button >
                     <Image Width="50" Margin="0" Source="/HomeArchiveX.WpfUI;component/img/drive.png"/>
                 </Button>
-                <!--<TextBox Foreground="LightGray" Width="100">Поиск...</TextBox>-->
+                --><!--<TextBox Foreground="LightGray" Width="100">Поиск...</TextBox>--><!--
             </ToolBar>
             
-        </ToolBarTray>
-        <Frame x:Name="Main" Margin="0,60,0,0"  Grid.ColumnSpan="2"/>
+        </ToolBarTray>-->
+        <Frame x:Name="Main" Margin="0,0,0,0" />
     </Grid>
 </Window>

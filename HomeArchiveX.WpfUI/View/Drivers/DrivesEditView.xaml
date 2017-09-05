@@ -32,9 +32,9 @@
 
         <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" 
                     VerticalAlignment="Bottom" Height="40" Width="Auto">
-            <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="5" Width="80"/>
-            <Button Content="Отменить" Command="{Binding ResetCommand}" Margin="5" Width="80"/>
-            <Button Content="Удалить" Command="{Binding DeleteCommand}" Margin="5" Width="80"/>
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="5" Width="100"/>
+            <Button Content="Отменить" Command="{Binding ResetCommand}" Margin="5" Width="100"/>
+            <Button Content="Удалить" Command="{Binding DeleteCommand}" Margin="5" Width="100"/>
         </StackPanel>
     </Grid>
 </UserControl>

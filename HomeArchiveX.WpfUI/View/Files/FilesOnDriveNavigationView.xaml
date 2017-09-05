@@ -43,9 +43,6 @@
                        
                     </StackPanel>
 
-                    <!--<Button Width="200" Command="{Binding OpenFileOnDriveEditViewCommand}"
-                    Content="{Binding DisplayValue}" 
-                    />-->
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
            

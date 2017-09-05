@@ -46,10 +46,10 @@ namespace HomeArchiveX.WpfUI.ViewModel
             OpenFileDialogCommand = new DelegateCommand(OnOpenFileDialogExecute, OnOpenFileDialogCanExecute);
             AddTagCommand = new DelegateCommand(OnAddTagExecute, OnAddTagCanExecute);
             AddCategoryCommand = new DelegateCommand(OnAddCategoryExecute, OnAddCategoryCanExecute);
-           
+
         }
 
-       
+
         //   IFilesOnDriveDataProvider FileOnDriveDataProvider;
         public IFilesOnDriveNavigationViewModel FilesOnDriveNavigationViewModel;
 
@@ -126,8 +126,9 @@ namespace HomeArchiveX.WpfUI.ViewModel
                         ret.Result);
                     var imtew = new ImageToEntityWrapper(imte);
                     ArchiveEntity.ImageToEntities.Add(imtew);
+                    ArchiveEntity.ImageToEntities.AcceptChanges();
 
-                    Load(ArchiveEntity.Model.ArchiveEntityKey);
+
 
                 }
 
@@ -155,9 +156,11 @@ namespace HomeArchiveX.WpfUI.ViewModel
                 var tte = _fileOnDriveDataProvider.GetTagToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
                     ret.Result);
                 var imtew = new TagToEntityWrapper(tte);
-                ArchiveEntity.TagToEntities.Add(imtew);
 
-                Load(ArchiveEntity.Model.ArchiveEntityKey);
+                ArchiveEntity.TagToEntities.Add(imtew);
+                ArchiveEntity.TagToEntities.AcceptChanges();
+               
+
 
             }
         }

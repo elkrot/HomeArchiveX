@@ -136,7 +136,6 @@ namespace HomeArchiveX.WpfUI.Wrapper
 
 
 
-
         private byte[] EntityInfo {get { return GetValue<byte[]>(); } }
 
         private byte[] MFileInfo { get { return GetValue<byte[]>(); } }

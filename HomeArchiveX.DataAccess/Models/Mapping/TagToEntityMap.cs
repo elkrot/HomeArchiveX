@@ -26,7 +26,7 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
             this.HasRequired(t => t.ArchiveEntity)
                 .WithMany(t => t.TagToEntities)
                 .HasForeignKey(t => t.TargetEntityKey);
-               
+
             this.HasRequired(t => t.Tag)
                 .WithMany(t => t.TagToEntities)
                 .HasForeignKey(d => d.TagKey);
