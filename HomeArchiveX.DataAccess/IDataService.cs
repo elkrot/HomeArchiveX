@@ -24,7 +24,6 @@ namespace HomeArchiveX.DataAccess
         MethodResult<int> DeleteFileOnDriveDrive(int id);
         ArchiveEntity GetFileOnDriveDriveById(int id);
         MethodResult<int> SaveFileOnDriveDrive(ArchiveEntity archiveEntity);
-        
         IEnumerable<ArchiveEntity> GetAllFilesOnDrive(int id);
         IEnumerable<ArchiveEntity> GetFilesOnDriveByCondition(Expression<Func<ArchiveEntity, bool>> where, Expression<Func<ArchiveEntity, object>> orderby);
         #endregion
@@ -42,6 +41,7 @@ namespace HomeArchiveX.DataAccess
         #endregion
 
         #region Категории
+        IEnumerable<Category> GetAllCategories();
         CategoryToEntity GetCategoryToEntityById(int EntityId, int CategoryId);
         Category GetCategoryById( int CategoryId);
         MethodResult<int> AddCategoryToEntity(int ArchiveEntityKey, int CategoryId);

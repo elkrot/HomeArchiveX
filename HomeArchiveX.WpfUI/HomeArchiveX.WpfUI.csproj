@@ -104,6 +104,7 @@
     <Compile Include="Command\DelegateCommand.cs" />
     <Compile Include="Converters\ComboBoxOriginalValueConverter.cs" />
     <Compile Include="Converters\DatePickerOriginalValueConverter.cs" />
+    <Compile Include="DataProvider\CategoryLookupProvider.cs" />
     <Compile Include="DataProvider\FilesOnDriveLookupProvider.cs" />
     <Compile Include="DataProvider\FilesOnDrive\FilesOnDriveDataProvider.cs" />
     <Compile Include="DataProvider\Lookups\DriveLookupProvider.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="ViewModel\Drive\DriveEditViewModel.cs" />
     <Compile Include="ViewModel\Drive\DrivesNavigationViewModel.cs" />
     <Compile Include="ViewModel\Drive\DrivesViewModel.cs" />
+    <Compile Include="ViewModel\FilesOnDrive\CategoryNavigationViewModel.cs" />
     <Compile Include="ViewModel\FilesOnDrive\FilesOnDriveEditViewModel.cs" />
     <Compile Include="ViewModel\FilesOnDrive\FilesOnDriveNavigationViewModel.cs" />
     <Compile Include="ViewModel\FilesOnDrive\FilesOnDriveViewModel.cs" />

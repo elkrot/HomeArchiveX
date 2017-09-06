@@ -69,7 +69,7 @@
                         <Button Content="+" Command="{Binding AddCategoryCommand}" />
                     </StackPanel>
 
-                    <view:CategoriesView DataContext="{Binding ArchiveEntity}"  Margin="0,10,0,0"/>
+                    <view:CategoriesView DataContext="{Binding CategoryNavigationViewModel}"  Margin="0,10,0,0"/>
 
                 </StackPanel>
             </TabItem>

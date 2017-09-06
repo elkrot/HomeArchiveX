@@ -5,15 +5,40 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HomeArchiveX.WpfUI.View.Files"
              mc:Ignorable="d" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="MediumVioletRed">
-        <Button Content="+" Command="{Binding CategoryAddCommand}"/>
-        <ListBox ><!--ItemsSource="{Binding Path=CategoryToEntities}"-->
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock  /><!--Text="{Binding Path=Category.Title}"-->
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        
+    
+<!--SelectedItemChanged="filesTreeView_SelectedItemChanged"-->
+
+        <TreeView x:Name="filesTreeView" Background="PaleGoldenrod" 
+                   
+                  ItemsSource="{Binding Path=NavigationItems}"
+                  SelectedValuePath="CategoryKey">
+
+            <!--<i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectedItemChanged">
+                    <i:InvokeCommandAction Command="{Binding SelectedItemChangedCommand}" CommandParameter="{Binding ElementName=filesTreeView, 
+                          Path=SelectedValue}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>-->
+
+
+
+            <TreeView.ItemTemplate >
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=NavigationItems}">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding ImagePath}" Width="50" Margin="0"/>
+                        <TextBlock Text="{Binding DisplayValue}" />
+
+                    </StackPanel>
+
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+
+        </TreeView>
+
     </Grid>
 </UserControl>

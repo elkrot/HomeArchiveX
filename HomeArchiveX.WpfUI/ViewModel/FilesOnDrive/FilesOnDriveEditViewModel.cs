@@ -4,6 +4,7 @@ using HomeArchiveX.WpfUI.DataProvider;
 using HomeArchiveX.WpfUI.Event;
 using HomeArchiveX.WpfUI.View.Services;
 using HomeArchiveX.WpfUI.ViewModel;
+using HomeArchiveX.WpfUI.ViewModel.FilesOnDrive;
 using HomeArchiveX.WpfUI.Wrapper;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Win32;
@@ -28,11 +29,13 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private readonly IMessageDialogService _messageDialogService;
         private readonly IFilesOnDriveDataProvider _fileOnDriveDataProvider;
         private ArchiveEntityWrapper _archiveEntity;
+        private ICategoryNavigationViewModel _categoryNavigationViewModel;
 
         public FilesOnDriveEditViewModel(IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService,
             IFilesOnDriveNavigationViewModel filesOnDriveNavigationViewModel
-            , IFilesOnDriveDataProvider fileOnDriveDataProvider)
+            , IFilesOnDriveDataProvider fileOnDriveDataProvider
+            , ICategoryNavigationViewModel categoryNavigationViewModel)
         {
             _eventAggregator = eventAggregator;
             _messageDialogService = messageDialogService;
@@ -46,13 +49,20 @@ namespace HomeArchiveX.WpfUI.ViewModel
             OpenFileDialogCommand = new DelegateCommand(OnOpenFileDialogExecute, OnOpenFileDialogCanExecute);
             AddTagCommand = new DelegateCommand(OnAddTagExecute, OnAddTagCanExecute);
             AddCategoryCommand = new DelegateCommand(OnAddCategoryExecute, OnAddCategoryCanExecute);
+            _categoryNavigationViewModel = categoryNavigationViewModel;
 
         }
 
 
         //   IFilesOnDriveDataProvider FileOnDriveDataProvider;
         public IFilesOnDriveNavigationViewModel FilesOnDriveNavigationViewModel;
-
+        public ICategoryNavigationViewModel CategoryNavigationViewModel
+        {
+            get
+            {
+                return _categoryNavigationViewModel;
+            }
+        }
 
 
 
@@ -67,6 +77,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         public void Load(int? FileOnDriveId = null)
         {
             ArchiveEntityLoad(FileOnDriveId);
+            CategoryNavigationViewModel.Load();
         }
 
         private void ArchiveEntityLoad(int? FileOnDriveId)

@@ -6,6 +6,7 @@ using HomeArchiveX.WpfU.DataProvider.Lookups;
 using HomeArchiveX.WpfUI.DataProvider;
 using HomeArchiveX.WpfUI.View.Services;
 using HomeArchiveX.WpfUI.ViewModel;
+using HomeArchiveX.WpfUI.ViewModel.FilesOnDrive;
 using Microsoft.Practices.Prism.PubSubEvents;
 using System;
 using System.Collections.Generic;
@@ -39,10 +40,14 @@ namespace HomeArchiveX.WpfU.Startup
             #region FileOnDrive
             builder.RegisterType<FilesOnDriveLookupProvider>().As<ITreeViewLookupProvider<ArchiveEntity>>();
 
+            builder.RegisterType<CategoryLookupProvider>().As<ITreeViewLookupProvider<Category>>();
+
             builder.RegisterType<FilesOnDriveDataProvider>().As<IFilesOnDriveDataProvider>();
             builder.RegisterType<FilesOnDriveEditViewModel>().As<IFilesOnDriveEditViewModel>();
             builder.RegisterType<FilesOnDriveNavigationViewModel>().As<IFilesOnDriveNavigationViewModel>();
+            builder.RegisterType<CategoryNavigationViewModel>().As<ICategoryNavigationViewModel>();
 
+        
             builder.RegisterType<FilesOnDriveViewModel>().AsSelf();
             #endregion
 

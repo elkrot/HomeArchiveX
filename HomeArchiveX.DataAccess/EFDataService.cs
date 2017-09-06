@@ -351,6 +351,16 @@ namespace HomeArchiveX.DataAccess
             }
         }
 
+        public IEnumerable<Category> GetAllCategories()
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<HomeArchiveX.Model.Category>();
+
+                return repo.GetAll();
+            }
+        }
+
 
         #endregion
 
