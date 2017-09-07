@@ -186,6 +186,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private void OnAddCategoryExecute(object obj)
         {
             var CategoryId = 0;
+            Int32.TryParse(obj.ToString(), out CategoryId);
             var cte = _fileOnDriveDataProvider.GetCategoryToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
                     CategoryId);
 
@@ -203,7 +204,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             var imtew = new CategoryToEntityWrapper(cte);
             ArchiveEntity.CategoryToEntities.Add(imtew);
 
-            Load(ArchiveEntity.Model.ArchiveEntityKey);
+            ArchiveEntity.CategoryToEntities.AcceptChanges();
         }
 
         private bool OnAddCategoryCanExecute(object arg)
