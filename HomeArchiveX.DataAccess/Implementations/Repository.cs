@@ -26,7 +26,17 @@ namespace HomeArchiveX.DataAccess.Implementations
         {
             return Context.Set<TEntity>().AsNoTracking().ToList();
         }
+        public IEnumerable<TEntity> GetAll(List<string> includes)
+        {
+            IQueryable<TEntity> ret;
+            ret = Context.Set<TEntity>();
+            foreach (var item in includes)
+            {
+                ret = ret.Include(item);
+            }
 
+            return ret.AsNoTracking();
+        }
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
             return Context.Set<TEntity>().AsNoTracking().Where(predicate);

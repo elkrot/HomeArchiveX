@@ -202,7 +202,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
                 }
             }
             var imtew = new CategoryToEntityWrapper(cte);
-            ArchiveEntity.CategoryToEntities.Add(imtew);
+             ArchiveEntity.CategoryToEntities.Add(imtew);
 
             ArchiveEntity.CategoryToEntities.AcceptChanges();
         }

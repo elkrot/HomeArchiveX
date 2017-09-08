@@ -355,8 +355,10 @@ namespace HomeArchiveX.DataAccess
         {
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
+                var includes = new List<string>() { "Category" };
                 var repo = uofw.GetRepository<HomeArchiveX.Model.Category>();
 
+                //return repo.GetAll(includes).ToList();
                 return repo.GetAll();
             }
         }

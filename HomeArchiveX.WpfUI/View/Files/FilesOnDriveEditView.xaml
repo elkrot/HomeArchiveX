@@ -71,8 +71,32 @@
                         <ColumnDefinition  />
                     </Grid.ColumnDefinitions>
 
-                    <view:CategoriesView DataContext="{Binding CategoryNavigationViewModel}"  Margin="0,0,0,0" Grid.Column="0" />
-                    <Button Content="+>>" Command="{Binding AddCategoryCommand}" Width="30" Grid.Column="1" Margin="3,0"/>
+                    <!--<view:CategoriesView DataContext="{Binding CategoryNavigationViewModel}"  Margin="0,0,0,0" Grid.Column="0" 
+                                         />-->
+
+                    <TreeView x:Name="CategoriesTreeView" Background="PaleGoldenrod" 
+                   
+                  ItemsSource="{Binding Path=CategoryNavigationViewModel.NavigationItems}"
+                  SelectedValuePath="CategoryKey">
+
+                        <TreeView.ItemTemplate >
+                            <HierarchicalDataTemplate ItemsSource="{Binding Path=NavigationItems}">
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding ImagePath}" Width="50" Margin="0"/>
+                                    <TextBlock Text="{Binding DisplayValue}" />
+
+                                </StackPanel>
+
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+
+                    </TreeView>
+
+
+                    <Button Content="+>>" Command="{Binding AddCategoryCommand}" 
+                            CommandParameter="{Binding ElementName=CategoriesTreeView,Path=SelectedValue}"
+                            Width="30" Grid.Column="1" Margin="3,0"/>
                     <view:CategoryToEntitiesView DataContext="{Binding ArchiveEntity}"  Margin="0,10,0,0" Grid.Column="2"/>
                 </Grid>
 

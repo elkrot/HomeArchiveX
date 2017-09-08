@@ -12,7 +12,7 @@
     
 <!--SelectedItemChanged="filesTreeView_SelectedItemChanged"-->
 
-        <TreeView x:Name="filesTreeView" Background="PaleGoldenrod" 
+        <TreeView x:Name="CategoriesTreeView" Background="PaleGoldenrod" 
                    
                   ItemsSource="{Binding Path=NavigationItems}"
                   SelectedValuePath="CategoryKey">
