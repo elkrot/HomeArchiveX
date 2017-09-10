@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:view="clr-namespace:HomeArchiveX.WpfUI.View.Files"
              mc:Ignorable="d" 
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              d:DesignHeight="500" d:DesignWidth="500">
     <Grid>
         <TabControl>
@@ -108,7 +109,23 @@
 
                 </StackPanel>
             </TabItem>
+            <TabItem Header="Описание">
+                <StackPanel>
 
+                    <xctk:RichTextBox x:Name="_richTextBox" Grid.Row="1" Margin="10" BorderBrush="Gray" Padding="10"
+                                     Text="{Binding ArchiveEntity.Description}" 
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <xctk:RichTextBox.TextFormatter>
+                            <xctk:XamlFormatter />
+                        </xctk:RichTextBox.TextFormatter>
+                        <xctk:RichTextBoxFormatBarManager.FormatBar>
+                            <xctk:RichTextBoxFormatBar />
+                        </xctk:RichTextBoxFormatBarManager.FormatBar>                        
+                    </xctk:RichTextBox>
+
+
+                </StackPanel>
+            </TabItem>
         </TabControl>
     </Grid>
 </UserControl>
