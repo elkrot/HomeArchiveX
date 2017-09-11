@@ -8,7 +8,12 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              d:DesignHeight="500" d:DesignWidth="500">
     <Grid>
-        <TabControl>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        
+        <TabControl Grid.Row="0">
             <TabItem Header="Инфа  файла">
                 <StackPanel>
                     <TextBlock Text="{Binding ArchiveEntity.FileInfo[Length]}" />
@@ -113,7 +118,7 @@
                 <StackPanel>
 
                     <xctk:RichTextBox x:Name="_richTextBox" Grid.Row="1" Margin="10" BorderBrush="Gray" Padding="10"
-                                     Text="{Binding ArchiveEntity.Description}" 
+                                     Text="{Binding ArchiveEntity.Description,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
                                      ScrollViewer.VerticalScrollBarVisibility="Auto">
                         <xctk:RichTextBox.TextFormatter>
                             <xctk:XamlFormatter />
@@ -127,5 +132,11 @@
                 </StackPanel>
             </TabItem>
         </TabControl>
+        <StackPanel  Orientation="Horizontal" HorizontalAlignment="Left" 
+                    VerticalAlignment="Bottom" Height="40" Width="Auto" Grid.Row="1">
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="5" Width="100"/>
+            <Button Content="Отменить" Command="{Binding ResetCommand}" Margin="5" Width="100"/>
+            <Button Content="Удалить" Command="{Binding DeleteCommand}" Margin="5" Width="100"/>
+        </StackPanel>
     </Grid>
 </UserControl>

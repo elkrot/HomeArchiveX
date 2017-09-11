@@ -105,7 +105,16 @@ namespace HomeArchiveX.DataAccess
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var repo = uofw.GetRepository<ArchiveEntity>();
-                repo.Add(archiveEntity);
+
+                if (archiveEntity.ArchiveEntityKey != 0)
+                {
+                    repo.Update(archiveEntity);
+                }
+                else
+                {
+                    repo.Add(archiveEntity);
+                }
+               
                 return uofw.Complete();
             }
         }
