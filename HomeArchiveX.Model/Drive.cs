@@ -15,6 +15,7 @@ namespace HomeArchiveX.Model
         public Nullable<int> HashCode { get; set; }
         public byte[] DriveInfo { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
+         public string DriveCode { get; set; }
         public virtual ICollection<ArchiveEntity> ArchiveEntities { get; set; }
     }
 }

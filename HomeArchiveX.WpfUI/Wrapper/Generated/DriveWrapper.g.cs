@@ -30,6 +30,19 @@ namespace HomeArchiveX.WpfUI.Wrapper
 
     public bool TitleIsChanged => GetIsChanged(nameof(Title));
 
+
+
+        public System.String DriveCode
+        {
+            get { return GetValue<System.String>().Trim(); }
+            set { SetValue(value); }
+        }
+
+        public System.String DriveCodeOriginalValue => GetOriginalValue<System.String>(nameof(DriveCode));
+
+        public bool DriveCodeIsChanged => GetIsChanged(nameof(DriveCode));
+
+
     public System.Nullable<System.Int32> HashCode
     {
       get { return GetValue<System.Nullable<System.Int32>>(); }

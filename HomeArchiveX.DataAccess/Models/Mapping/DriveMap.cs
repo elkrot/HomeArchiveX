@@ -12,8 +12,18 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
             // Primary Key
             this.HasKey(t => t.DriveId);
 
+            // Properties
             this.Property(t => t.Title)
+                .IsRequired()
                 .HasMaxLength(100);
+
+            this.Property(t => t.DriveInfo)
+                .IsRequired();
+
+            this.Property(t => t.DriveCode)
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(20);
 
             // Table & Column Mappings
             this.ToTable("Drive");
@@ -22,6 +32,7 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
             this.Property(t => t.HashCode).HasColumnName("HashCode");
             this.Property(t => t.DriveInfo).HasColumnName("DriveInfo");
             this.Property(t => t.CreatedDate).HasColumnName("CreatedDate");
+            this.Property(t => t.DriveCode).HasColumnName("DriveCode");
         }
     }
 }
