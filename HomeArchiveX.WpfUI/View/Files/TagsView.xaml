@@ -60,7 +60,7 @@
         
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                           CanContentScroll="True"  Margin="10"  VerticalAlignment="Top" HorizontalAlignment="Left"  >
-            <ListBox ItemsSource="{Binding Path=TagToEntities}" x:Name="TagListView" Height="300" Width="400">
+            <ListBox ItemsSource="{Binding Path=TagToEntities}" x:Name="TagListView" Height="Auto" Width="Auto" MinHeight="50" MinWidth="100" >
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical" />

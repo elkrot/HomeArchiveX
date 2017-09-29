@@ -5,3 +5,7 @@
     CONSTRAINT [PK_Tag] PRIMARY KEY CLUSTERED ([TagKey] ASC)
 );
 
+
+GO
+
+CREATE UNIQUE INDEX [IX_Tag_TitleUnique] ON [dbo].[Tag] ([TagTitle])

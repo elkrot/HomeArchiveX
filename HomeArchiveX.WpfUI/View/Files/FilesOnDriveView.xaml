@@ -24,7 +24,7 @@
         <!--Buttons-->
        
         <!--Navigation-->
-        <view:FilesOnDriveNavigationView DataContext="{Binding FileOnDriveNavigationViewModel}" Grid.Row="2" Margin="0,10,0,0"/>
+        <view:FilesOnDriveNavigationView DataContext="{Binding FileOnDriveNavigationViewModel}"  Grid.Column="0" Grid.Row="2" Margin="0,10,0,0"/>
 
         <view:FilesOnDriveEditView DataContext="{Binding SelectedFileOnDriveEditViewModel}" Grid.Column="2" Grid.Row="2" Margin="0,0,0,0" />
        

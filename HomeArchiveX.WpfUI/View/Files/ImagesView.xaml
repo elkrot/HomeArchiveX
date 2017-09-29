@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              d:DesignHeight="445" d:DesignWidth="920">
-    <Border BorderBrush="#FF1A5AB8" BorderThickness="1"   >
+    <Border BorderBrush="#FF1A5AB8" BorderThickness="1" Height="Auto"   >
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" CanContentScroll="True">
             <Grid Background="Honeydew" Width="Auto" Height="Auto">
                 <Grid.ColumnDefinitions>
@@ -18,7 +18,7 @@
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                           CanContentScroll="True"  Margin="10"  VerticalAlignment="Top" HorizontalAlignment="Left"  >
-                    <ListBox x:Name="imageListView" ItemsSource="{Binding Path=ImageToEntities}" Grid.Column="0" Height="400" Width="150">
+                    <ListBox x:Name="imageListView" ItemsSource="{Binding Path=ImageToEntities}" Grid.Column="0" Height="Auto" Width="250" MaxHeight="400">
                         <!--<i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectedIndexChanged">
                                 <i:InvokeCommandAction Command="{Binding DataContextChangedCommand}" CommandParameter="{Binding ElementName=imageListView, 
@@ -35,7 +35,7 @@
 
                             <DataTemplate>
                                 <Border BorderBrush="#FF165FDE">
-                                    <Image Source="{Binding Path=Image.ThumbnailPath}" Width="80" Height="80"/>
+                                    <Image Source="{Binding Path=Image.ThumbnailPath}" Width="150" Height="150"/>
                                 </Border>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -46,8 +46,8 @@
                 <StackPanel Grid.Column="1" >
                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                           CanContentScroll="True"  Margin="10"  VerticalAlignment="Top" HorizontalAlignment="Left"  >
-                        <StackPanel  Height="380" Width="700">
-                            <Border BorderThickness="1" BorderBrush="#FF2D23F7" Margin="10" Height="354">
+                        <StackPanel  Height="Auto" MinWidth="300" Width="Auto"  MinHeight="380">
+                            <Border BorderThickness="1" BorderBrush="#FF2D23F7" Margin="10" Height="354" >
                                 <Image Margin="10,10,10,9" x:Name="image" gif:ImageBehavior.RepeatBehavior="Forever" 
                                                    gif:ImageBehavior.AnimatedSource="{Binding ElementName=imageListView,Path=SelectedItem.Image.ImagePath }" /> <!--Path=ImageToEntities[0].Image.ImagePath-->
                             </Border>
