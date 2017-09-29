@@ -286,7 +286,7 @@ values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
         /// <param name="path">Путь</param>
         /// <param name="title">Описание</param>
         /// <returns></returns>
-        public int CreateDrive(string path, string title)
+        public int CreateDrive(string path, string title,string diskCode)
         {
 
             var di = new DriveInfo(path);
@@ -303,7 +303,8 @@ values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
                 return 0;
             }
 
-            string queryString = @"insert into Drive(Title, HashCode, DriveInfo) values (@Title, @HashCode, @DriveInfo);
+            string queryString = @"insert into Drive(Title, HashCode, DriveInfo,DriveCode) 
+values (@Title, @HashCode, @DriveInfo,@DriveCode);
                 select SCOPE_IDENTITY();";
             using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
             {
@@ -312,9 +313,11 @@ values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
                 command.Parameters.Add("@Title", SqlDbType.NVarChar, 100);
                 command.Parameters.Add("@HashCode", SqlDbType.Int);
                 command.Parameters.Add("@DriveInfo", SqlDbType.VarBinary, Int32.MaxValue);
+command.Parameters.Add("@DriveCode", SqlDbType.NVarChar, 20);
                 command.Parameters["@DriveInfo"].Value = _fileManager.GetBinaryData<DriveInfo>(di);
                 command.Parameters["@Title"].Value = title;
                 command.Parameters["@HashCode"].Value = hashCode;
+                command.Parameters["@DriveCode"].Value = diskCode;
                 ce.Open();
                 // command.ExecuteNonQuery();
                 string strid = command.ExecuteScalar().ToString();

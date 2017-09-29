@@ -110,9 +110,11 @@ namespace HomeArchiveX
 
             if (!string.IsNullOrWhiteSpace(drvLetter))
             {
-                Console.WriteLine("Введите Заголовок описание устройства");
+                Console.WriteLine("Введите Заголовок Диска");
                 string title = Console.ReadLine().ToString();
-                CrtDrv(dm, drvLetter, title);
+                Console.WriteLine("Введите Код диска");
+                string diskCode = Console.ReadLine().ToString();
+                CrtDrv(dm, drvLetter, title,  diskCode);
             }
             else
             {
@@ -271,7 +273,9 @@ namespace HomeArchiveX
                     {
                         Console.WriteLine("Введите Заголовок описание устройства");
                         string title = Console.ReadLine().ToString();
-                        CrtDrv(dm, drvLetter, title);
+                        Console.WriteLine("Введите Код Диска");
+                        string driveCode = Console.ReadLine().ToString();
+                        CrtDrv(dm, drvLetter, title, driveCode);
                     }
                     else
                     {
@@ -399,13 +403,13 @@ namespace HomeArchiveX
             Console.WriteLine("Очистка выполнена");
         }
 
-        private static void CrtDrv(IDataManager dm, string drvLetter, string title)
+        private static void CrtDrv(IDataManager dm, string drvLetter, string title, string diskCode)
         {
 
 
             string pathDrive = drvLetter;
             //string.Format(@"{0}:\", drvLetter);
-            int driveId = dm.CreateDrive(pathDrive, title);
+            int driveId = dm.CreateDrive(pathDrive, title,  diskCode);
             if (driveId != 0)
             {
                 dm.FillDirectoriesInfo(driveId, pathDrive);
