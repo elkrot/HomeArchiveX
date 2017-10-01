@@ -17,8 +17,10 @@ namespace HomeArchiveX.Infrastructure
         /// </summary>
         /// <returns></returns>
         public string GetConnectionString()
-        {
+        {if(ConfigurationManager.ConnectionStrings["HomeArchiveXContext"]!=null)
             return ConfigurationManager.ConnectionStrings["HomeArchiveXContext"].ConnectionString;
+        else
+                return ConfigurationManager.ConnectionStrings["HmeArhXContext"].ConnectionString;
         }
         #endregion
 

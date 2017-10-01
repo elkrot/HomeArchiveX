@@ -5,13 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HomeArchiveX.WpfUI"
         xmlns:view="clr-namespace:HomeArchiveX.WpfUI"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid ShowGridLines="False" RenderTransformOrigin="0.503,0.453" Background="White">
-        
+    <Window.Resources>
+        <xctk:Wizard x:Key="_wizard" FinishButtonClosesWindow="True" Help="OnWizardHelp">
+            <xctk:WizardPage Title="Welcome to my Wizard"
+                             Description="This Wizard will walk you though how to do something." >
+                
+                </xctk:WizardPage>
+            <xctk:WizardPage PageType="Interior"
+                             Title="Page 1"
+                             Description="This is the first page in the process." >
+                <Grid>
+                    <StackPanel>
+                        <TextBox Text="{Binding DriveTitle}"/>
+                        <TextBox  Text="{Binding DriveCode}"/>
+                    </StackPanel>
+                </Grid>
+            </xctk:WizardPage>
+            <xctk:WizardPage PageType="Interior"
+                             Title="Page 2"
+                             Description="This is the second page in the process" />
+            <xctk:WizardPage PageType="Interior"
+                             Title="Last Page"
+                             Description="This is the last page in the process"
+                             CanFinish="True" />
+        </xctk:Wizard>
+    </Window.Resources>
+    <Grid ShowGridLines="False"  Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <!--<ToolBarTray HorizontalAlignment="Left" Height="50" 
-                      Margin="0,10,0,0" VerticalAlignment="Top" Width="230" Grid.Column="1">
+        <ToolBarTray HorizontalAlignment="Left" Height="50" 
+                      Margin="0,10,0,0" VerticalAlignment="Top" Width="230" Grid.Column="1" Grid.Row="0">
             <ToolBar Height="50" VerticalAlignment="Top" Margin="0,0,-515,0">
                 <Button Click="Button_Click_1" VerticalAlignment="Top" Height="40" >
                     <Image Source="/HomeArchiveX.WpfUI;component/img/drive_add.png" Width="50" Margin="0"/>
@@ -33,10 +62,10 @@
                 <Button >
                     <Image Width="50" Margin="0" Source="/HomeArchiveX.WpfUI;component/img/drive.png"/>
                 </Button>
-                --><!--<TextBox Foreground="LightGray" Width="100">Поиск...</TextBox>--><!--
+                <TextBox Foreground="LightGray" Width="100">Поиск...</TextBox>
             </ToolBar>
             
-        </ToolBarTray>-->
-        <Frame x:Name="Main" Margin="0,0,0,0" />
+        </ToolBarTray>
+        <Frame x:Name="Main" Margin="0,0,0,0" Grid.Row="1"/>
     </Grid>
 </Window>

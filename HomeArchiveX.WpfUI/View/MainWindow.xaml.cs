@@ -1,10 +1,13 @@
 ﻿using Autofac;
+using HomeArchiveX.Infrastructure;
 using HomeArchiveX.WpfU.Startup;
 using HomeArchiveX.WpfUI.View;
 using HomeArchiveX.WpfUI.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,6 +29,8 @@ namespace HomeArchiveX.WpfUI
     {
 DrivesViewModel _drivesViewModel;
         FilesOnDriveViewModel _filesOnDriveViewModel;
+
+        private System.Windows.Window _window;
         public MainWindow()
         {
 
@@ -40,7 +45,7 @@ DrivesViewModel _drivesViewModel;
         {
 
             var bootstrapper = new Bootstrapper();
-            IContainer container = bootstrapper.Bootstrap();
+            Autofac.IContainer container = bootstrapper.Bootstrap();
 
             _filesOnDriveViewModel = container.Resolve<FilesOnDriveViewModel>();
             _filesOnDriveViewModel.Load();
@@ -49,8 +54,95 @@ DrivesViewModel _drivesViewModel;
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            
-            Main.Content = new DrivesPage(_drivesViewModel);
+            Xceed.Wpf.Toolkit.Wizard wizard = this.Resources["_wizard"] as Xceed.Wpf.Toolkit.Wizard;
+            if (wizard != null)
+            {
+                wizard.CurrentPage = wizard.Items[0] as Xceed.Wpf.Toolkit.WizardPage;
+
+                if (_window != null)
+                {
+                    _window.Content = null;
+                    _window = null;
+                }
+                _window = new System.Windows.Window();
+                _window.Title = "Wizard demonstration";
+                _window.Content = wizard;
+                _window.DataContext = new WizardData() { DriveCode ="2017_000"};
+                _window.Width = 600;
+                _window.Height = 400;
+                _window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+                // Window will be closed by Wizard because FinishButtonClosesWindow = true and CancelButtonClosesWindow = true
+                
+                if (_window.ShowDialog()==true)
+                {
+                    var DriveCode = ((WizardData)_window.DataContext).DriveCode;
+                    var DriveTitle = ((WizardData)_window.DataContext).DriveTitle;
+                    var cnf = new ConfigurationData();
+                    var lg = new Logger();
+                    var fm = new FileManager(cnf, lg);
+                   
+                    IDataManager dm = new DataManager(cnf, fm, lg, 999);
+                    string drvLetter = @"e:\";
+                    CrtDrv(dm, drvLetter, DriveTitle, DriveCode);
+                    _drivesViewModel.Load();
+                    System.Windows.Forms.MessageBox.Show("Завершено");
+                }
+               
+               
+            }
+            // Main.Content = new DrivesPage(_drivesViewModel);
+        }
+        private static void CrtDrv(IDataManager dm, string drvLetter, string title, string diskCode)
+        {
+
+
+            string pathDrive = drvLetter;
+            //string.Format(@"{0}:\", drvLetter);
+            int driveId = dm.CreateDrive(pathDrive, title, diskCode);
+            if (driveId != 0)
+            {
+                dm.FillDirectoriesInfo(driveId, pathDrive);
+                dm.FillFilesInfo(driveId, pathDrive);
+                dm.ClearCash();
+            }
+            else
+            {
+             //   Console.WriteLine(dm.logger.GetLog());
+            }
+        }
+        private void OnWizardHelp(object sender, EventArgs e)
+        {
+            System.Windows.MessageBox.Show("This is the Help for the Wizard\n\n\n\n\n", "Wizard Help");
+        }
+        public class WizardData:INotifyPropertyChanged
+        {
+            string _driveTitle;
+            string _driveCode;
+            public string DriveTitle { get { return _driveTitle; }
+                set
+                {
+                    _driveTitle = value;
+                    OnPropertyChanged("DriveTitle");
+                }
+            }
+            public string DriveCode
+            {
+                get { return _driveCode; }
+                set
+                {
+                    _driveCode = value;
+                    OnPropertyChanged("DriveCode");
+                }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            private void OnPropertyChanged([CallerMemberName] string caller = "")
+            {
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(caller));
+                }
+            }
         }
     }
 }
