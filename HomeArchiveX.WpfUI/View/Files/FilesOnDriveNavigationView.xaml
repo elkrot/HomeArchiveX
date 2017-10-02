@@ -20,7 +20,7 @@
 
 
 
-        <TreeView x:Name="filesTreeView" Background="PaleGoldenrod" 
+        <TreeView x:Name="filesTreeView" 
                   SelectedItemChanged="filesTreeView_SelectedItemChanged" 
                   ItemsSource="{Binding Path=NavigationItems}"
                   SelectedValuePath="ArchiveEntityKey">

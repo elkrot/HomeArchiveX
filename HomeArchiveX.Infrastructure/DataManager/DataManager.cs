@@ -31,7 +31,7 @@ namespace HomeArchiveX.Infrastructure
         /// <param name="configuration">Конфигурация</param>
         /// <param name="fileManager">Файл Менеджер</param>
         /// <param name="logger">Логгер</param>
-        public DataManager(IConfiguration configuration, IFIleManager fileManager, ILogger logger, int maxImagesInDirectory=2)
+        public DataManager(IConfiguration configuration, IFIleManager fileManager, ILogger logger, int maxImagesInDirectory = 2)
         {
             _configuration = configuration;
             _logger = logger;
@@ -65,7 +65,7 @@ namespace HomeArchiveX.Infrastructure
             diDict.Add("FullName", di.FullName);
             diDict.Add("Name", di.Name);
             #endregion
-            var id = CreateArchiveEntity<Dictionary<string,string>>(driveId, diDict, di.Name, di.GetHashCode(), parentId
+            var id = CreateArchiveEntity<Dictionary<string, string>>(driveId, diDict, di.Name, di.GetHashCode(), parentId
                 , EntityType.Folder, path, "", "");
             _directoryCash.Add(path, id);
             return id;
@@ -148,7 +148,7 @@ values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
             byte[] imageData = null;
             try
             {
-                if (!(imgCount > MAX_IMAGES_IN_DIRECTORY)&& MAX_IMAGES_IN_DIRECTORY!=0 && imgCount!=0) 
+                if (!(imgCount > MAX_IMAGES_IN_DIRECTORY) && MAX_IMAGES_IN_DIRECTORY != 0 && imgCount != 0)
                 {
                     newImgPath = _fileManager.CopyImg(imagePath, targetDir);
                 }
@@ -286,7 +286,7 @@ values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
         /// <param name="path">Путь</param>
         /// <param name="title">Описание</param>
         /// <returns></returns>
-        public int CreateDrive(string path, string title,string diskCode)
+        public int CreateDrive(string path, string title, string diskCode)
         {
 
             var di = new DriveInfo(path);
@@ -313,7 +313,7 @@ values (@Title, @HashCode, @DriveInfo,@DriveCode);
                 command.Parameters.Add("@Title", SqlDbType.NVarChar, 100);
                 command.Parameters.Add("@HashCode", SqlDbType.Int);
                 command.Parameters.Add("@DriveInfo", SqlDbType.VarBinary, Int32.MaxValue);
-command.Parameters.Add("@DriveCode", SqlDbType.NVarChar, 20);
+                command.Parameters.Add("@DriveCode", SqlDbType.NVarChar, 20);
                 command.Parameters["@DriveInfo"].Value = _fileManager.GetBinaryData<DriveInfo>(di);
                 command.Parameters["@Title"].Value = title;
                 command.Parameters["@HashCode"].Value = hashCode;
@@ -453,7 +453,6 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         }
         #endregion
 
-
         #region FillFilesInfo
         public void FillFilesInfo(int driveId, string pathDrive)
         {
@@ -479,10 +478,7 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         }
         #endregion
 
-
-
-
-
+        #region Все диски
         public string[] GetDrives()
         {
             using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
@@ -502,7 +498,9 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
 
             }
         }
+        #endregion
 
+        #region Получить Дирректории
         public string[] GetDirectories(int id)
         {
             using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
@@ -526,8 +524,9 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
 
             }
         }
+        #endregion
 
-
+        #region Получить файлы
         public string[] GetFiles(int id)
         {
             using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
@@ -551,6 +550,7 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
 
             }
         }
+        #endregion
 
         #region GetDriveInfoById Описание диска по ИД
         public DriveInfo GetDriveInfoById(int id)
@@ -570,7 +570,6 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         }
         #endregion
 
-
         #region GetFileInfoById Информация о файле по ИД
         public Dictionary<string, string> GetFileInfoById(int id)
         {
@@ -589,7 +588,6 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
             }
         }
         #endregion
-
 
         #region GetMediaFileInfoById Медиа информация о файле.
         public Dictionary<string, string> GetMediaFileInfoById(int id)
@@ -611,8 +609,6 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         }
         #endregion
 
-
-
         #region GetDirectoryInfoById Информация о дирректории по Ид
         public Dictionary<string, string> GetDirectoryInfoById(int id)
         {
@@ -631,8 +627,6 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
             }
         }
         #endregion
-
-
 
 
         private void ReadImageFromDatabase()

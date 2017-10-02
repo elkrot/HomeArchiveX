@@ -56,7 +56,7 @@
     </UserControl.Resources>
 
 
-    <Grid Background="#FFECC4C4">
+    <Grid>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                           CanContentScroll="True"  Margin="10"  VerticalAlignment="Top" HorizontalAlignment="Left"  >

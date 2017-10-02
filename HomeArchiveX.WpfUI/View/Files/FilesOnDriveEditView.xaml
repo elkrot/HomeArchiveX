@@ -76,7 +76,7 @@
                     <!--<view:CategoriesView DataContext="{Binding CategoryNavigationViewModel}"  Margin="0,0,0,0" Grid.Column="0" 
                                          />-->
 
-                    <TreeView x:Name="CategoriesTreeView" Background="PaleGoldenrod" 
+                    <TreeView x:Name="CategoriesTreeView"
                    
                   ItemsSource="{Binding Path=CategoryNavigationViewModel.NavigationItems}"
                   SelectedValuePath="CategoryKey">
@@ -119,7 +119,7 @@
             <TabItem Header="Описание">
                 <StackPanel>
 
-                    <xctk:RichTextBox x:Name="_richTextBox" Grid.Row="1" Margin="10" BorderBrush="Gray" Padding="10"
+                    <xctk:RichTextBox x:Name="_richTextBox" Grid.Row="1" Margin="10" Padding="10"
                                      Text="{Binding ArchiveEntity.Description,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
                                      ScrollViewer.VerticalScrollBarVisibility="Auto">
                         <xctk:RichTextBox.TextFormatter>

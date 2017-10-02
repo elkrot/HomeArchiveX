@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
            xmlns:view="clr-namespace:HomeArchiveX.WpfUI.View"
              d:DesignHeight="485" d:DesignWidth="625">
-    <Grid Background="AliceBlue">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>

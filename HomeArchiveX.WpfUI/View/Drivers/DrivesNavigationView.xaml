@@ -14,7 +14,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Grid x:Name="grid" Background="#444444">
+                        <Grid x:Name="grid">
                             
                             <ContentPresenter Margin="{TemplateBinding Padding}"/>
                         </Grid>
