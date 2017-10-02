@@ -19,7 +19,7 @@ namespace HomeArchiveX.Infrastructure
         private Dictionary<string, int> _directoryCash;
         private Dictionary<string, int> _imagesInDirectory;
         readonly int MAX_IMAGES_IN_DIRECTORY;
-
+        const string ERROR_ARGUMENT_EXCEPTION_MSG = "Не верно указан параметр";
         private IConfiguration _configuration;
         ILogger _logger;
         IFIleManager _fileManager;
@@ -33,6 +33,14 @@ namespace HomeArchiveX.Infrastructure
         /// <param name="logger">Логгер</param>
         public DataManager(IConfiguration configuration, IFIleManager fileManager, ILogger logger, int maxImagesInDirectory = 2)
         {
+            #region Guard
+            if (configuration == null) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(configuration));
+            if (fileManager == null) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(fileManager));
+            if (logger == null) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(logger));
+            if (maxImagesInDirectory <= 0)
+                throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(maxImagesInDirectory));
+            #endregion
+
             _configuration = configuration;
             _logger = logger;
             _fileManager = fileManager;
@@ -54,21 +62,36 @@ namespace HomeArchiveX.Infrastructure
         /// <returns></returns>
         public int CreateFolder(string path, int driveId)
         {
-            var di = _fileManager.GetDirectoryInfoByPath(path);
-            var parentPath = di.Parent == null || di.Root.FullName == di.Parent.FullName ? null : di.Parent.FullName;
-            int parentId = GetEntityIdByPath(parentPath, driveId, EntityType.Folder);
-            #region Set Directory Info Dictionary
-            var diDict = new Dictionary<string, string>();
-            diDict.Add("CreationTime", string.Format("{0:dd.MM.yyyy hh:mm:ss}", di.CreationTime));
-            diDict.Add("LastWriteTime", string.Format("{0:dd.MM.yyyy hh:mm:ss}", di.LastWriteTime));
-            diDict.Add("Extension", di.Extension);
-            diDict.Add("FullName", di.FullName);
-            diDict.Add("Name", di.Name);
+            #region Guard
+            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(path));
+            if (driveId <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(driveId));
             #endregion
-            var id = CreateArchiveEntity<Dictionary<string, string>>(driveId, diDict, di.Name, di.GetHashCode(), parentId
-                , EntityType.Folder, path, "", "");
-            _directoryCash.Add(path, id);
-            return id;
+
+            try
+            {
+                var di = _fileManager.GetDirectoryInfoByPath(path);
+                var parentPath = di.Parent == null || di.Root.FullName == di.Parent.FullName ? null : di.Parent.FullName;
+                int parentId = GetEntityIdByPath(parentPath, driveId, EntityType.Folder);
+                #region Set Directory Info Dictionary
+                var diDict = new Dictionary<string, string>();
+                diDict.Add("CreationTime", string.Format("{0:dd.MM.yyyy hh:mm:ss}", di.CreationTime));
+                diDict.Add("LastWriteTime", string.Format("{0:dd.MM.yyyy hh:mm:ss}", di.LastWriteTime));
+                diDict.Add("Extension", di.Extension);
+                diDict.Add("FullName", di.FullName);
+                diDict.Add("Name", di.Name);
+                #endregion
+                var id = CreateArchiveEntity<Dictionary<string, string>>(
+                    driveId, diDict, di.Name, di.GetHashCode(), parentId, EntityType.Folder, path, "", "");
+                _directoryCash.Add(path, id);
+                return id;
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе CreateFolder. {0}", e.Message));
+                throw new Exception("Ошибка в методе CreateFolder");
+            }
+
+
         }
         #endregion
 
@@ -81,21 +104,33 @@ namespace HomeArchiveX.Infrastructure
         /// <returns></returns>
         public int CreateFile(string path, int driveId)
         {
-            FileInfo fi = _fileManager.GetFileInfoByPath(path);
-            int parentId = GetEntityIdByPath(fi.Directory.Parent == null ? null : fi.Directory.FullName
-                , driveId, EntityType.Folder);
+            #region Guard
+            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(path));
+            if (driveId <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(driveId));
+            #endregion
+            try
+            {
+                FileInfo fi = _fileManager.GetFileInfoByPath(path);
+                int parentId = GetEntityIdByPath(fi.Directory.Parent == null ? null : fi.Directory.FullName
+                    , driveId, EntityType.Folder);
 
-            var fiDict = new Dictionary<string, string>();
-            fiDict.Add("CreationTime", string.Format("{0:dd.MM.yyyy hh:mm:ss}", fi.CreationTime));
-            fiDict.Add("LastWriteTime", string.Format("{0:dd.MM.yyyy hh:mm:ss}", fi.LastWriteTime));
-            fiDict.Add("Extension", fi.Extension);
-            fiDict.Add("FullName", fi.FullName);
-            fiDict.Add("Name", fi.Name);
-            fiDict.Add("Length", string.Format("{0}", fi.Length));
+                var fiDict = new Dictionary<string, string>();
+                fiDict.Add("CreationTime", string.Format("{0:dd.MM.yyyy hh:mm:ss}", fi.CreationTime));
+                fiDict.Add("LastWriteTime", string.Format("{0:dd.MM.yyyy hh:mm:ss}", fi.LastWriteTime));
+                fiDict.Add("Extension", fi.Extension);
+                fiDict.Add("FullName", fi.FullName);
+                fiDict.Add("Name", fi.Name);
+                fiDict.Add("Length", string.Format("{0}", fi.Length));
 
-            var id = CreateArchiveEntity<Dictionary<string, string>>(driveId, fiDict, fi.Name, fi.GetHashCode(), parentId
-                , EntityType.File, path, fi.Extension, "");
-            return id;
+                var id = CreateArchiveEntity<Dictionary<string, string>>(driveId, fiDict, fi.Name, fi.GetHashCode(), parentId
+                    , EntityType.File, path, fi.Extension, "");
+                return id;
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе CreateFile. {0}", e.Message));
+                throw new Exception("Ошибка в методе CreateFile");
+            }
         }
         #endregion
 
@@ -108,19 +143,33 @@ namespace HomeArchiveX.Infrastructure
         /// <param name="driveId">Ключ диска</param>
         public void CreateImageToEntity(string ImagePath, int entityId, int driveId)
         {
-            int imageId = CreateImage(ImagePath, string.Format(@"drive{0}\img{1}", driveId, entityId));
-            string queryString = @"insert into ImageToEntity(TargetEntityKey,ImageKey) values (@TargetEntityKey,@ImageKey)";
+            #region Guard
+            if (string.IsNullOrWhiteSpace(ImagePath)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(ImagePath));
+            if (driveId <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(driveId));
+            if (entityId <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(entityId));
+            #endregion
 
-            using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
+            try
             {
-                var command = new SqlCommand(queryString, ce);
-                command.Parameters.Clear();
-                command.Parameters.Add("@TargetEntityKey", SqlDbType.Int);
-                command.Parameters.Add("@ImageKey", SqlDbType.Int);
-                command.Parameters["@TargetEntityKey"].Value = entityId;
-                command.Parameters["@ImageKey"].Value = imageId;
-                ce.Open();
-                command.ExecuteNonQuery();
+                int imageId = CreateImage(ImagePath, string.Format(@"drive{0}\img{1}", driveId, entityId));
+                string queryString = @"insert into ImageToEntity(TargetEntityKey,ImageKey) values (@TargetEntityKey,@ImageKey)";
+
+                using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    var command = new SqlCommand(queryString, ce);
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@TargetEntityKey", SqlDbType.Int);
+                    command.Parameters.Add("@ImageKey", SqlDbType.Int);
+                    command.Parameters["@TargetEntityKey"].Value = entityId;
+                    command.Parameters["@ImageKey"].Value = imageId;
+                    ce.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе CreateImageToEntity. {0}", e.Message));
+                throw new Exception("Ошибка в методе CreateImageToEntity");
             }
 
         }
@@ -135,71 +184,104 @@ namespace HomeArchiveX.Infrastructure
         /// <returns>Ключ рисунка</returns>
         public int CreateImage(string imagePath, string targetDir)
         {
-            var imgInfo = new FileInfo(imagePath);
-            var imgDirPath = imgInfo.Directory.FullName;
-            int imgCount = 0;
-            imgCount = GetImgCountInDirectory(imgDirPath, imgCount);
+            #region Guard
+            if (string.IsNullOrWhiteSpace(imagePath)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(imagePath));
+            if (string.IsNullOrWhiteSpace(targetDir)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(targetDir));
 
-            string newImgPath = "";
-            string queryString = @"insert into Image( Thumbnail,ImagePath,ThumbnailPath,ImageTitle,HashCode) 
+            #endregion
+
+            try
+            {
+                var imgInfo = new FileInfo(imagePath);
+                var imgDirPath = imgInfo.Directory.FullName;
+                int imgCount = 0;
+                imgCount = GetImgCountInDirectory(imgDirPath, imgCount);
+
+                string newImgPath = "";
+                string queryString = @"insert into Image( Thumbnail,ImagePath,ThumbnailPath,ImageTitle,HashCode) 
 values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
                 select SCOPE_IDENTITY();";
 
-            byte[] imageData = null;
-            try
-            {
-                if (!(imgCount > MAX_IMAGES_IN_DIRECTORY) && MAX_IMAGES_IN_DIRECTORY != 0 && imgCount != 0)
+                byte[] imageData = null;
+                try
                 {
-                    newImgPath = _fileManager.CopyImg(imagePath, targetDir);
+                    if (!(imgCount > MAX_IMAGES_IN_DIRECTORY) && MAX_IMAGES_IN_DIRECTORY != 0 && imgCount != 0)
+                    {
+                        newImgPath = _fileManager.CopyImg(imagePath, targetDir);
+                    }
+
                 }
 
+                // Catch exception if the file was already copied.
+                catch (IOException copyError)
+                {
+                    _logger.Add(copyError.Message);
+                }
+
+                Bitmap bmp = _fileManager.GetThumb(imagePath);
+                string thumbPath = _fileManager.SaveThumb(targetDir, _configuration.GetThumbDirName(), bmp, imgInfo.Name);
+                imageData = _fileManager.GetImageData(bmp);
+
+                using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    var command = new SqlCommand(queryString, ce);
+                    command.Parameters.Clear(); //Thumbnail,
+                    command.Parameters.Add("@HashCode", SqlDbType.Int);
+                    command.Parameters.Add("@ImagePath", SqlDbType.NVarChar, 255);
+                    command.Parameters.Add("@ThumbnailPath", SqlDbType.NVarChar, 255);
+                    command.Parameters.Add("@ImageTitle", SqlDbType.NVarChar, 50);
+                    command.Parameters.Add("@Thumbnail", SqlDbType.Image);
+
+                    command.Parameters["@HashCode"].Value = imgInfo.GetHashCode();
+                    command.Parameters["@ImagePath"].Value = newImgPath;
+                    command.Parameters["@ThumbnailPath"].Value = thumbPath;
+                    command.Parameters["@ImageTitle"].Value = imgInfo.Name;
+                    command.Parameters["@Thumbnail"].Value = imageData;
+                    ce.Open();
+                    string strid = command.ExecuteScalar().ToString();
+                    return int.Parse(strid);
+                }
             }
-
-            // Catch exception if the file was already copied.
-            catch (IOException copyError)
+            catch (Exception e)
             {
-                _logger.Add(copyError.Message);
-            }
-
-            Bitmap bmp = _fileManager.GetThumb(imagePath);
-            string thumbPath = _fileManager.SaveThumb(targetDir, _configuration.GetThumbDirName(), bmp, imgInfo.Name);
-            imageData = _fileManager.GetImageData(bmp);
-
-            using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
-            {
-                var command = new SqlCommand(queryString, ce);
-                command.Parameters.Clear(); //Thumbnail,
-                command.Parameters.Add("@HashCode", SqlDbType.Int);
-                command.Parameters.Add("@ImagePath", SqlDbType.NVarChar, 255);
-                command.Parameters.Add("@ThumbnailPath", SqlDbType.NVarChar, 255);
-                command.Parameters.Add("@ImageTitle", SqlDbType.NVarChar, 50);
-                command.Parameters.Add("@Thumbnail", SqlDbType.Image);
-
-                command.Parameters["@HashCode"].Value = imgInfo.GetHashCode();
-                command.Parameters["@ImagePath"].Value = newImgPath;
-                command.Parameters["@ThumbnailPath"].Value = thumbPath;
-                command.Parameters["@ImageTitle"].Value = imgInfo.Name;
-                command.Parameters["@Thumbnail"].Value = imageData;
-                ce.Open();
-                string strid = command.ExecuteScalar().ToString();
-                return int.Parse(strid);
+                _logger.Add(string.Format("Ошибка в методе CreateImageToEntity. {0}", e.Message));
+                throw new Exception("Ошибка в методе CreateImageToEntity");
             }
         }
 
+        /// <summary>
+        /// Получить количество картинок в дирректории
+        /// </summary>
+        /// <param name="imgDirPath"></param>
+        /// <param name="imgCount"></param>
+        /// <returns></returns>
         private int GetImgCountInDirectory(string imgDirPath, int imgCount)
         {
-            if (_imagesInDirectory.Keys.Contains(imgDirPath))
-            {
-                _imagesInDirectory.TryGetValue(imgDirPath, out imgCount);
-                imgCount++;
-                _imagesInDirectory[imgDirPath] = imgCount;
-            }
-            else
-            {
-                _imagesInDirectory.Add(imgDirPath, 1);
-            }
+            #region Guard
+            if (string.IsNullOrWhiteSpace(imgDirPath)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(imgDirPath));
+            if (imgCount <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(imgCount));
+            #endregion
 
-            return imgCount;
+            try
+            {
+                if (_imagesInDirectory.Keys.Contains(imgDirPath))
+                {
+                    _imagesInDirectory.TryGetValue(imgDirPath, out imgCount);
+                    imgCount++;
+                    _imagesInDirectory[imgDirPath] = imgCount;
+                }
+                else
+                {
+                    _imagesInDirectory.Add(imgDirPath, 1);
+                }
+
+                return imgCount;
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе GetImgCountInDirectory. {0}", e.Message));
+                throw new Exception("Ошибка в методе GetImgCountInDirectory ");
+            }
         }
         #endregion
 
@@ -211,71 +293,95 @@ values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
         /// <returns></returns>
         public DriveX GetDriveById(int id)
         {
-            DriveX drive = new DriveX();
-            string queryString = "SELECT Title,DriveInfo FROM Drive where DriveId=@id;";
+            #region Guard
+            if (id <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(id));
+            #endregion
 
-            using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
+            try
             {
-                var command = new SqlCommand(queryString, ce);
-                command.Parameters.Clear();
-                command.Parameters.AddWithValue("id", id);
-                ce.Open();
-                using (var reader = command.ExecuteReader())
+                DriveX drive = new DriveX();
+                string queryString = "SELECT Title,DriveInfo FROM Drive where DriveId=@id;";
+
+                using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
                 {
-                    while (reader.Read())
+                    var command = new SqlCommand(queryString, ce);
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("id", id);
+                    ce.Open();
+                    using (var reader = command.ExecuteReader())
                     {
-                        byte[] bytes = (byte[])reader[1];
-                        drive = _fileManager.FillDrive(drive, bytes, (string)reader[0], id);
+                        while (reader.Read())
+                        {
+                            byte[] bytes = (byte[])reader[1];
+                            drive = _fileManager.FillDrive(drive, bytes, (string)reader[0], id);
+                        }
                     }
                 }
+                return drive;
             }
-            return drive;
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе . {0}", e.Message));
+                throw new Exception("Ошибка в методе ");
+            }
         }
         #endregion
 
         #region Вернуть ИД описания Файла, папки
         public int GetEntityIdByPath(string path, int driveId, EntityType entityType)
         {
+            #region Guard
+            if (driveId <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(driveId));
             if (path == null) return -1;
+            #endregion
+
             if (_directoryCash.ContainsKey(path)) return _directoryCash[path];
 
-            int id = 0;
-            string queryString = @"select ArchiveEntityKey from ArchiveEntity where 
+            try
+            {
+                int id = 0;
+                string queryString = @"select ArchiveEntityKey from ArchiveEntity where 
                                     DriveId=@DriveId and EntityPath=@EntityPath";
-            using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
-            {
-                var command = new SqlCommand(queryString, ce);
-                command.Parameters.Clear();
-                command.Parameters.Add("@DriveId", SqlDbType.Int);
-                command.Parameters.Add("@EntityPath", SqlDbType.NVarChar, 250);
+                using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    var command = new SqlCommand(queryString, ce);
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@DriveId", SqlDbType.Int);
+                    command.Parameters.Add("@EntityPath", SqlDbType.NVarChar, 250);
 
-                command.Parameters["@DriveId"].Value = driveId;
-                command.Parameters["@EntityPath"].Value = path;
-                ce.Open();
+                    command.Parameters["@DriveId"].Value = driveId;
+                    command.Parameters["@EntityPath"].Value = path;
+                    ce.Open();
 
-                var execResult = command.ExecuteScalar();
+                    var execResult = command.ExecuteScalar();
 
-                string strid = execResult == null ? "" : execResult.ToString();
+                    string strid = execResult == null ? "" : execResult.ToString();
 
-                int.TryParse(strid, out id);
+                    int.TryParse(strid, out id);
 
-            }
-            if (id != 0)
-            {
+                }
+                if (id != 0)
+                {
+                    return id;
+                }
+                switch (entityType)
+                {
+                    case EntityType.Folder:
+                        id = CreateFolder(path, driveId);
+                        break;
+                    case EntityType.File:
+                        id = CreateFile(path, driveId);
+                        break;
+                    default:
+                        break;
+                }
                 return id;
             }
-            switch (entityType)
+            catch (Exception e)
             {
-                case EntityType.Folder:
-                    id = CreateFolder(path, driveId);
-                    break;
-                case EntityType.File:
-                    id = CreateFile(path, driveId);
-                    break;
-                default:
-                    break;
+                _logger.Add(string.Format("Ошибка в методе GetEntityIdByPath. {0}", e.Message));
+                throw new Exception("Ошибка в методе GetEntityIdByPath");
             }
-            return id;
         }
         #endregion
 
@@ -288,41 +394,53 @@ values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
         /// <returns></returns>
         public int CreateDrive(string path, string title, string diskCode)
         {
-
-            var di = new DriveInfo(path);
-            if (!di.IsReady)
+            #region Guard
+            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(path));
+            if (string.IsNullOrWhiteSpace(title)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(title));
+            if (string.IsNullOrWhiteSpace(diskCode)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(diskCode));
+            #endregion
+            try
             {
-                _logger.Add("Устройство не готово для чтения");
-                return 0;
-            }
-            var hashCode = di.TotalSize.GetHashCode() ^ di.VolumeLabel.GetHashCode() ^ di.TotalFreeSpace.GetHashCode();
-            var driveExist = IsDriveExist(hashCode, title);
-            if (driveExist > 0)
-            {
-                _logger.Add("Диск с таким хешем или наименованием существует");
-                return 0;
-            }
+                var di = new DriveInfo(path);
+                if (!di.IsReady)
+                {
+                    _logger.Add("Устройство не готово для чтения");
+                    return 0;
+                }
+                var hashCode = di.TotalSize.GetHashCode() ^ di.VolumeLabel.GetHashCode() ^ di.TotalFreeSpace.GetHashCode();
+                var driveExist = IsDriveExist(hashCode, title);
+                if (driveExist > 0)
+                {
+                    _logger.Add("Диск с таким хешем или наименованием существует");
+                    return 0;
+                }
 
-            string queryString = @"insert into Drive(Title, HashCode, DriveInfo,DriveCode) 
+                string queryString = @"insert into Drive(Title, HashCode, DriveInfo,DriveCode) 
 values (@Title, @HashCode, @DriveInfo,@DriveCode);
                 select SCOPE_IDENTITY();";
-            using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
-            {
-                var command = new SqlCommand(queryString, ce);
-                command.Parameters.Clear();
-                command.Parameters.Add("@Title", SqlDbType.NVarChar, 100);
-                command.Parameters.Add("@HashCode", SqlDbType.Int);
-                command.Parameters.Add("@DriveInfo", SqlDbType.VarBinary, Int32.MaxValue);
-                command.Parameters.Add("@DriveCode", SqlDbType.NVarChar, 20);
-                command.Parameters["@DriveInfo"].Value = _fileManager.GetBinaryData<DriveInfo>(di);
-                command.Parameters["@Title"].Value = title;
-                command.Parameters["@HashCode"].Value = hashCode;
-                command.Parameters["@DriveCode"].Value = diskCode;
-                ce.Open();
-                // command.ExecuteNonQuery();
-                string strid = command.ExecuteScalar().ToString();
+                using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    var command = new SqlCommand(queryString, ce);
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@Title", SqlDbType.NVarChar, 100);
+                    command.Parameters.Add("@HashCode", SqlDbType.Int);
+                    command.Parameters.Add("@DriveInfo", SqlDbType.VarBinary, Int32.MaxValue);
+                    command.Parameters.Add("@DriveCode", SqlDbType.NVarChar, 20);
+                    command.Parameters["@DriveInfo"].Value = _fileManager.GetBinaryData<DriveInfo>(di);
+                    command.Parameters["@Title"].Value = title;
+                    command.Parameters["@HashCode"].Value = hashCode;
+                    command.Parameters["@DriveCode"].Value = diskCode;
+                    ce.Open();
+                    // command.ExecuteNonQuery();
+                    string strid = command.ExecuteScalar().ToString();
 
-                return int.Parse(strid);
+                    return int.Parse(strid);
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе CreateDrive. {0}", e.Message));
+                throw new Exception("Ошибка в методе CreateDrive");
             }
         }
         #endregion
@@ -336,40 +454,64 @@ values (@Title, @HashCode, @DriveInfo,@DriveCode);
         /// <returns></returns>
         public int IsDriveExist(int hashCode, string title)
         {
-            string queryString = @"
+            #region Guard
+            if (string.IsNullOrWhiteSpace(title)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(title));
+            if (hashCode <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(hashCode));
+            #endregion
+
+            try
+            {
+                string queryString = @"
 select (SELECT count(1) FROM Drive where 
 Title=@title)+case when ( SELECT count(1) FROM Drive 
 where  HashCode = @HashCode)>0 then 2 else 0 end vl";
-            using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
+                using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    var command = new SqlCommand(queryString, ce);
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@Title", SqlDbType.NVarChar, 100);
+                    command.Parameters.Add("@HashCode", SqlDbType.Int);
+
+                    command.Parameters["@Title"].Value = title;
+                    command.Parameters["@HashCode"].Value = hashCode;
+
+                    ce.Open();
+
+                    string strid = command.ExecuteScalar().ToString();
+
+                    return int.Parse(strid);
+                }
+            }
+            catch (Exception e)
             {
-                var command = new SqlCommand(queryString, ce);
-                command.Parameters.Clear();
-                command.Parameters.Add("@Title", SqlDbType.NVarChar, 100);
-                command.Parameters.Add("@HashCode", SqlDbType.Int);
-
-                command.Parameters["@Title"].Value = title;
-                command.Parameters["@HashCode"].Value = hashCode;
-
-                ce.Open();
-
-                string strid = command.ExecuteScalar().ToString();
-
-                return int.Parse(strid);
+                _logger.Add(string.Format("Ошибка в методе IsDriveExist. {0}", e.Message));
+                throw new Exception("Ошибка в методе IsDriveExist");
             }
         }
         #endregion
 
         #region Очистить БД
+        /// <summary>
+        /// Очистить БД
+        /// </summary>
         public void TruncateTables()
         {
-            string sqlExpression = "TruncateTables";
-            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            try
             {
-                connection.Open();
-                var command = new SqlCommand(sqlExpression, connection);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.ExecuteScalar();
+                string sqlExpression = "TruncateTables";
+                using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    connection.Open();
+                    var command = new SqlCommand(sqlExpression, connection);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.ExecuteScalar();
 
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе TruncateTables. {0}", e.Message));
+                throw new Exception("Ошибка в методе TruncateTables");
             }
         }
         #endregion
@@ -393,54 +535,74 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
            int hashCode, int parentEntityKey, EntityType entityType, string entityPath, string extension, string description)
         {
 
-            string queryString = @"insert into ArchiveEntity( 
+            #region Guard
+            if (string.IsNullOrWhiteSpace(title)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(title));
+            if (string.IsNullOrWhiteSpace(entityPath)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(entityPath));
+            if (string.IsNullOrWhiteSpace(extension)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(extension));
+            if (string.IsNullOrWhiteSpace(description)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(description));
+
+            if (driveId <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(driveId));
+            if (parentEntityKey <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(parentEntityKey));
+            if (hashCode <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(hashCode));
+            #endregion
+
+
+            try
+            {
+                string queryString = @"insert into ArchiveEntity( 
                                     ParentEntityKey,DriveId,Title,EntityType ,EntityPath,EntityExtension ,Description ,HashCode ,EntityInfo, MFileInfo)
                                     values ( 
                                     @ParentEntityKey,@DriveId,@Title,@EntityType,@EntityPath,@EntityExtension,@Description,@HashCode,@EntityInfo,@MFileInfo);
                                      select SCOPE_IDENTITY();";
-            using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
+                using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    var command = new SqlCommand(queryString, ce);
+                    command.Parameters.Clear();
+
+                    command.Parameters.Add("@ParentEntityKey", SqlDbType.Int);
+
+                    command.Parameters.Add("@DriveId", SqlDbType.Int);
+                    command.Parameters.Add("@EntityType", SqlDbType.Int);
+                    command.Parameters.Add("@EntityPath", SqlDbType.NVarChar, 100);
+                    command.Parameters.Add("@EntityExtension", SqlDbType.NVarChar, 20);
+                    command.Parameters.Add("@Description", SqlDbType.NVarChar, 100);
+                    command.Parameters.Add("@HashCode", SqlDbType.Int);
+                    command.Parameters.Add("@EntityInfo", SqlDbType.VarBinary, Int32.MaxValue);
+                    command.Parameters.Add("@MFileInfo", SqlDbType.VarBinary, Int32.MaxValue);
+                    command.Parameters.Add("@Title", SqlDbType.NVarChar, 250);
+                    var mfi = MFIFactory.GetMediaFileInfoDictionary(extension, entityPath);
+
+                    command.Parameters["@MFileInfo"].Value = _fileManager.GetBinaryData<Dictionary<string, string>>(mfi);
+                    command.Parameters["@EntityInfo"].Value = _fileManager.GetBinaryData<T>(entity);
+                    command.Parameters["@Title"].Value = title;
+                    command.Parameters["@HashCode"].Value = hashCode;
+                    if (parentEntityKey != -1)
+                    {
+                        command.Parameters["@ParentEntityKey"].Value = parentEntityKey;
+                    }
+                    else
+                    {
+                        command.Parameters["@ParentEntityKey"].Value = DBNull.Value;
+                    }
+                    command.Parameters["@DriveId"].Value = driveId;
+                    command.Parameters["@EntityType"].Value = (int)entityType;
+                    command.Parameters["@EntityPath"].Value = entityPath;
+                    command.Parameters["@EntityExtension"].Value = extension;
+                    command.Parameters["@Description"].Value = description;
+                    ce.Open();
+                    //  command.ExecuteNonQuery();
+                    string strid = command.ExecuteScalar().ToString();
+                    if (_fileManager.IsImage(extension))
+                    {
+                        CreateImageToEntity(entityPath, int.Parse(strid), driveId);
+                    }
+                    return int.Parse(strid);
+                }
+            }
+            catch (Exception e)
             {
-                var command = new SqlCommand(queryString, ce);
-                command.Parameters.Clear();
-
-                command.Parameters.Add("@ParentEntityKey", SqlDbType.Int);
-
-                command.Parameters.Add("@DriveId", SqlDbType.Int);
-                command.Parameters.Add("@EntityType", SqlDbType.Int);
-                command.Parameters.Add("@EntityPath", SqlDbType.NVarChar, 100);
-                command.Parameters.Add("@EntityExtension", SqlDbType.NVarChar, 20);
-                command.Parameters.Add("@Description", SqlDbType.NVarChar, 100);
-                command.Parameters.Add("@HashCode", SqlDbType.Int);
-                command.Parameters.Add("@EntityInfo", SqlDbType.VarBinary, Int32.MaxValue);
-                command.Parameters.Add("@MFileInfo", SqlDbType.VarBinary, Int32.MaxValue);
-                command.Parameters.Add("@Title", SqlDbType.NVarChar, 250);
-                var mfi = MFIFactory.GetMediaFileInfoDictionary(extension, entityPath);
-
-                command.Parameters["@MFileInfo"].Value = _fileManager.GetBinaryData<Dictionary<string, string>>(mfi);
-                command.Parameters["@EntityInfo"].Value = _fileManager.GetBinaryData<T>(entity);
-                command.Parameters["@Title"].Value = title;
-                command.Parameters["@HashCode"].Value = hashCode;
-                if (parentEntityKey != -1)
-                {
-                    command.Parameters["@ParentEntityKey"].Value = parentEntityKey;
-                }
-                else
-                {
-                    command.Parameters["@ParentEntityKey"].Value = DBNull.Value;
-                }
-                command.Parameters["@DriveId"].Value = driveId;
-                command.Parameters["@EntityType"].Value = (int)entityType;
-                command.Parameters["@EntityPath"].Value = entityPath;
-                command.Parameters["@EntityExtension"].Value = extension;
-                command.Parameters["@Description"].Value = description;
-                ce.Open();
-                //  command.ExecuteNonQuery();
-                string strid = command.ExecuteScalar().ToString();
-                if (_fileManager.IsImage(extension))
-                {
-                    CreateImageToEntity(entityPath, int.Parse(strid), driveId);
-                }
-                return int.Parse(strid);
+                _logger.Add(string.Format("Ошибка в методе . {0}", e.Message));
+                throw new Exception("Ошибка в методе ");
             }
         }
         #endregion
@@ -449,6 +611,10 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         #region FillDirectoriesInfo
         public void FillDirectoriesInfo(int driveId, string pathDrive)
         {
+            #region Guard
+            if (string.IsNullOrWhiteSpace(pathDrive)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(pathDrive));
+            if (driveId <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(driveId));
+            #endregion
             MethodResult<int> result = _fileManager.FillDirectoriesInfo(driveId, pathDrive, CreateFolder);
         }
         #endregion
@@ -456,6 +622,10 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         #region FillFilesInfo
         public void FillFilesInfo(int driveId, string pathDrive)
         {
+            #region Guard
+            if (string.IsNullOrWhiteSpace(pathDrive)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(pathDrive));
+            if (driveId <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(driveId));
+            #endregion
             MethodResult<int> result = _fileManager.FillFilesInfo(driveId, pathDrive, CreateFile);
         }
         #endregion
@@ -463,17 +633,28 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         #region GetImageById
         public Image GetImageById(int id)
         {
-            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            #region Guard
+            if (id <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(id));
+            #endregion
+            try
             {
-                connection.Open();
-                string sql = "select Thumbnail FROM [dbo].[Image] where imageKey=@imageKey";
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.Clear();
-                command.Parameters.AddWithValue("imageKey", id);
-                connection.Open();
-                object obj = command.ExecuteScalar();
-                return _fileManager.GetDataFromBinary<Image>((byte[])obj);
+                using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    connection.Open();
+                    string sql = "select Thumbnail FROM [dbo].[Image] where imageKey=@imageKey";
+                    SqlCommand command = new SqlCommand(sql, connection);
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("imageKey", id);
+                    connection.Open();
+                    object obj = command.ExecuteScalar();
+                    return _fileManager.GetDataFromBinary<Image>((byte[])obj);
 
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе GetImageById. {0}", e.Message));
+                throw new Exception("Ошибка в методе GetImageById");
             }
         }
         #endregion
@@ -481,21 +662,29 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         #region Все диски
         public string[] GetDrives()
         {
-            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            try
             {
-                var result = new List<string>();
-                connection.Open();
-                string sql = " select rtrim(ltrim(str(DriveId))+'. '+Title) descr FROM Drive descr ";
-                SqlCommand command = new SqlCommand(sql, connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
+                using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
                 {
-                    result.Add(reader.GetString(0));
+                    var result = new List<string>();
+                    connection.Open();
+                    string sql = " select rtrim(ltrim(str(DriveId))+'. '+Title) descr FROM Drive descr ";
+                    SqlCommand command = new SqlCommand(sql, connection);
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        result.Add(reader.GetString(0));
+                    }
+
+                    return result.ToArray();
+
                 }
-
-                return result.ToArray();
-
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе . {0}", e.Message));
+                throw new Exception("Ошибка в методе ");
             }
         }
         #endregion
@@ -503,25 +692,37 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         #region Получить Дирректории
         public string[] GetDirectories(int id)
         {
-            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            #region Guard
+            if (id <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(id));
+            #endregion
+
+            try
             {
-                var result = new List<string>();
-                connection.Open();
-                string sql = @"select rtrim(ltrim(str(ArchiveEntityKey)))+'. '+EntityPath descr 
-                               from ArchiveEntity where EntityType=1 and DriveId = @id";
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.Clear();
-                command.Parameters.AddWithValue("id", id);
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
+                using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
                 {
-                    result.Add(reader.GetString(0));
+                    var result = new List<string>();
+                    connection.Open();
+                    string sql = @"select rtrim(ltrim(str(ArchiveEntityKey)))+'. '+EntityPath descr 
+                               from ArchiveEntity where EntityType=1 and DriveId = @id";
+                    SqlCommand command = new SqlCommand(sql, connection);
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("id", id);
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        result.Add(reader.GetString(0));
+                    }
+
+                    return result.ToArray();
+
                 }
-
-                return result.ToArray();
-
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе GetDirectories. {0}", e.Message));
+                throw new Exception("Ошибка в методе GetDirectories");
             }
         }
         #endregion
@@ -529,25 +730,37 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         #region Получить файлы
         public string[] GetFiles(int id)
         {
-            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            #region Guard
+            if (id <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(id));
+            #endregion
+
+            try
             {
-                var result = new List<string>();
-                connection.Open();
-                string sql = @"select rtrim(ltrim(str(ArchiveEntityKey)))+'. '+EntityPath descr 
-                               from ArchiveEntity where EntityType=2 and DriveId = @id";
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.Clear();
-                command.Parameters.AddWithValue("id", id);
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
+                using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
                 {
-                    result.Add(reader.GetString(0));
+                    var result = new List<string>();
+                    connection.Open();
+                    string sql = @"select rtrim(ltrim(str(ArchiveEntityKey)))+'. '+EntityPath descr 
+                               from ArchiveEntity where EntityType=2 and DriveId = @id";
+                    SqlCommand command = new SqlCommand(sql, connection);
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("id", id);
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        result.Add(reader.GetString(0));
+                    }
+
+                    return result.ToArray();
+
                 }
-
-                return result.ToArray();
-
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе GetFiles. {0}", e.Message));
+                throw new Exception("Ошибка в методе GetFiles");
             }
         }
         #endregion
@@ -555,17 +768,29 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         #region GetDriveInfoById Описание диска по ИД
         public DriveInfo GetDriveInfoById(int id)
         {
-            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            #region Guard
+            if (id <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(id));
+            #endregion
+
+            try
             {
-                connection.Open();
-                string sql = "select DriveInfo FROM Drive where DriveId=@id";
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.Clear();
-                command.Parameters.AddWithValue("id", id);
+                using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    connection.Open();
+                    string sql = "select DriveInfo FROM Drive where DriveId=@id";
+                    SqlCommand command = new SqlCommand(sql, connection);
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("id", id);
 
-                object obj = command.ExecuteScalar();
-                return _fileManager.GetDataFromBinary<DriveInfo>((byte[])obj);
+                    object obj = command.ExecuteScalar();
+                    return _fileManager.GetDataFromBinary<DriveInfo>((byte[])obj);
 
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе GetDriveInfoById . {0}", e.Message));
+                throw new Exception("Ошибка в методе GetDriveInfoById ");
             }
         }
         #endregion
@@ -573,18 +798,29 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         #region GetFileInfoById Информация о файле по ИД
         public Dictionary<string, string> GetFileInfoById(int id)
         {
-            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            #region Guard
+            if (id <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(id));
+            #endregion
+            try
             {
-                connection.Open();
-                string sql = "select EntityInfo FROM ArchiveEntity where ArchiveEntityKey=@id and EntityType=2";
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.Clear();
-                command.Parameters.AddWithValue("id", id);
+                using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    connection.Open();
+                    string sql = "select EntityInfo FROM ArchiveEntity where ArchiveEntityKey=@id and EntityType=2";
+                    SqlCommand command = new SqlCommand(sql, connection);
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("id", id);
 
-                object obj = command.ExecuteScalar();
-                if (obj is System.DBNull) return default(Dictionary<string, string>);
-                return _fileManager.GetDataFromBinary<Dictionary<string, string>>((byte[])obj);
+                    object obj = command.ExecuteScalar();
+                    if (obj is System.DBNull) return default(Dictionary<string, string>);
+                    return _fileManager.GetDataFromBinary<Dictionary<string, string>>((byte[])obj);
 
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе GetFileInfoById. {0}", e.Message));
+                throw new Exception("Ошибка в методе GetFileInfoById");
             }
         }
         #endregion
@@ -592,19 +828,31 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         #region GetMediaFileInfoById Медиа информация о файле.
         public Dictionary<string, string> GetMediaFileInfoById(int id)
         {
-            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            #region Guard
+            if (id <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(id));
+            #endregion
+
+            try
             {
-                connection.Open();
-                string sql = "select MFileInfo FROM ArchiveEntity where ArchiveEntityKey=@id and EntityType=2";
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.Clear();
-                command.Parameters.AddWithValue("id", id);
+                using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    connection.Open();
+                    string sql = "select MFileInfo FROM ArchiveEntity where ArchiveEntityKey=@id and EntityType=2";
+                    SqlCommand command = new SqlCommand(sql, connection);
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("id", id);
 
-                object obj = command.ExecuteScalar();
+                    object obj = command.ExecuteScalar();
 
-                if (obj is System.DBNull) return new Dictionary<string, string>();
-                return _fileManager.GetDataFromBinary<Dictionary<string, string>>((byte[])obj);
+                    if (obj is System.DBNull) return new Dictionary<string, string>();
+                    return _fileManager.GetDataFromBinary<Dictionary<string, string>>((byte[])obj);
 
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе GetMediaFileInfoById. {0}", e.Message));
+                throw new Exception("Ошибка в методе GetMediaFileInfoById");
             }
         }
         #endregion
@@ -612,51 +860,35 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         #region GetDirectoryInfoById Информация о дирректории по Ид
         public Dictionary<string, string> GetDirectoryInfoById(int id)
         {
-            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            #region Guard
+            if (id <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(id));
+            #endregion
+
+            try
             {
-                connection.Open();
-                string sql = "select EntityInfo FROM ArchiveEntity where ArchiveEntityKey=@id and EntityType=1";
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.Clear();
-                command.Parameters.AddWithValue("id", id);
+                using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    connection.Open();
+                    string sql = "select EntityInfo FROM ArchiveEntity where ArchiveEntityKey=@id and EntityType=1";
+                    SqlCommand command = new SqlCommand(sql, connection);
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("id", id);
 
-                object obj = command.ExecuteScalar();
-                if (obj is System.DBNull) return default(Dictionary<string, string>);
-                return _fileManager.GetDataFromBinary<Dictionary<string, string>>((byte[])obj);
+                    object obj = command.ExecuteScalar();
+                    if (obj is System.DBNull) return default(Dictionary<string, string>);
+                    return _fileManager.GetDataFromBinary<Dictionary<string, string>>((byte[])obj);
 
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе GetDirectoryInfoById. {0}", e.Message));
+                throw new Exception("Ошибка в методе GetDirectoryInfoById");
             }
         }
         #endregion
 
 
-        private void ReadImageFromDatabase()
-        {
 
-            List<byte[]> images = new List<byte[]>();
-            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
-            {
-                connection.Open();
-                string sql = "select Thumbnail FROM[dbo].[Image] ";
-                SqlCommand command = new SqlCommand(sql, connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-
-                    //images.Add(_fileManager.GetDataFromBinary<Image>((byte[])reader.GetValue(0)));
-                }
-            }
-            // _fileManager.GetDataFromBinary<Image> (byte[] data)
-            string FileName = @"d:\test.jpg";
-            // сохраним первый файл из списка
-            if (images.Count > 0)
-            {
-                using (System.IO.FileStream fs = new System.IO.FileStream(FileName, FileMode.OpenOrCreate))
-                {
-                    fs.Write(images[1], 0, images[1].Length);
-
-                }
-            }
-        }
     }
 }

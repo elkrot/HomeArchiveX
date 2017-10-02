@@ -117,3 +117,39 @@
             }
         }
     }
+
+
+
+
+
+
+	 private void ReadImageFromDatabase()
+        {
+
+            List<byte[]> images = new List<byte[]>();
+            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+            {
+                connection.Open();
+                string sql = "select Thumbnail FROM[dbo].[Image] ";
+                SqlCommand command = new SqlCommand(sql, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+
+                    //images.Add(_fileManager.GetDataFromBinary<Image>((byte[])reader.GetValue(0)));
+                }
+            }
+            // _fileManager.GetDataFromBinary<Image> (byte[] data)
+            string FileName = @"d:\test.jpg";
+            // сохраним первый файл из списка
+            if (images.Count > 0)
+            {
+                using (System.IO.FileStream fs = new System.IO.FileStream(FileName, FileMode.OpenOrCreate))
+                {
+                    fs.Write(images[1], 0, images[1].Length);
+
+                }
+            }
+        }
+

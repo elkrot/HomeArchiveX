@@ -19,6 +19,11 @@ namespace HomeArchiveX.Infrastructure
         ILogger _logger;
         public FileManager(IConfiguration configuration, ILogger logger)
         {
+            #region Guard
+            if (configuration == null) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(configuration));
+            if (logger == null) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(logger));
+            #endregion
+
             _configuration = configuration;
             _logger = logger;
         }
