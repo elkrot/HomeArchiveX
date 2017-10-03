@@ -212,10 +212,6 @@ namespace HomeArchiveX.Infrastructure
         /// <returns></returns>
         public bool IsImage(string ext)
         {
-            #region Guard
-            if (string.IsNullOrWhiteSpace(ext))
-                throw new ArgumentException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(ext));
-            #endregion
             string[] ar = new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
             return ar.Contains(ext.ToLower());
         }

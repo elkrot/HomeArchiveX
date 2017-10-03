@@ -27,7 +27,7 @@ namespace HomeArchiveX.WpfUI
     /// </summary>
     public partial class MainWindow : Window
     {
-DrivesViewModel _drivesViewModel;
+        DrivesViewModel _drivesViewModel;
         FilesOnDriveViewModel _filesOnDriveViewModel;
 
         private System.Windows.Window _window;
@@ -39,7 +39,8 @@ DrivesViewModel _drivesViewModel;
         {
             InitializeComponent();
             _drivesViewModel = drivesViewModel;
-            Main.Content = new DrivesPage(_drivesViewModel);        }
+            Main.Content = new DrivesPage(_drivesViewModel);
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -65,30 +66,43 @@ DrivesViewModel _drivesViewModel;
                     _window = null;
                 }
                 _window = new System.Windows.Window();
-                _window.Title = "Wizard demonstration";
+                _window.Title = "Создание Описания Файлов для дирректории.";
                 _window.Content = wizard;
-                _window.DataContext = new WizardData() { DriveCode ="2017_000"};
+                _window.DataContext = new WizardData() { DriveCode = "2017_000" };
                 _window.Width = 600;
                 _window.Height = 400;
                 _window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
                 // Window will be closed by Wizard because FinishButtonClosesWindow = true and CancelButtonClosesWindow = true
-                
-                if (_window.ShowDialog()==true)
+
+                if (_window.ShowDialog() == true)
                 {
-                    var DriveCode = ((WizardData)_window.DataContext).DriveCode;
-                    var DriveTitle = ((WizardData)_window.DataContext).DriveTitle;
-                    var cnf = new ConfigurationData();
-                    var lg = new Logger();
-                    var fm = new FileManager(cnf, lg);
-                   
-                    IDataManager dm = new DataManager(cnf, fm, lg, 999);
-                    string drvLetter = @"e:\";
-                    CrtDrv(dm, drvLetter, DriveTitle, DriveCode);
-                    _drivesViewModel.Load();
-                    System.Windows.Forms.MessageBox.Show("Завершено");
+                        var cnf = new ConfigurationData();
+                        var lg = new Logger();
+
+                    try
+                    {
+                        var DriveCode = ((WizardData)_window.DataContext).DriveCode;
+                        var DriveTitle = ((WizardData)_window.DataContext).DriveTitle;
+
+                        var fm = new FileManager(cnf, lg);
+
+                        IDataManager dm = new DataManager(cnf, fm, lg, 999);
+                        string drvLetter = @"e:\";
+                        CrtDrv(dm, drvLetter, DriveTitle, DriveCode);
+                        _drivesViewModel.Load();
+                        System.Windows.Forms.MessageBox.Show("Завершено");
+                    }
+                    catch (Exception er)
+                    {
+
+                        System.Windows.Forms.MessageBox.Show(er.Message);
+                        System.Windows.Forms.MessageBox.Show(lg.GetLog());
+
+                    }
+
                 }
-               
-               
+
+
             }
             // Main.Content = new DrivesPage(_drivesViewModel);
         }
@@ -107,18 +121,20 @@ DrivesViewModel _drivesViewModel;
             }
             else
             {
-             //   Console.WriteLine(dm.logger.GetLog());
+                //   Console.WriteLine(dm.logger.GetLog());
             }
         }
         private void OnWizardHelp(object sender, EventArgs e)
         {
-            System.Windows.MessageBox.Show("This is the Help for the Wizard\n\n\n\n\n", "Wizard Help");
+            System.Windows.MessageBox.Show("Здесь будет помощь\n\n\n\n\n", "Помощь");
         }
-        public class WizardData:INotifyPropertyChanged
+        public class WizardData : INotifyPropertyChanged
         {
             string _driveTitle;
             string _driveCode;
-            public string DriveTitle { get { return _driveTitle; }
+            public string DriveTitle
+            {
+                get { return _driveTitle; }
                 set
                 {
                     _driveTitle = value;

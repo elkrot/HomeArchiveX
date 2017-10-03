@@ -49,10 +49,14 @@ namespace HomeArchiveX.Infrastructure
             MAX_IMAGES_IN_DIRECTORY = maxImagesInDirectory;
         }
         #endregion
+       
+        #region ClearCash
         public void ClearCash()
         {
             _directoryCash.Clear();
         }
+        #endregion
+
         #region Создать описание папки
         /// <summary>
         /// Создать в БД запись с описанием папки, дирректории
@@ -538,11 +542,7 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
             #region Guard
             if (string.IsNullOrWhiteSpace(title)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(title));
             if (string.IsNullOrWhiteSpace(entityPath)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(entityPath));
-            if (string.IsNullOrWhiteSpace(extension)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(extension));
-            if (string.IsNullOrWhiteSpace(description)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(description));
-
             if (driveId <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(driveId));
-            if (parentEntityKey <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(parentEntityKey));
             if (hashCode <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(hashCode));
             #endregion
 
@@ -888,7 +888,46 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         }
         #endregion
 
+        #region GetExiststingFilesByHashCode Информация о Существующих файлах
+        public Dictionary<int, string> GetExiststingFilesByHashCode(int hashCode)
+        {
+            #region Guard
+            if (hashCode == 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(hashCode));
+            #endregion
 
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    connection.Open();
+                    string sql = "select ArchiveEntityKey,Title FROM ArchiveEntity where where HashCode=@hashCode and EntityType=2";
+                    SqlCommand command = new SqlCommand(sql, connection);
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("hashCode", hashCode);
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    var result = new Dictionary<int, string>();
+                    
+
+                    while (reader.Read())
+                    {
+                        int tmp = 0;
+                        int.TryParse(reader.GetString(0), out tmp);
+                        result.Add( tmp, reader.GetString(1));
+                    }
+
+                    return result;
+
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе GetDirectoryInfoById. {0}", e.Message));
+                throw new Exception("Ошибка в методе GetDirectoryInfoById");
+            }
+        }
+        #endregion
 
     }
 }

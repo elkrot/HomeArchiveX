@@ -10,13 +10,13 @@
         Title="MainWindow" Height="350" Width="525">
     <Window.Resources>
         <xctk:Wizard x:Key="_wizard" FinishButtonClosesWindow="True" Help="OnWizardHelp">
-            <xctk:WizardPage Title="Welcome to my Wizard"
-                             Description="This Wizard will walk you though how to do something." >
+            <xctk:WizardPage Title="Добро пожаловать"
+                             Description="Этот помошник поможет создать описание дирректории." >
                 
                 </xctk:WizardPage>
             <xctk:WizardPage PageType="Interior"
                              Title="Page 1"
-                             Description="This is the first page in the process." >
+                             Description="Первый шаг процесса." >
                 <Grid>
                     <StackPanel>
                         <TextBox Text="{Binding DriveTitle}"/>
@@ -26,10 +26,10 @@
             </xctk:WizardPage>
             <xctk:WizardPage PageType="Interior"
                              Title="Page 2"
-                             Description="This is the second page in the process" />
+                             Description="Это второй шаг процесса" />
             <xctk:WizardPage PageType="Interior"
                              Title="Last Page"
-                             Description="This is the last page in the process"
+                             Description="Это третий шаг процесса"
                              CanFinish="True" />
         </xctk:Wizard>
     </Window.Resources>
