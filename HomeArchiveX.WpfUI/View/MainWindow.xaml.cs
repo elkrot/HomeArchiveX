@@ -28,7 +28,7 @@ namespace HomeArchiveX.WpfUI
     public partial class MainWindow : Window
     {
         DrivesViewModel _drivesViewModel;
-        FilesOnDriveViewModel _filesOnDriveViewModel;
+      //  FilesOnDriveViewModel _filesOnDriveViewModel;
 
         private System.Windows.Window _window;
         public MainWindow()
@@ -45,12 +45,12 @@ namespace HomeArchiveX.WpfUI
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
-            var bootstrapper = new Bootstrapper();
-            Autofac.IContainer container = bootstrapper.Bootstrap();
+            //var bootstrapper = new Bootstrapper();
+            //Autofac.IContainer container = bootstrapper.Bootstrap();
 
-            _filesOnDriveViewModel = container.Resolve<FilesOnDriveViewModel>();
-            _filesOnDriveViewModel.Load();
-            Main.Content = new FilesOnDrivePage(_filesOnDriveViewModel);
+            //_filesOnDriveViewModel = container.Resolve<FilesOnDriveViewModel>();
+            //_filesOnDriveViewModel.Load();
+            //Main.Content = new FilesOnDrivePage(_filesOnDriveViewModel);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -76,8 +76,8 @@ namespace HomeArchiveX.WpfUI
 
                 if (_window.ShowDialog() == true)
                 {
-                        var cnf = new ConfigurationData();
-                        var lg = new Logger();
+                    var cnf = new ConfigurationData();
+                    var lg = new Logger();
 
                     try
                     {
@@ -121,7 +121,8 @@ namespace HomeArchiveX.WpfUI
             }
             else
             {
-                //   Console.WriteLine(dm.logger.GetLog());
+                System.Windows.Forms.MessageBox.Show(dm.logger.GetLog());
+                //   Console.WriteLine();
             }
         }
         private void OnWizardHelp(object sender, EventArgs e)
