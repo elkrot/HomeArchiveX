@@ -29,7 +29,7 @@ namespace HomeArchiveX.WpfUI.DataProvider
                             .Select(f => new LookupItem
                             {
                                 Id = f.DriveId,
-                                DisplayValue = string.Format("{0}", f.Title)
+                                DisplayValue = string.Format("{0}({1})", f.Title,f.DriveCode.Trim())
                             })
                             .OrderBy(l => l.DisplayValue)
                             .ToList();

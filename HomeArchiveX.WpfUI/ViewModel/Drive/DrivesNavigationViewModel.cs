@@ -24,6 +24,8 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private readonly IEventAggregator _eventAggregator;
         private readonly ILookupProvider<Drive> _driveLookupProvider;
 
+
+        #region constructor
         public DrivesNavigationViewModel(IEventAggregator eventAggregator,
           ILookupProvider<Drive> driveLookupProvider)
         {
@@ -35,7 +37,9 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
             NavigationItems = new ObservableCollection<NavigationItemViewModel>();
         }
+        #endregion
 
+        #region Events
         private void OnDriveDeleted(int driveId)
         {
             var navigationItem =
@@ -60,6 +64,9 @@ namespace HomeArchiveX.WpfUI.ViewModel
                 Load();
             }
         }
+        #endregion
+
+
 
         public void Load()
         {

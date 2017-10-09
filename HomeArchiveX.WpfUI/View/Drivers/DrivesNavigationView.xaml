@@ -34,8 +34,14 @@
         </Style>
     </UserControl.Resources>
     <ScrollViewer  VerticalScrollBarVisibility="Auto">
-        
-        <ItemsControl ItemsSource="{Binding NavigationItems}" Foreground="White" Background="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition  Height="Auto"/>
+            </Grid.RowDefinitions>
+         <TextBox Grid.Row="0"/>
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding NavigationItems}" Foreground="White" Background="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button Command="{Binding OpenDriveEditViewCommand}"
@@ -44,6 +50,14 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Row="2">
+                <Button>N</Button>
+                <Button>L</Button>
+                <TextBox Width="30" />
+                <Button>R</Button>
+                <Button>E</Button>
+            </StackPanel>
+        </Grid>
     </ScrollViewer>
 </UserControl>
 
