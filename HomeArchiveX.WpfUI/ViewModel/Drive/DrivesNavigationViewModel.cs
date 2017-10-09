@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace HomeArchiveX.WpfUI.ViewModel
@@ -19,10 +20,27 @@ namespace HomeArchiveX.WpfUI.ViewModel
         void Load();
     }
 
-    public class DrivesNavigationViewModel : IDrivesNavigationViewModel
+    public class DrivesNavigationViewModel : DependencyObject, IDrivesNavigationViewModel
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly ILookupProvider<Drive> _driveLookupProvider;
+
+
+
+        public string FilterText
+        {
+            get { return (string)GetValue(FilterTextProperty); }
+            set {
+
+                SetValue(FilterTextProperty, value);
+                Load();
+            }
+        }
+
+        // Using a DependencyProperty as the backing store for FilterText.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FilterTextProperty =
+            DependencyProperty.Register("FilterText", typeof(string), typeof(DrivesNavigationViewModel),
+                new PropertyMetadata(String.Empty));
 
 
         #region constructor
@@ -71,9 +89,14 @@ namespace HomeArchiveX.WpfUI.ViewModel
         public void Load()
         {
             IEnumerable<LookupItem> items;
-
-            items = _driveLookupProvider.GetLookup();
-
+            if (string.IsNullOrWhiteSpace(FilterText))
+            {
+                items = _driveLookupProvider.GetLookup();
+            }
+            else
+            {
+                items = _driveLookupProvider.GetLookupWithCondition(x=>x.Title.Contains(FilterText),null);
+            }
             NavigationItems.Clear();
             foreach (var driveLookupItem in
                 items)
