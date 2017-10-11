@@ -25,15 +25,13 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private readonly IEventAggregator _eventAggregator;
         private readonly ILookupProvider<Drive> _driveLookupProvider;
 
+        const int PAGE_LENGTH = 10;
 
-
+        #region FilterText
         public string FilterText
         {
             get { return (string)GetValue(FilterTextProperty); }
-            set {
-
-                SetValue(FilterTextProperty, value);
-                Load();
+            set {SetValue(FilterTextProperty, value);         
             }
         }
 
@@ -50,7 +48,32 @@ namespace HomeArchiveX.WpfUI.ViewModel
                 current.Load();
             }
         }
+        #endregion
 
+        #region CurrentPage
+
+
+        public int CurrentPage
+        {
+            get { return (int)GetValue(CurrentPageProperty); }
+            set { SetValue(CurrentPageProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CurrentPage.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CurrentPageProperty =
+            DependencyProperty.Register("CurrentPage", typeof(int), typeof(DrivesNavigationViewModel), new PropertyMetadata(0,CurrentPage_Changed));
+
+        private static void CurrentPage_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var current = d as DrivesNavigationViewModel;
+            if (current != null)
+            {
+                current.Load();
+            }
+        }
+
+
+        #endregion
 
         #region constructor
         public DrivesNavigationViewModel(IEventAggregator eventAggregator,
@@ -62,7 +85,32 @@ namespace HomeArchiveX.WpfUI.ViewModel
             _eventAggregator.GetEvent<DriveSavedEvent>().Subscribe(OnDriveSaved);
             _eventAggregator.GetEvent<DriveDeletedEvent>().Subscribe(OnDriveDeleted);
 
+            FirstPageCommand = new DelegateCommand(FirstPageCommandExecute);
+            PrevPageCommand = new DelegateCommand(PrevPageCommandExecute);
+            NextPageCommand = new DelegateCommand(NextPageCommandExecute);
+            LastPageCommand = new DelegateCommand(LastPageCommandExecute);
+
             NavigationItems = new ObservableCollection<NavigationItemViewModel>();
+        }
+
+        private void LastPageCommandExecute(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void NextPageCommandExecute(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void PrevPageCommandExecute(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void FirstPageCommandExecute(object obj)
+        {
+            throw new NotImplementedException();
         }
         #endregion
 
@@ -104,7 +152,8 @@ namespace HomeArchiveX.WpfUI.ViewModel
             }
             else
             {
-                items = _driveLookupProvider.GetLookupWithCondition(x=>x.Title.Contains(FilterText),x=>x.Title);
+                items = _driveLookupProvider.GetLookupWithCondition(x=>x.Title.Contains(FilterText),x=>x.Title
+                ,false, CurrentPage,PAGE_LENGTH);
             }
             NavigationItems.Clear();
             foreach (var driveLookupItem in
@@ -120,6 +169,11 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
 
         public ObservableCollection<NavigationItemViewModel> NavigationItems { get; set; }
+
+        public ICommand FirstPageCommand { get; set; }
+        public ICommand PrevPageCommand { get; set; }
+        public ICommand NextPageCommand { get; set; }
+        public ICommand LastPageCommand { get; set; }
     }
 
 

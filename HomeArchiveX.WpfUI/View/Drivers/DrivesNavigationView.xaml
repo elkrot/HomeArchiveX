@@ -51,11 +51,11 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
             <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Row="2">
-                <Button>N</Button>
-                <Button>L</Button>
-                <TextBox Width="30" />
-                <Button>R</Button>
-                <Button>E</Button>
+                <Button Command="{Binding FirstPageCommand}" Width="20">F</Button>
+                <Button Command="{Binding PrevPageCommand}" Width="20">P</Button>
+                <TextBox Width="30" Text="{Binding CurrentPage,UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Command="{Binding NetPageCommand}" Width="20">N</Button>
+                <Button Command="{Binding LastPageCommand}" Width="20">L</Button>
             </StackPanel>
         </Grid>
     </ScrollViewer>

@@ -19,7 +19,10 @@ namespace HomeArchiveX.DataAccess
         IEnumerable<Drive> GetAllDrives();
         IEnumerable<Drive> GetDrivesByCondition(
             Expression<Func<Drive, bool>> where, Expression<Func<Drive, object>> orderby
-            , bool isDescending, int index, int length);
+            );
+        IEnumerable<Drive> GetDrivesByCondition(
+    Expression<Func<Drive, bool>> where, Expression<Func<Drive, object>> orderby
+    , bool isDescending, int index, int length);
         #endregion
 
         #region Файлы

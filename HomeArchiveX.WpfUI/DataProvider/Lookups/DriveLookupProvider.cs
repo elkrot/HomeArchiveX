@@ -36,15 +36,31 @@ namespace HomeArchiveX.WpfUI.DataProvider
                 }
             }
 
-        public IEnumerable<LookupItem> GetLookupWithCondition(Expression<Func<Drive, bool>> where, Expression<Func<Drive, object>> orderby)
+        public IEnumerable<LookupItem> GetLookupWithCondition(Expression<Func<Drive, bool>> where
+            , Expression<Func<Drive, object>> orderby)
         {
             using (var service = _dataServiceCreator())
             {
-                return service.GetDrivesByCondition(where, orderby,false,1,10)
+                return service.GetDrivesByCondition(where, orderby)
                         .Select(f => new LookupItem
                         {
                             Id = f.DriveId,
-                            DisplayValue = string.Format("{0} ", f.Title)
+                            DisplayValue = string.Format("{0}({1})", f.Title, f.DriveCode.Trim())
+                        })
+                        ;
+            }
+        }
+
+        public IEnumerable<LookupItem> GetLookupWithCondition(Expression<Func<Drive, bool>> where
+            , Expression<Func<Drive, object>> orderby, bool isDescending, int index, int length)
+        {
+            using (var service = _dataServiceCreator())
+            {
+                return service.GetDrivesByCondition(where, orderby, isDescending, index, length)
+                        .Select(f => new LookupItem
+                        {
+                            Id = f.DriveId,
+                            DisplayValue = string.Format("{0}({1})", f.Title, f.DriveCode.Trim())
                         })
                         ;
             }

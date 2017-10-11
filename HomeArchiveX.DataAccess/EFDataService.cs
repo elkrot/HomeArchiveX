@@ -54,7 +54,17 @@ namespace HomeArchiveX.DataAccess
                 return repo.Find(x => x.DriveId == id).FirstOrDefault();
             }
         }
-
+        public IEnumerable<Drive> GetDrivesByCondition(
+           Expression<Func<Drive, bool>> where
+           , Expression<Func<Drive, object>> orderby
+           )
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<Drive>();
+                return repo.Find(where, orderby).ToList<Drive>();
+            }
+        }
         public IEnumerable<Drive> GetDrivesByCondition(
             Expression<Func<Drive, bool>> where
             , Expression<Func<Drive, object>> orderby

@@ -8,6 +8,8 @@ namespace HomeArchiveX.WpfU.DataProvider.Lookups
     {
         IEnumerable<LookupItem> GetLookup();
         IEnumerable<LookupItem> GetLookupWithCondition(Expression<Func<T, bool>> where, Expression<Func<T, object>> orderby);
+        IEnumerable<LookupItem> GetLookupWithCondition(Expression<Func<T, bool>> where, Expression<Func<T, object>> orderby
+            , bool isDescending, int index, int length);
     }
 
     public interface ITreeViewLookupProvider<T>
