@@ -40,13 +40,13 @@ namespace HomeArchiveX.WpfUI.DataProvider
         {
             using (var service = _dataServiceCreator())
             {
-                return service.GetDrivesByCondition(where, orderby)
+                return service.GetDrivesByCondition(where, orderby,false,1,10)
                         .Select(f => new LookupItem
                         {
                             Id = f.DriveId,
                             DisplayValue = string.Format("{0} ", f.Title)
                         })
-                        .ToList();
+                        ;
             }
         }
     }

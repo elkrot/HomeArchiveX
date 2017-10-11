@@ -17,7 +17,9 @@ namespace HomeArchiveX.DataAccess
         Drive GetDriveById(int id);
         MethodResult<int> SaveDrive(Drive drive);
         IEnumerable<Drive> GetAllDrives();
-        IEnumerable<Drive> GetDrivesByCondition(Expression<Func<Drive, bool>> where, Expression<Func<Drive, object>> orderby);
+        IEnumerable<Drive> GetDrivesByCondition(
+            Expression<Func<Drive, bool>> where, Expression<Func<Drive, object>> orderby
+            , bool isDescending, int index, int length);
         #endregion
 
         #region Файлы

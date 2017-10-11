@@ -55,12 +55,16 @@ namespace HomeArchiveX.DataAccess
             }
         }
 
-        public IEnumerable<Drive> GetDrivesByCondition(Expression<Func<Drive, bool>> where, Expression<Func<Drive, object>> orderby)
+        public IEnumerable<Drive> GetDrivesByCondition(
+            Expression<Func<Drive, bool>> where
+            , Expression<Func<Drive, object>> orderby
+            , bool isDescending , int index , int length)
         {
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
+                var skip = (index - 1) * length;
                 var repo = uofw.GetRepository<Drive>();
-                return repo.Find(where);
+                return repo.Find(where,orderby).Skip(skip).Take(length).ToList<Drive>();
             }
         }
 

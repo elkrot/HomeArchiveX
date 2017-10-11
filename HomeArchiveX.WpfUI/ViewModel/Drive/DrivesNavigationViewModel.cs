@@ -40,7 +40,16 @@ namespace HomeArchiveX.WpfUI.ViewModel
         // Using a DependencyProperty as the backing store for FilterText.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FilterTextProperty =
             DependencyProperty.Register("FilterText", typeof(string), typeof(DrivesNavigationViewModel),
-                new PropertyMetadata(String.Empty));
+                new PropertyMetadata(String.Empty,FilterText_Changed));
+
+        private static void FilterText_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var current = d as DrivesNavigationViewModel;
+            if (current != null)
+            {
+                current.Load();
+            }
+        }
 
 
         #region constructor
@@ -95,7 +104,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             }
             else
             {
-                items = _driveLookupProvider.GetLookupWithCondition(x=>x.Title.Contains(FilterText),null);
+                items = _driveLookupProvider.GetLookupWithCondition(x=>x.Title.Contains(FilterText),x=>x.Title);
             }
             NavigationItems.Clear();
             foreach (var driveLookupItem in
