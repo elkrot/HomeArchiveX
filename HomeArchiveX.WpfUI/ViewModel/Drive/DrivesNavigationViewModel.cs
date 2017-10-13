@@ -24,8 +24,9 @@ namespace HomeArchiveX.WpfUI.ViewModel
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly ILookupProvider<Drive> _driveLookupProvider;
-
-        const int PAGE_LENGTH = 1;
+        public int itemsCount { get; set; }
+        const int PAGE_LENGTH = 10;
+        public int PageLength { get { return PAGE_LENGTH; } }
 
         #region FilterText
         public string FilterText
@@ -98,16 +99,16 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
         private void LastPageCommandExecute(object obj)
         {
-            int itemsCount = NavigationItems.Count();
-            int totalPages = itemsCount / PAGE_LENGTH;
+           
+            int totalPages = itemsCount / PageLength;
             if (totalPages > 1) CurrentPage = totalPages;
 
         }
 
         private void NextPageCommandExecute(object obj)
         {
-            int itemsCount = NavigationItems.Count();
-            int totalPages = itemsCount / PAGE_LENGTH;
+            
+            int totalPages = itemsCount / PageLength;
             if (totalPages > CurrentPage) CurrentPage++;
         }
 
@@ -155,15 +156,12 @@ namespace HomeArchiveX.WpfUI.ViewModel
         public void Load()
         {
             IEnumerable<LookupItem> items;
-            if (string.IsNullOrWhiteSpace(FilterText))
-            {
-                items = _driveLookupProvider.GetLookup();
-            }
-            else
-            {
+
+            itemsCount = _driveLookupProvider.GetLookupWithCondition(x => x.Title.Contains(FilterText), x => x.Title
+                , false, 1, int.MaxValue).Count();
                 items = _driveLookupProvider.GetLookupWithCondition(x => x.Title.Contains(FilterText), x => x.Title
-                , false, CurrentPage, PAGE_LENGTH);
-            }
+                , false, CurrentPage, PageLength);
+            
             NavigationItems.Clear();
             foreach (var driveLookupItem in
                 items)
