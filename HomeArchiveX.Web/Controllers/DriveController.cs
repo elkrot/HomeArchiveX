@@ -15,21 +15,52 @@ namespace HomeArchiveX.Web.Controllers
 {
     public class DriveController : Controller
     {
-        
-
-
-        public DriveController() : base()
+        private readonly Func<IDataService> _dataServiceCreator;
+        public DriveController()
         {
-
+            var bootstrapper = new Bootstrapper();
+            IContainer container = bootstrapper.Bootstrap();
+            _dataServiceCreator = container.Resolve<Func<IDataService>>();
         }
-       
-        public ActionResult Index(int page=1)
+
+        public ActionResult Index(int page = 1)
         {
             var model = new DriveViewModel(page);
             return View(model);
         }
 
+        [HttpGet]
+        [ActionName("Edit")]
+        public ActionResult Edit(int id)
+        {
+            using (var service = _dataServiceCreator())
+            {
+                var drive = service.GetDriveById(id);
+                return View(drive);
+            }
 
-        
+        }
+
+        [HttpPost]
+        [ActionName("Edit")]
+        public ActionResult SaveDrive(Drive Drive)
+        {
+            using (var service = _dataServiceCreator())
+            {
+                var drive = service.SaveDrive(Drive);
+                
+            }
+            return View();
+        }
+
+        public ActionResult Detail(int id)
+        {
+            using (var service = _dataServiceCreator())
+            {
+                var files = service.GetFilesOnDriveByCondition(x=>x.DriveId==id,o=>o.ArchiveEntityKey);
+                return View(files);
+            }
+
+        }
     }
 }

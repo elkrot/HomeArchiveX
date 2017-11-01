@@ -28,7 +28,7 @@ namespace HomeArchiveX.WpfUI
     public partial class MainWindow : Window
     {
         DrivesViewModel _drivesViewModel;
-      //  FilesOnDriveViewModel _filesOnDriveViewModel;
+        //  FilesOnDriveViewModel _filesOnDriveViewModel;
 
         private System.Windows.Window _window;
         public MainWindow()
@@ -91,12 +91,16 @@ namespace HomeArchiveX.WpfUI
                         CrtDrv(dm, drvLetter, DriveTitle, DriveCode);
                         _drivesViewModel.Load();
                         System.Windows.Forms.MessageBox.Show("Завершено");
+                        System.Windows.Forms.MessageBox.Show(lg.GetLog());
                     }
                     catch (Exception er)
                     {
 
                         System.Windows.Forms.MessageBox.Show(er.Message);
-                        System.Windows.Forms.MessageBox.Show(lg.GetLog());
+                        if (!string.IsNullOrWhiteSpace(lg.GetLog()))
+                        {
+                            System.Windows.Forms.MessageBox.Show(lg.GetLog());
+                        }
 
                     }
 

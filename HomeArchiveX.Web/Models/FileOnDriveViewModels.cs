@@ -21,8 +21,17 @@ namespace HomeArchiveX.Web.Models
             public string Title { get; set; }
         }
 
-
-    public class DriveViewModel
+    public class FileOnDriveViewModel
+    {
+        private readonly Func<IDataService> _dataServiceCreator;
+        public FileOnDriveViewModel(int DriveId)
+        {
+            var bootstrapper = new Bootstrapper();
+            IContainer container = bootstrapper.Bootstrap();
+            _dataServiceCreator = container.Resolve<Func<IDataService>>();
+        }
+        }
+        public class DriveViewModel
     {
         private readonly Func<IDataService> _dataServiceCreator;
         private int RowsCountOnPage { get { return 10; } }

@@ -285,6 +285,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Drive\Index.cshtml" />
     <Content Include="Views\Shared\_Paginator.cshtml" />
+    <Content Include="Views\Drive\Edit.cshtml" />
+    <Content Include="Views\Drive\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -301,6 +303,10 @@
     <ProjectReference Include="..\HomeArchiveX.DataAccess\HomeArchiveX.DataAccess.csproj">
       <Project>{fee4a0b2-886b-4d5f-bb3d-75ce1783ffda}</Project>
       <Name>HomeArchiveX.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HomeArchiveX.Infrastructure\HomeArchiveX.Infrastructure.csproj">
+      <Project>{0C1A5EC6-BDB0-43DC-B40C-AC5FE1E96F44}</Project>
+      <Name>HomeArchiveX.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\HomeArchiveX.Model\HomeArchiveX.Model.csproj">
       <Project>{3b0639d8-648a-4e6c-aa33-ebcc1aa12aa4}</Project>

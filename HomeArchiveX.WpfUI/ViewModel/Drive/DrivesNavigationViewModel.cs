@@ -27,6 +27,9 @@ namespace HomeArchiveX.WpfUI.ViewModel
         public int itemsCount { get; set; }
         const int PAGE_LENGTH = 10;
         public int PageLength { get { return PAGE_LENGTH; } }
+        public int TotalPages { get {
+                var result = itemsCount / PageLength +(itemsCount % PageLength>0?1:0);
+                return result; } }
 
         #region FilterText
         public string FilterText
@@ -97,19 +100,18 @@ namespace HomeArchiveX.WpfUI.ViewModel
             CurrentPage = 1;
         }
 
+
+        #endregion
+
+        #region Events
         private void LastPageCommandExecute(object obj)
         {
-           
-            int totalPages = itemsCount / PageLength;
-            if (totalPages > 1) CurrentPage = totalPages;
-
+            if (TotalPages > 1) CurrentPage = TotalPages;
         }
 
         private void NextPageCommandExecute(object obj)
         {
-            
-            int totalPages = itemsCount / PageLength;
-            if (totalPages > CurrentPage) CurrentPage++;
+            if (TotalPages > CurrentPage) CurrentPage++;
         }
 
         private void PrevPageCommandExecute(object obj)
@@ -122,9 +124,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         {
             CurrentPage = 1;
         }
-        #endregion
 
-        #region Events
         private void OnDriveDeleted(int driveId)
         {
             var navigationItem =
@@ -152,8 +152,8 @@ namespace HomeArchiveX.WpfUI.ViewModel
         #endregion
 
 
-
-        public void Load()
+        #region Load
+ public void Load()
         {
             IEnumerable<LookupItem> items;
 
@@ -173,6 +173,8 @@ namespace HomeArchiveX.WpfUI.ViewModel
                     _eventAggregator));
             }
         }
+        #endregion
+       
 
 
         public ObservableCollection<NavigationItemViewModel> NavigationItems { get; set; }

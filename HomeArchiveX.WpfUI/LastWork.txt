@@ -1,1 +1,12 @@
 ﻿FilesOnDriveLookupProvider -> GetNodesById
+ delete  FROM ImageToEntity
+where TargetEntityKey in (select ArchiveEntityKey FROM ArchiveEntity where DriveId in(36))
+
+  delete  FROM [Image]
+	  where ImageKey in(  SELECT ImageKey     FROM ImageToEntity
+where TargetEntityKey in (select ArchiveEntityKey FROM ArchiveEntity where DriveId in(36)))
+delete
+  FROM ArchiveEntity where DriveId in(36)
+  
+   delete
+  FROM Drive where DriveId in(36)

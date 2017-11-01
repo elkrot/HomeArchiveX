@@ -1,5 +1,15 @@
 ﻿@model HomeArchiveX.Web.Models.PaginatorViewModel
-
-@Model.CurrentPage
-
-@Model.TotalPages
+<div class="paginator">
+@for (int i = 1; i < @Model.TotalPages + 1; i++)
+{
+    <div class="page-number">
+        @if (i == @Model.CurrentPage) {
+            @i
+        }else
+        {
+            @Html.ActionLink(i.ToString(), "Index", new { page = i })
+        }
+        
+    </div>
+}
+</div>

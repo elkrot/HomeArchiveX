@@ -263,7 +263,7 @@ values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
         {
             #region Guard
             if (string.IsNullOrWhiteSpace(imgDirPath)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(imgDirPath));
-            if (imgCount <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(imgCount));
+           // if (imgCount <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(imgCount));
             #endregion
 
             try
@@ -460,7 +460,7 @@ values (@Title, @HashCode, @DriveInfo,@DriveCode);
         {
             #region Guard
             if (string.IsNullOrWhiteSpace(title)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(title));
-            if (hashCode <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(hashCode));
+            if (hashCode == 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(hashCode));
             #endregion
 
             try

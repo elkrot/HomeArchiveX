@@ -22,3 +22,23 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.paginator {
+    background-color: aquamarine;
+}
+
+.page-number {
+    float: left;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #d3d6db;
+    background-color: aquamarine;
+    margin: 3px;
+    padding: 5px;
+}
+
+    .page-number a {
+        display: block;
+        width: 30px;
+        height: 30px;
+    }
