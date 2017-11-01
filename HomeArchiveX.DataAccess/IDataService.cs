@@ -20,6 +20,10 @@ namespace HomeArchiveX.DataAccess
         IEnumerable<Drive> GetDrivesByCondition(
             Expression<Func<Drive, bool>> where, Expression<Func<Drive, object>> orderby
             );
+
+        int GetCountDrivesByCondition(
+    Expression<Func<Drive, bool>> where);
+
         IEnumerable<Drive> GetDrivesByCondition(
     Expression<Func<Drive, bool>> where, Expression<Func<Drive, object>> orderby
     , bool isDescending, int index, int length);

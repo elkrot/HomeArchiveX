@@ -96,7 +96,14 @@ namespace HomeArchiveX.DataAccess
                 return uofw.Complete();
             }
         }
-
+        public int GetCountDrivesByCondition(Expression<Func<Drive, bool>> where)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<Drive>();
+                return repo.Find(where).Count();
+            }
+        }
 
         #endregion
 
@@ -385,6 +392,8 @@ namespace HomeArchiveX.DataAccess
                 return repo.GetAll();
             }
         }
+
+
 
 
         #endregion
