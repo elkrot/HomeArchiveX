@@ -47,7 +47,10 @@ namespace HomeArchiveX.Web.Controllers
         {
             using (var service = _dataServiceCreator())
             {
-                var drive = service.SaveDrive(Drive);
+                if (ModelState.IsValid)
+                {
+                    var saveResult = service.SaveDrive(Drive);
+                }
                 
             }
             return View();
@@ -57,8 +60,8 @@ namespace HomeArchiveX.Web.Controllers
         {
             using (var service = _dataServiceCreator())
             {
-                var files = service.GetFilesOnDriveByCondition(x=>x.DriveId==id,o=>o.ArchiveEntityKey);
-                return View(files);
+                var model = new FileOnDriveViewModel(id);
+                return View(model);
             }
 
         }

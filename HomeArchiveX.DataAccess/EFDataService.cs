@@ -158,7 +158,7 @@ namespace HomeArchiveX.DataAccess
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var repo = uofw.GetRepository<ArchiveEntity>();
-                return repo.Find(where);
+                return repo.Find(where).ToList();
             }
         }
 

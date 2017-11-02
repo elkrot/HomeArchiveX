@@ -1,95 +1,35 @@
-﻿@model IEnumerable<HomeArchiveX.Model.ArchiveEntity>
+﻿@using HomeArchiveX.Web.Models
+@model HomeArchiveX.Web.Models.FileOnDriveViewModel
 
-@{
-    Layout = null;
+
+@helper BuildListOfFiles(IEnumerable<FileOnDriveTreeViewItem> data, int? parentId = null)
+{
+var items = data;
+if (items.Any())
+{
+        <ul>
+            @foreach (var item in items)
+            {
+                <li>
+                    <a href="#">@item.Title</a>
+                    @BuildListOfFiles(@item.Items, item.ArchivEntityId)
+                </li>
+            }
+        </ul>
+}
 }
 
-<!DOCTYPE html>
+<div id="cssmenu">
+    @BuildListOfFiles(Model.Items)
+</div>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Detail</title>
-</head>
-<body>
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ArchiveEntityKey)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ParentEntityKey)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DriveId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EntityType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EntityPath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EntityExtension)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HashCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th></th>
-        </tr>
     
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArchiveEntityKey)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ParentEntityKey)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DriveId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EntityType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EntityPath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EntityExtension)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HashCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.ArchiveEntityKey }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-    }
     
-    </table>
-</body>
-</html>
+   
+
+                @*@Html.ActionLink("Edit", "Edit", new {  id=item.ArchiveEntityKey }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ArchiveEntityKey }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ArchiveEntityKey })*@
+         
+
+
