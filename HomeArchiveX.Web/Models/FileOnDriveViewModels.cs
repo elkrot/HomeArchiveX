@@ -39,7 +39,7 @@ namespace HomeArchiveX.Web.Models
             using (var service = _dataServiceCreator())
             {
                 _files = service.GetFilesOnDriveByCondition(x => x.DriveId == DriveId, o => o.ArchiveEntityKey);
-               IEnumerable< FileOnDriveTreeViewItem> Items = LoadItems(null);
+               Items = LoadItems(null);
             }
         }
 
@@ -77,6 +77,22 @@ namespace HomeArchiveX.Web.Models
         public IEnumerable<FileOnDriveTreeViewItem> Items { get; set; }
     }
 
+    public class SingleFileViewModel {
+
+        private readonly Func<IDataService> _dataServiceCreator;
+        public ArchiveEntity Entity { get; set; }
+        public SingleFileViewModel(int id)
+        {
+            var bootstrapper = new Bootstrapper();
+            IContainer container = bootstrapper.Bootstrap();
+            _dataServiceCreator = container.Resolve<Func<IDataService>>();
+
+            using (var service = _dataServiceCreator())
+            {
+                Entity = service.GetFileOnDriveDriveById(id);
+            }
+        }
+    }
 
     #region DriveViewModel
     public class DriveViewModel

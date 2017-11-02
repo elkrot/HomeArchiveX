@@ -1,17 +1,21 @@
-﻿@using HomeArchiveX.Web.Models
-@model HomeArchiveX.Web.Models.FileOnDriveViewModel
+﻿@model HomeArchiveX.Web.Models.FileOnDriveViewModel
+
+@using HomeArchiveX.Web.Models
+
+
+
 
 
 @helper BuildListOfFiles(IEnumerable<FileOnDriveTreeViewItem> data, int? parentId = null)
 {
 var items = data;
-if (items.Any())
+if (items!=null && items.Any())
 {
         <ul>
             @foreach (var item in items)
             {
                 <li>
-                    <a href="#">@item.Title</a>
+                    <a href="@Url.Action("Details", "SingleFile", new { id=item.ArchivEntityId})">@item.Title</a>
                     @BuildListOfFiles(@item.Items, item.ArchivEntityId)
                 </li>
             }
@@ -19,10 +23,11 @@ if (items.Any())
 }
 }
 
-<div id="cssmenu">
-    @BuildListOfFiles(Model.Items)
-</div>
 
+<div id="cssmenu">
+
+@BuildListOfFiles(Model.Items)
+</div>
     
     
    

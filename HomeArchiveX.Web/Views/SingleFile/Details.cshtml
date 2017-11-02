@@ -1,0 +1,8 @@
+﻿@model HomeArchiveX.Web.Models.SingleFileViewModel
+
+
+
+<h2>@Model.Entity.Title</h2>
+
+
+@Html.ActionLink("Назад", "Detail","Drive",new{id= Model.Entity.DriveId },null)
