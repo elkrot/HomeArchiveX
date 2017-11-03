@@ -31,7 +31,7 @@ namespace HomeArchiveX.Infrastructure
         /// <param name="configuration">Конфигурация</param>
         /// <param name="fileManager">Файл Менеджер</param>
         /// <param name="logger">Логгер</param>
-        public DataManager(IConfiguration configuration, IFIleManager fileManager, ILogger logger, int maxImagesInDirectory = 2)
+        public DataManager(IConfiguration configuration, IFIleManager fileManager, ILogger logger, int maxImagesInDirectory = 99)
         {
             #region Guard
             if (configuration == null) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(configuration));
@@ -396,7 +396,7 @@ values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
         /// <param name="path">Путь</param>
         /// <param name="title">Описание</param>
         /// <returns></returns>
-        public int CreateDrive(string path, string title, string diskCode)
+        public int CreateDrive(string path, string title, string diskCode, Dictionary<string, object> addParams =null)
         {
             #region Guard
             if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(path));

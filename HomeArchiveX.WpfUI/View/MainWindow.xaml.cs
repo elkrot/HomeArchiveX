@@ -68,7 +68,7 @@ namespace HomeArchiveX.WpfUI
                 _window = new System.Windows.Window();
                 _window.Title = "Создание Описания Файлов для дирректории.";
                 _window.Content = wizard;
-                _window.DataContext = new WizardData() { DriveCode = "2017_000" };
+                _window.DataContext = new WizardData() { DriveCode = "2017_000" ,DriveLetter= @"e:\",MaxImagesInDirectory=999 };
                 _window.Width = 600;
                 _window.Height = 400;
                 _window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
@@ -84,14 +84,24 @@ namespace HomeArchiveX.WpfUI
                         var DriveCode = ((WizardData)_window.DataContext).DriveCode;
                         var DriveTitle = ((WizardData)_window.DataContext).DriveTitle;
 
+                        var DriveLetter = ((WizardData)_window.DataContext).DriveLetter;
+                        var MaxImagesInDirectory = ((WizardData)_window.DataContext).MaxImagesInDirectory;
+                        var IsSecret = ((WizardData)_window.DataContext).IsSecret;
+
                         var fm = new FileManager(cnf, lg);
 
-                        IDataManager dm = new DataManager(cnf, fm, lg, 999);
-                        string drvLetter = @"e:\";
-                        CrtDrv(dm, drvLetter, DriveTitle, DriveCode);
+                        IDataManager dm = new DataManager(cnf, fm, lg, MaxImagesInDirectory);
+                        string drvLetter = DriveLetter;
+                        Dictionary<string, object> addParams = new Dictionary<string, object>();
+                        addParams.Add("IsSecret", IsSecret);
+
+                        CrtDrv(dm, drvLetter, DriveTitle, DriveCode, addParams);
                         _drivesViewModel.Load();
-                        System.Windows.Forms.MessageBox.Show("Завершено");
-                        System.Windows.Forms.MessageBox.Show(lg.GetLog());
+                        System.Windows.Forms.MessageBox.Show("Обработка Завершена");
+                        var Log = lg.GetLog();
+                        if (!string.IsNullOrWhiteSpace(Log)) { 
+                        System.Windows.Forms.MessageBox.Show(Log);
+                    }
                     }
                     catch (Exception er)
                     {
@@ -110,13 +120,13 @@ namespace HomeArchiveX.WpfUI
             }
             // Main.Content = new DrivesPage(_drivesViewModel);
         }
-        private static void CrtDrv(IDataManager dm, string drvLetter, string title, string diskCode)
+        private static void CrtDrv(IDataManager dm, string drvLetter, string title, string diskCode, Dictionary<string,object> addParams)
         {
 
 
             string pathDrive = drvLetter;
             //string.Format(@"{0}:\", drvLetter);
-            int driveId = dm.CreateDrive(pathDrive, title, diskCode);
+            int driveId = dm.CreateDrive(pathDrive, title, diskCode, addParams);
             if (driveId != 0)
             {
                 dm.FillDirectoriesInfo(driveId, pathDrive);
@@ -137,6 +147,10 @@ namespace HomeArchiveX.WpfUI
         {
             string _driveTitle;
             string _driveCode;
+            string _driveLetter;
+            int _maxImagesInDirectory;
+            bool _isSecret;
+
             public string DriveTitle
             {
                 get { return _driveTitle; }
@@ -155,6 +169,39 @@ namespace HomeArchiveX.WpfUI
                     OnPropertyChanged("DriveCode");
                 }
             }
+
+            
+
+             public string DriveLetter
+            {
+                get { return _driveLetter; }
+                set
+                {
+                    _driveLetter = value;
+                    OnPropertyChanged("DriveLetter");
+                }
+            }
+
+            public int MaxImagesInDirectory
+            {
+                get { return _maxImagesInDirectory; }
+                set
+                {
+                    _maxImagesInDirectory = value;
+                    OnPropertyChanged("MaxImagesInDirectory");
+                }
+            }
+
+            public bool IsSecret
+            {
+                get { return _isSecret; }
+                set
+                {
+                    _isSecret = value;
+                    OnPropertyChanged("IsSecret");
+                }
+            }
+
 
             public event PropertyChangedEventHandler PropertyChanged;
             private void OnPropertyChanged([CallerMemberName] string caller = "")

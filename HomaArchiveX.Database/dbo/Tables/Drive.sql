@@ -5,6 +5,7 @@
     [DriveInfo]   VARBINARY (MAX) NOT NULL,
     [CreatedDate] DATETIME2 (7)   CONSTRAINT [DF_Drive_CreatedDate] DEFAULT (getdate()) NOT NULL,
     [DriveCode] NVARCHAR(20) NOT NULL, 
+    [IsSecret] BIT NOT NULL DEFAULT 0, 
     CONSTRAINT [PK_Drive] PRIMARY KEY CLUSTERED ([DriveId] ASC)
 );
 

@@ -15,22 +15,26 @@
                 
                 </xctk:WizardPage>
             <xctk:WizardPage PageType="Interior"
-                             Title="Page 1"
+                             Title="Страница 1"
                              Description="Первый шаг процесса." >
                 <Grid>
                     <StackPanel>
-                        <TextBox Text="{Binding DriveTitle}"/>
-                        <TextBox  Text="{Binding DriveCode}"/>
+                        <TextBox Text="{Binding DriveLetter}"/>
+                        <TextBox  Text="{Binding MaxImagesInDirectory}"/>
+                        <CheckBox Checked="{Binding IsSecret}" Content="Секретный"/>
                     </StackPanel>
                 </Grid>
             </xctk:WizardPage>
             <xctk:WizardPage PageType="Interior"
                              Title="Page 2"
-                             Description="Это второй шаг процесса" />
-            <xctk:WizardPage PageType="Interior"
-                             Title="Last Page"
-                             Description="Это третий шаг процесса"
-                             CanFinish="True" />
+                             Description="Это второй шаг процесса">
+                <StackPanel>
+                    <TextBox Text="{Binding DriveTitle}"/>
+                    <TextBox  Text="{Binding DriveCode}"/>
+                </StackPanel>
+
+            </xctk:WizardPage>
+
         </xctk:Wizard>
     </Window.Resources>
     <Grid ShowGridLines="False"  Background="White">

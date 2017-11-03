@@ -17,7 +17,7 @@ namespace HomeArchiveX.Infrastructure
         int CreateImage(string imagePath, string targetDir);
         DriveX GetDriveById(int id);
         int GetEntityIdByPath(string path, int driveId, EntityType entityType);
-        int CreateDrive(string path, string title, string diskCode);
+        int CreateDrive(string path, string title, string diskCode, Dictionary<string, object> addParams=null);
         int CreateArchiveEntity<T>(int driveId, T entity, string title,
         int hashCode, int parentEntityKey, EntityType entityType, string entityPath, string extension, string description);
         Dictionary<string, string> GetFileInfoById(int id);
