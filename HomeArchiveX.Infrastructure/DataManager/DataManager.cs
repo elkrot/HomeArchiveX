@@ -31,13 +31,14 @@ namespace HomeArchiveX.Infrastructure
         /// <param name="configuration">Конфигурация</param>
         /// <param name="fileManager">Файл Менеджер</param>
         /// <param name="logger">Логгер</param>
-        public DataManager(IConfiguration configuration, IFIleManager fileManager, ILogger logger, int maxImagesInDirectory = 99)
+        public DataManager(IConfiguration configuration, IFIleManager fileManager
+            , ILogger logger, int maxImagesInDirectory = 99)
         {
             #region Guard
             if (configuration == null) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(configuration));
             if (fileManager == null) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(fileManager));
             if (logger == null) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(logger));
-            if (maxImagesInDirectory <= 0)
+            if (maxImagesInDirectory < 0)
                 throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(maxImagesInDirectory));
             #endregion
 
@@ -405,6 +406,20 @@ values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
             #endregion
             try
             {
+                #region IsSecret
+                object addParamObj;
+                byte?  IsSecret=0 ;
+                if (addParams != null) {
+                    if (addParams.Keys.Contains("IsSecret"))
+                    {
+                        addParams.TryGetValue("IsSecret", out addParamObj);
+                        IsSecret = addParamObj as byte?;
+                    }
+                }
+                #endregion
+
+
+
                 var di = new DriveInfo(path);
                 if (!di.IsReady)
                 {
@@ -419,8 +434,8 @@ values (@Thumbnail,@ImagePath,@ThumbnailPath,@ImageTitle,@HashCode);
                     return 0;
                 }
 
-                string queryString = @"insert into Drive(Title, HashCode, DriveInfo,DriveCode) 
-values (@Title, @HashCode, @DriveInfo,@DriveCode);
+                string queryString = @"insert into Drive(Title, HashCode, DriveInfo,DriveCode,IsSecret) 
+values (@Title, @HashCode, @DriveInfo,@DriveCode,@IsSecret);
                 select SCOPE_IDENTITY();";
                 using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
                 {
@@ -430,10 +445,13 @@ values (@Title, @HashCode, @DriveInfo,@DriveCode);
                     command.Parameters.Add("@HashCode", SqlDbType.Int);
                     command.Parameters.Add("@DriveInfo", SqlDbType.VarBinary, Int32.MaxValue);
                     command.Parameters.Add("@DriveCode", SqlDbType.NVarChar, 20);
+                    command.Parameters.Add("@IsSecret", SqlDbType.Bit);
+
                     command.Parameters["@DriveInfo"].Value = _fileManager.GetBinaryData<DriveInfo>(di);
                     command.Parameters["@Title"].Value = title;
                     command.Parameters["@HashCode"].Value = hashCode;
                     command.Parameters["@DriveCode"].Value = diskCode;
+                    command.Parameters["@IsSecret"].Value = IsSecret;
                     ce.Open();
                     // command.ExecuteNonQuery();
                     string strid = command.ExecuteScalar().ToString();

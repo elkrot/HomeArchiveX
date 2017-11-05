@@ -149,7 +149,7 @@ namespace HomeArchiveX.WpfUI
             string _driveCode;
             string _driveLetter;
             int _maxImagesInDirectory;
-            bool _isSecret;
+            byte _isSecret;
 
             public string DriveTitle
             {
@@ -192,7 +192,7 @@ namespace HomeArchiveX.WpfUI
                 }
             }
 
-            public bool IsSecret
+            public byte IsSecret
             {
                 get { return _isSecret; }
                 set

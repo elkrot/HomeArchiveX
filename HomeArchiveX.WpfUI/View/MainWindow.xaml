@@ -21,13 +21,14 @@
                     <StackPanel>
                         <TextBox Text="{Binding DriveLetter}"/>
                         <TextBox  Text="{Binding MaxImagesInDirectory}"/>
-                        <CheckBox Checked="{Binding IsSecret}" Content="Секретный"/>
+                        <TextBox  Text="{Binding IsSecret}"/>
+                        <!--<CheckBox Checked="{Binding IsSecret}" />-->
                     </StackPanel>
                 </Grid>
             </xctk:WizardPage>
             <xctk:WizardPage PageType="Interior"
                              Title="Page 2"
-                             Description="Это второй шаг процесса">
+                             Description="Это второй шаг процесса" CanFinish="True">
                 <StackPanel>
                     <TextBox Text="{Binding DriveTitle}"/>
                     <TextBox  Text="{Binding DriveCode}"/>
