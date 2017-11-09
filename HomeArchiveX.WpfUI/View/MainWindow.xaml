@@ -53,11 +53,11 @@
                 </Button>
                 <Separator />
                 <Button Click="Button_Click">
-                    <Image Width="50" Margin="0" Source="/HomeArchiveX.WpfUI;component/img/drive_link.png"/>
+                    <Image Width="50" Margin="0" Source="/HomeArchiveX.WpfUI;component/img/cog.png"/>
                 </Button>
                 <Separator />
                 <Button>
-                    <Image Source="/HomeArchiveX.WpfUI;component/img/drive_network.png" Width="50" Margin="0"/>
+                    <Image Source="/HomeArchiveX.WpfUI;component/img/drive_user.png" Width="50" Margin="0"/>
                 </Button>
                 <Separator />
                 <Button>
@@ -65,7 +65,7 @@
                 </Button>
 
                 <Button >
-                    <Image Width="50" Margin="0" Source="/HomeArchiveX.WpfUI;component/img/drive.png"/>
+                    <Image Width="50" Margin="0" Source="/HomeArchiveX.WpfUI;component/img/drive_magnify.png"/>
                 </Button>
                 <TextBox Foreground="LightGray" Width="100">Поиск...</TextBox>
             </ToolBar>

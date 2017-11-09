@@ -363,6 +363,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="img\cog.png" />
+    <Resource Include="img\cog_add.png" />
+    <Resource Include="img\cog_delete.png" />
     <Content Include="Xceed.Wpf.Toolkit.dll" />
     <Resource Include="img\drive.png" />
     <Resource Include="img\drive_add.png" />

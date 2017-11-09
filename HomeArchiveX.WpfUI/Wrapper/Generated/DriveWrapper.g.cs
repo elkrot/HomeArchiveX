@@ -62,5 +62,20 @@ namespace HomeArchiveX.WpfUI.Wrapper
     public System.Nullable<System.DateTime> CreatedDateOriginalValue => GetOriginalValue<System.Nullable<System.DateTime>>(nameof(CreatedDate));
 
     public bool CreatedDateIsChanged => GetIsChanged(nameof(CreatedDate));
-  }
+
+
+
+
+    public System.Nullable<bool> IsSecret
+    {
+        get { return GetValue<System.Nullable<bool>>(); }
+        set { SetValue(value); }
+    }
+
+    public System.Nullable<bool> IsSecretOriginalValue => GetOriginalValue<System.Nullable<bool>>(nameof(IsSecret));
+
+    public bool IsSecretIsChanged => GetIsChanged(nameof(IsSecret));
+
+
+    }
 }
