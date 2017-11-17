@@ -142,6 +142,7 @@
     <Compile Include="ViewModel\FilesOnDrive\FilesOnDriveNavigationViewModel.cs" />
     <Compile Include="ViewModel\FilesOnDrive\FilesOnDriveViewModel.cs" />
     <Compile Include="ViewModel\Observable.cs" />
+    <Compile Include="ViewModel\Security\AuthenticationViewModel.cs" />
     <Compile Include="View\Drivers\DrivesEditView.xaml.cs">
       <DependentUpon>DrivesEditView.xaml</DependentUpon>
     </Compile>
@@ -177,6 +178,10 @@
     </Compile>
     <Compile Include="View\Files\TagsView.xaml.cs">
       <DependentUpon>TagsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Security\LoginWindow.cs" />
+    <Compile Include="View\Security\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Services\IMessageDialogService.cs" />
     <Compile Include="View\Services\MessageDialog.xaml.cs">
@@ -312,6 +317,10 @@
     <Page Include="Styles\ValidationErrorTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Security\LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Services\MessageDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -523,6 +532,10 @@
     <ProjectReference Include="..\HomeArchiveX.Model\HomeArchiveX.Model.csproj">
       <Project>{3b0639d8-648a-4e6c-aa33-ebcc1aa12aa4}</Project>
       <Name>HomeArchiveX.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HomeArchiveX.Security\HomeArchiveX.Security.csproj">
+      <Project>{4ec0bdfb-3efc-4d97-b8ab-5b02d0520579}</Project>
+      <Name>HomeArchiveX.Security</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

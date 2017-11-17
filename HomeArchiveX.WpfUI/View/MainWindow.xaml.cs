@@ -2,12 +2,15 @@
 using HomeArchiveX.Infrastructure;
 using HomeArchiveX.WpfU.Startup;
 using HomeArchiveX.WpfUI.View;
+using HomeArchiveX.WpfUI.View.Security;
 using HomeArchiveX.WpfUI.ViewModel;
+using HomeArchiveX.WpfUI.ViewModel.Security;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,12 +28,30 @@ namespace HomeArchiveX.WpfUI
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    [PrincipalPermission(SecurityAction.Demand)]
+    public partial class MainWindow : Window, IView
     {
         DrivesViewModel _drivesViewModel;
         //  FilesOnDriveViewModel _filesOnDriveViewModel;
 
         private System.Windows.Window _window;
+
+        #region IView Members
+
+        public IViewModel ViewModel
+        {
+            get
+            {
+                return DataContext as IViewModel;
+            }
+            set
+            {
+                DataContext = value;
+            }
+        }
+
+        #endregion
+
         public MainWindow()
         {
 
