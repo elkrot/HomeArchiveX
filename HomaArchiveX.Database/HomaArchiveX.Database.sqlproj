@@ -79,6 +79,9 @@
     <Build Include="dbo\Tables\TranslateTable.sql" />
     <Build Include="dbo\Tables\MediaInfoType.sql" />
     <Build Include="dbo\Tables\MediaInfoParameter.sql" />
+    <Build Include="dbo\Tables\User.sql" />
+    <Build Include="dbo\Tables\Role.sql" />
+    <Build Include="dbo\Tables\UserToRole.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HomaArchiveX.Database.publish.xml" />
