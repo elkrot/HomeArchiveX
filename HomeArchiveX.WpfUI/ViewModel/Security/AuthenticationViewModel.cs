@@ -84,7 +84,7 @@ namespace HomeArchiveX.WpfUI.ViewModel.Security
                     throw new ArgumentException("The application's default thread principal must be set to a CustomPrincipal object on startup.");
 
                 //Authenticate the user
-                customPrincipal.Identity = new CustomIdentity(user.Username, user.Email, user.Roles);
+                customPrincipal.Identity = new CustomIdentity(user.Username, user.Email, user.Role.Select(x=>x.RoleTitle).ToArray<string>());
 
                 //Update UI
                 NotifyPropertyChanged("AuthenticatedUser");
