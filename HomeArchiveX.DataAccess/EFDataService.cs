@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HomeArchiveX.Infrastructure;
 using HomeArchiveX.Model;
 using HomeArchiveX.DataAccess.Implementations;
 using System.Linq.Expressions;
 using System.IO;
 using System.Drawing;
+using HomeArchiveX.Common;
 
 namespace HomeArchiveX.DataAccess
 {

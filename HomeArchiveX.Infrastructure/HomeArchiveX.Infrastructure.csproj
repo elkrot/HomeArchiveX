@@ -76,7 +76,6 @@
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="MediaInfoDLL.cs" />
     <Compile Include="MediaInfoManager.cs" />
-    <Compile Include="MethodResult.cs" />
     <Compile Include="PasswordHash.cs" />
     <Compile Include="PredicateBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

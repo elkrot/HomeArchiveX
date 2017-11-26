@@ -59,12 +59,9 @@
     <Compile Include="Implementations\DriveRepository.cs" />
     <Compile Include="Implementations\ImageRepository.cs" />
     <Compile Include="Implementations\ImageToEntityRepository.cs" />
-    <Compile Include="Implementations\Repository.cs" />
     <Compile Include="Implementations\TagRepository.cs" />
     <Compile Include="Implementations\TagToEntityRepository.cs" />
     <Compile Include="Implementations\UnitOfWork.cs" />
-    <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Models\HmeArhXContext.cs" />
     <Compile Include="Models\Mapping\ArchiveEntityMap.cs" />
     <Compile Include="Models\Mapping\CategoryMap.cs" />
@@ -84,6 +81,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HomeArchiveX.Common\HomeArchiveX.Common.csproj">
+      <Project>{5a70a4d3-5f79-4f30-b3d3-7318840964f0}</Project>
+      <Name>HomeArchiveX.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HomeArchiveX.Infrastructure\HomeArchiveX.Infrastructure.csproj">
       <Project>{0c1a5ec6-bdb0-43dc-b40c-ac5fe1e96f44}</Project>
       <Name>HomeArchiveX.Infrastructure</Name>
@@ -93,7 +94,9 @@
       <Name>HomeArchiveX.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

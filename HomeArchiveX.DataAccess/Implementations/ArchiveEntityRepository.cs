@@ -1,9 +1,6 @@
-﻿using HomeArchiveX.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HomeArchiveX.Common.Implementations;
+using HomeArchiveX.Model;
+
 
 namespace HomeArchiveX.DataAccess.Implementations
 {

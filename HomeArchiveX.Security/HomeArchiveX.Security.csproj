@@ -30,7 +30,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,15 +49,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnonymousIdentity.cs" />
-    <Compile Include="AuthenticationService.cs" />
-    <Compile Include="CustomIdentity.cs" />
-    <Compile Include="CustomPrincipal.cs" />
-    <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Identity\AnonymousIdentity.cs" />
+    <Compile Include="Models\Mapping\RoleMap.cs" />
+    <Compile Include="Models\Mapping\UserMap.cs" />
+    <Compile Include="Repositories\EFUnitOfWorkSecurity.cs" />
+    <Compile Include="Repositories\RoleRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Services\AuthenticationService.cs" />
+    <Compile Include="Identity\CustomIdentity.cs" />
+    <Compile Include="Identity\CustomPrincipal.cs" />
+    <Compile Include="Identity\DelegateCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Role.cs" />
-    <Compile Include="SecurityContext.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="Models\Role.cs" />
+    <Compile Include="Repositories\SecurityContext.cs" />
+    <Compile Include="Models\User.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HomeArchiveX.Common\HomeArchiveX.Common.csproj">
+      <Project>{5a70a4d3-5f79-4f30-b3d3-7318840964f0}</Project>
+      <Name>HomeArchiveX.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -45,12 +45,12 @@ namespace HomeArchiveX.WpfUI.ViewModel.Security
             get
             {
                 if (IsAuthenticated)
-                    return string.Format("Signed in as {0}. {1}",
+                    return string.Format("Выполнен вход как {0}. {1}",
                           Thread.CurrentPrincipal.Identity.Name,
-                          Thread.CurrentPrincipal.IsInRole("Administrators") ? "You are an administrator!"
-                              : "You are NOT a member of the administrators group.");
+                          Thread.CurrentPrincipal.IsInRole("Administrators") ? "Вы вошли как администратор!"
+                              : "Вы не входите в группу администраторов.");
 
-                return "Not authenticated!";
+                return "Не аутентфицирован!";
             }
         }
 
@@ -75,18 +75,16 @@ namespace HomeArchiveX.WpfUI.ViewModel.Security
             string clearTextPassword = passwordBox.Password;
             try
             {
-                //Validate credentials through the authentication service
-                User user = _authenticationService.AuthenticateUser(Username, clearTextPassword);
 
-                //Get the current principal object
+                UserDto user = _authenticationService.AuthenticateUser(Username, clearTextPassword);
+
                 CustomPrincipal customPrincipal = Thread.CurrentPrincipal as CustomPrincipal;
                 if (customPrincipal == null)
-                    throw new ArgumentException("The application's default thread principal must be set to a CustomPrincipal object on startup.");
+                    throw new ArgumentException("Неудача.");
+                //"The application's default thread principal must be set to a CustomPrincipal object on startup."
 
-                //Authenticate the user
-                customPrincipal.Identity = new CustomIdentity(user.Username, user.Email, user.Role.Select(x=>x.RoleTitle).ToArray<string>());
+                customPrincipal.Identity = new CustomIdentity(user.Username, user.Email, user.Roles);
 
-                //Update UI
                 NotifyPropertyChanged("AuthenticatedUser");
                 NotifyPropertyChanged("IsAuthenticated");
                 _loginCommand.RaiseCanExecuteChanged();
@@ -97,7 +95,7 @@ namespace HomeArchiveX.WpfUI.ViewModel.Security
             }
             catch (UnauthorizedAccessException)
             {
-                Status = "Login failed! Please provide some valid credentials.";
+                Status = "Login failed! Измените учетные данные и повторите попытку.";
             }
             catch (Exception ex)
             {
@@ -162,7 +160,7 @@ namespace HomeArchiveX.WpfUI.ViewModel.Security
             }
             catch (SecurityException)
             {
-                Status = "You are not authorized!";
+                Status = "Вы не авторизованы!";
             }
         }
 

@@ -3,6 +3,7 @@ using System.Data.Entity.Infrastructure;
 using HomeArchiveX.DataAccess.Models.Mapping;
 using HomeArchiveX.Model;
 using HomeArchiveX.DataAccess.Implementations;
+using HomeArchiveX.Common.Implementations;
 
 namespace HomeArchiveX.DataAccess
 {

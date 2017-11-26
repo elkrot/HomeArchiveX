@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 using System.Data.Entity;
+using HomeArchiveX.Common.Implementations;
 
 namespace HomeArchiveX.DataAccess.Implementations
 {
