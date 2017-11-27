@@ -1,4 +1,5 @@
-﻿using HomeArchiveX.Infrastructure;
+﻿using HomeArchiveX.Common;
+using HomeArchiveX.Infrastructure;
 using HomeArchiveX.Model;
 using System;
 using System.Collections.Generic;

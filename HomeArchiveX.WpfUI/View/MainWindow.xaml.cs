@@ -29,6 +29,7 @@ namespace HomeArchiveX.WpfUI
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     [PrincipalPermission(SecurityAction.Demand)]
+    ///[PrincipalPermission(SecurityAction.Demand, Role = "Administrators")]
     public partial class MainWindow : Window, IView
     {
         DrivesViewModel _drivesViewModel;

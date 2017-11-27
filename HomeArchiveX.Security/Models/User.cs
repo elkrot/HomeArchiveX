@@ -8,11 +8,16 @@ namespace HomeArchiveX.Security
         {
             Role = new HashSet<Role>();
         }
-        public User(string username, string email, HashSet<Role> roles)
+        public User(string username, string email, HashSet<Role> roles):this()
         {
+
             Username = username;
             Email = email;
-            Role = roles;
+            foreach (var role in roles)
+            {
+                Role.Add(role);
+            }
+            
         }
         public int UserId { get; set; }
         public string Username { get; set; }

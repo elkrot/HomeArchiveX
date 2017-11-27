@@ -22,6 +22,8 @@ namespace HomeArchiveX.WpfUI.ViewModel.Security
         private readonly DelegateCommand _loginCommand;
         private readonly DelegateCommand _logoutCommand;
         private readonly DelegateCommand _showViewCommand;
+        private readonly DelegateCommand _createAdminCommand;
+
         private string _username;
         private string _status;
 
@@ -31,6 +33,7 @@ namespace HomeArchiveX.WpfUI.ViewModel.Security
             _loginCommand = new DelegateCommand(Login, CanLogin);
             _logoutCommand = new DelegateCommand(Logout, CanLogout);
             _showViewCommand = new DelegateCommand(ShowView, null);
+            _createAdminCommand = new DelegateCommand(CreateAdmin, null);
         }
 
         #region Properties
@@ -47,7 +50,7 @@ namespace HomeArchiveX.WpfUI.ViewModel.Security
                 if (IsAuthenticated)
                     return string.Format("Выполнен вход как {0}. {1}",
                           Thread.CurrentPrincipal.Identity.Name,
-                          Thread.CurrentPrincipal.IsInRole("Administrators") ? "Вы вошли как администратор!"
+                          Thread.CurrentPrincipal.IsInRole("Administrator") ? "Вы вошли как администратор!"
                               : "Вы не входите в группу администраторов.");
 
                 return "Не аутентфицирован!";
@@ -67,7 +70,23 @@ namespace HomeArchiveX.WpfUI.ViewModel.Security
         public DelegateCommand LogoutCommand { get { return _logoutCommand; } }
 
         public DelegateCommand ShowViewCommand { get { return _showViewCommand; } }
+
+        public DelegateCommand CreateAdminCommand { get { return _createAdminCommand; } }
         #endregion
+
+        private void CreateAdmin(object parameter) {
+            try
+            {
+              //  var adminRole = _authenticationService.GetRole("Administrator");
+                _authenticationService.NewUser("Admin", "", "Pa$$w0rd", new HashSet<Role>() { new Role() { RoleTitle="Administrator"} });
+                Status = "Создан пользователь Admin";
+            }
+            catch (Exception ex)
+            {
+                Status = string.Format("ERROR: {0}", ex.Message);
+            }
+        }
+
 
         private void Login(object parameter)
         {

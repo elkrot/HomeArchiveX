@@ -521,6 +521,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HomeArchiveX.Common\HomeArchiveX.Common.csproj">
+      <Project>{5a70a4d3-5f79-4f30-b3d3-7318840964f0}</Project>
+      <Name>HomeArchiveX.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HomeArchiveX.DataAccess\HomeArchiveX.DataAccess.csproj">
       <Project>{FEE4A0B2-886B-4D5F-BB3D-75CE1783FFDA}</Project>
       <Name>HomeArchiveX.DataAccess</Name>

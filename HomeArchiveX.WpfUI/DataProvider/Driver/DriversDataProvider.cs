@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HomeArchiveX.Infrastructure;
 using HomeArchiveX.Model;
 using HomeArchiveX.DataAccess;
+using HomeArchiveX.Common;
 
 namespace HomeArchiveX.WpfUI.DataProvider
 {

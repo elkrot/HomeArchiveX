@@ -91,6 +91,12 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HomeArchiveX.Common\HomeArchiveX.Common.csproj">
+      <Project>{5a70a4d3-5f79-4f30-b3d3-7318840964f0}</Project>
+      <Name>HomeArchiveX.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

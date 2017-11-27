@@ -12,6 +12,8 @@ namespace HomeArchiveX.Security
     public interface IAuthenticationService
     {
         UserDto AuthenticateUser(string username, string password);
+        MethodResult<int> NewUser(string username, string email, string password, HashSet<Role> roles);
+        Role GetRole(string RoleTitle);
     }
 
     public class AuthenticationService : IAuthenticationService
@@ -23,8 +25,10 @@ namespace HomeArchiveX.Security
             using (var uofw = new EFUnitOfWorkSecurity(new SecurityContext()))
             {
                 var repo = uofw.GetRepository<User>();
+                var CashedPassword = CalculateHash(clearTextPassword, username);
+
                 User userData = repo.Find(u => u.Username.Equals(username)
-                && u.Password.Equals(CalculateHash(clearTextPassword, u.Username))).FirstOrDefault();
+                && u.Password.Equals(CashedPassword)).FirstOrDefault();
 
                 if (userData == null)
                     throw new UnauthorizedAccessException("Доступ запрещен. Отредактируйте учетные данные.");
@@ -69,16 +73,19 @@ namespace HomeArchiveX.Security
         #region NewUser
         public MethodResult<int> NewUser(string username, string email, string password, HashSet<Role> roles)
         {
+
+
+
             using (var uofw = new EFUnitOfWorkSecurity(new SecurityContext()))
             {
                 var repo = uofw.GetRepository<User>();
                 User user = repo.Find(x => x.Username == username).FirstOrDefault();
 
-                if (user != null)
+                if (user == null)
                 {
                     user = new User(username, email, roles);
                     user.Password = CalculateHash(password, user.Username);
-                    repo.Update(user);
+                    repo.Add(user);
                 }
                 else
                 {
@@ -89,8 +96,34 @@ namespace HomeArchiveX.Security
         }
         #endregion
 
+        #region GetRole
+        public Role GetRole(string RoleTitle)
+        {
+            using (var uofw = new EFUnitOfWorkSecurity(new SecurityContext()))
+            {
+                var repo = uofw.GetRepository<Role>();
+                Role role = repo.Find(x => x.RoleTitle == RoleTitle).FirstOrDefault();
+
+                if (role == null)
+                {
+                    role = new Role() { RoleTitle=RoleTitle};
+                    repo.Add(role);
+                    uofw.Complete();
+                }
+                else
+                {
+                    //throw new ArgumentException("Пользователь с таки именем существует", "User");
+                }
+
+
+                return role;
+            }
+        }
+        #endregion
+
+
         #region SaveUser
-      public MethodResult<int> SaveUser(string username, string email, string password)
+        public MethodResult<int> SaveUser(string username, string email, string password)
         {
             using (var uofw = new EFUnitOfWorkSecurity(new SecurityContext()))
             {
