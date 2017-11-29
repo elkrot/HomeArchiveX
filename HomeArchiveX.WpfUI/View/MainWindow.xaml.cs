@@ -12,6 +12,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Permissions;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,7 +35,14 @@ namespace HomeArchiveX.WpfUI
     {
         DrivesViewModel _drivesViewModel;
         //  FilesOnDriveViewModel _filesOnDriveViewModel;
+        CancellationTokenSource cancelTokenSource;
+        CancellationToken token;
 
+        string DriveCode = "";
+        string DriveTitle = "";
+        string DriveLetter = "";
+        int MaxImagesInDirectory = 0;
+        byte IsSecret = 0;
         private System.Windows.Window _window;
 
         #region IView Members
@@ -60,6 +68,9 @@ namespace HomeArchiveX.WpfUI
         public MainWindow(DrivesViewModel drivesViewModel)
         {
             InitializeComponent();
+            cancelTokenSource = new CancellationTokenSource();
+            token = cancelTokenSource.Token;
+
             _drivesViewModel = drivesViewModel;
             Main.Content = new DrivesPage(_drivesViewModel);
         }
@@ -75,7 +86,7 @@ namespace HomeArchiveX.WpfUI
             //Main.Content = new FilesOnDrivePage(_filesOnDriveViewModel);
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Xceed.Wpf.Toolkit.Wizard wizard = this.Resources["_wizard"] as Xceed.Wpf.Toolkit.Wizard;
             if (wizard != null)
@@ -90,7 +101,7 @@ namespace HomeArchiveX.WpfUI
                 _window = new System.Windows.Window();
                 _window.Title = "Создание Описания Файлов для дирректории.";
                 _window.Content = wizard;
-                _window.DataContext = new WizardData() { DriveCode = "2017_000" ,DriveLetter= @"e:\",MaxImagesInDirectory=999 };
+                _window.DataContext = new WizardData() { DriveCode = "2017_000", DriveLetter = @"e:\", MaxImagesInDirectory = 999 };
                 _window.Width = 600;
                 _window.Height = 400;
                 _window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
@@ -103,27 +114,40 @@ namespace HomeArchiveX.WpfUI
 
                     try
                     {
-                        var DriveCode = ((WizardData)_window.DataContext).DriveCode;
-                        var DriveTitle = ((WizardData)_window.DataContext).DriveTitle;
+                         DriveCode = ((WizardData)_window.DataContext).DriveCode;
+                         DriveTitle = ((WizardData)_window.DataContext).DriveTitle;
 
-                        var DriveLetter = ((WizardData)_window.DataContext).DriveLetter;
-                        var MaxImagesInDirectory = ((WizardData)_window.DataContext).MaxImagesInDirectory;
-                        var IsSecret = ((WizardData)_window.DataContext).IsSecret;
+                         DriveLetter = ((WizardData)_window.DataContext).DriveLetter;
+                         MaxImagesInDirectory = ((WizardData)_window.DataContext).MaxImagesInDirectory;
+                         IsSecret = ((WizardData)_window.DataContext).IsSecret;
 
-                        var fm = new FileManager(cnf, lg);
+                        //var fm = new FileManager(cnf, lg);
 
-                        IDataManager dm = new DataManager(cnf, fm, lg, MaxImagesInDirectory);
-                        string drvLetter = DriveLetter;
-                        Dictionary<string, object> addParams = new Dictionary<string, object>();
-                        addParams.Add("IsSecret", IsSecret);
+                        //IDataManager dm = new DataManager(cnf, fm, lg, MaxImagesInDirectory);
+                        //string drvLetter = DriveLetter;
+                        //Dictionary<string, object> addParams = new Dictionary<string, object>();
+                        //addParams.Add("IsSecret", IsSecret);
 
-                        CrtDrv(dm, drvLetter, DriveTitle, DriveCode, addParams);
+                        // CrtDrv(dm, drvLetter, DriveTitle, DriveCode, addParams);
+
+                        //-----------
+                        var worker = new Worker();
+
+                        cancelTokenSource = new CancellationTokenSource();
+                        token = cancelTokenSource.Token;
+                        var progress = new Progress<int>(value => progressBar.Value = value);
+                        var id = await worker.Work(progress, token, CreateDestination);
+                        //------------
+
+
                         _drivesViewModel.Load();
                         System.Windows.Forms.MessageBox.Show("Обработка Завершена");
-                        var Log = lg.GetLog();
-                        if (!string.IsNullOrWhiteSpace(Log)) { 
-                        System.Windows.Forms.MessageBox.Show(Log);
-                    }
+                        progressBar.Value = 0;
+                       var Log = lg.GetLog();
+                        if (!string.IsNullOrWhiteSpace(Log))
+                        {
+                            System.Windows.Forms.MessageBox.Show(Log);
+                        }
                     }
                     catch (Exception er)
                     {
@@ -142,7 +166,40 @@ namespace HomeArchiveX.WpfUI
             }
             // Main.Content = new DrivesPage(_drivesViewModel);
         }
-        private static void CrtDrv(IDataManager dm, string drvLetter, string title, string diskCode, Dictionary<string,object> addParams)
+
+        private int CreateDestination()
+        {
+            var cnf = new ConfigurationData();
+            var lg = new Logger();
+
+            var driveCode = DriveCode;
+            var driveTitle = DriveTitle;
+
+
+
+            var fm = new FileManager(cnf, lg);
+
+            IDataManager dm = new DataManager(cnf, fm, lg, MaxImagesInDirectory);
+            string drvLetter = DriveLetter;
+            Dictionary<string, object> addParams = new Dictionary<string, object>();
+            addParams.Add("IsSecret", IsSecret);
+
+
+            int driveId = dm.CreateDrive(DriveLetter, DriveTitle, DriveCode, addParams);
+            if (driveId != 0)
+            {
+                dm.FillDirectoriesInfo(driveId, DriveLetter);
+                dm.FillFilesInfo(driveId, DriveLetter);
+                dm.ClearCash();
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show(dm.logger.GetLog());
+            }
+            return driveId;
+        }
+
+        private static void CrtDrv(IDataManager dm, string drvLetter, string title, string diskCode, Dictionary<string, object> addParams)
         {
 
 
@@ -192,9 +249,9 @@ namespace HomeArchiveX.WpfUI
                 }
             }
 
-            
 
-             public string DriveLetter
+
+            public string DriveLetter
             {
                 get { return _driveLetter; }
                 set
@@ -233,6 +290,11 @@ namespace HomeArchiveX.WpfUI
                     PropertyChanged(this, new PropertyChangedEventArgs(caller));
                 }
             }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            cancelTokenSource.Cancel();
         }
     }
 }

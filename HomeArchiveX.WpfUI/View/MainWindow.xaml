@@ -68,6 +68,9 @@
                     <Image Width="50" Margin="0" Source="/HomeArchiveX.WpfUI;component/img/drive_magnify.png"/>
                 </Button>
                 <TextBox Foreground="LightGray" Width="100">Поиск...</TextBox>
+
+                <ProgressBar Name="progressBar" Height="Auto" Width="80"/>
+                <Button Click="Button_Click_2">Отмена</Button>
             </ToolBar>
             
         </ToolBarTray>

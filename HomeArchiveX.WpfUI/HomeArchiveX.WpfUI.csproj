@@ -189,6 +189,7 @@
     </Compile>
     <Compile Include="View\Services\MessageDialogResult.cs" />
     <Compile Include="View\Services\MessageDialogService.cs" />
+    <Compile Include="Worker.cs" />
     <Compile Include="Wrapper\Base\ChangeTrackingCollection.cs" />
     <Compile Include="Wrapper\Base\IValidatableTrackingObject.cs" />
     <Compile Include="Wrapper\Base\ModelWrapper.cs" />
