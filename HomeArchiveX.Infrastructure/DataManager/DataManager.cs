@@ -947,6 +947,54 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
             }
         }
         #endregion
+        //*********************
 
+        public string[] GetFilesByHashOrTitle(int hash,string title)
+        {
+            #region Guard
+            if (hash == 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(hash));
+            #endregion
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    var result = new List<string>();
+                    connection.Open();
+                    string sql = @"  select concat(rtrim(ltrim(str(ae.ArchiveEntityKey))),'::',rtrim(ae.Title)+'::',d.Title,'::',d.DriveCode)
+                                 from ArchiveEntity ae 
+								 join Drive d on ae.DriveId=d.DriveId
+								 where ae.EntityType=2 and ae.HashCode=@hash
+								 union all
+								 select * from(
+								 select '=============by name============' fld
+								 union all
+								 select concat(rtrim(ltrim(str(ae.ArchiveEntityKey))),'::',rtrim(ae.Title)+'::',d.Title,'::',d.DriveCode)
+                                 from ArchiveEntity ae 
+								 join Drive d on ae.DriveId=d.DriveId
+								 where ae.EntityType=2 and ae.HashCode!=213149 and ae.Title=@title)as x where exists (select 1 from ArchiveEntity
+								 where EntityType=2 and HashCode!=@hash and Title=@title)";
+                    SqlCommand command = new SqlCommand(sql, connection);
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("hash", hash);
+                    command.Parameters.AddWithValue("title", title);
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        result.Add(reader.GetString(0));
+                    }
+
+                    return result.ToArray();
+
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе GetFiles. {0}", e.Message));
+                throw new Exception("Ошибка в методе GetFiles");
+            }
+        }
     }
 }

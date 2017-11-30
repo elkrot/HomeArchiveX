@@ -5,9 +5,11 @@ using HomeArchiveX.WpfUI.View;
 using HomeArchiveX.WpfUI.View.Security;
 using HomeArchiveX.WpfUI.ViewModel;
 using HomeArchiveX.WpfUI.ViewModel.Security;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Permissions;
@@ -18,6 +20,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -78,12 +81,41 @@ namespace HomeArchiveX.WpfUI
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
-            //var bootstrapper = new Bootstrapper();
-            //Autofac.IContainer container = bootstrapper.Bootstrap();
+            OpenFileDialog myDialog = new OpenFileDialog();
+            //myDialog.Filter = "Все файлы (*.*)|Картинки(*.JPG;*.GIF;*.PNG)|*.JPG;*.GIF;*.PNG" + "|*.* ";
+            
+            myDialog.Multiselect = false;
+            if (myDialog.ShowDialog() == true)
+            {
+                var cnf = new ConfigurationData();
+                var lg = new Logger();
+                var fm = new FileManager(cnf, lg);
+                FileInfo fi = fm.GetFileInfoByPath(myDialog.FileName);
 
-            //_filesOnDriveViewModel = container.Resolve<FilesOnDriveViewModel>();
-            //_filesOnDriveViewModel.Load();
-            //Main.Content = new FilesOnDrivePage(_filesOnDriveViewModel);
+                var Title = fi.Name;
+                var HashCode = fi.GetHashCode();
+
+                IDataManager dm;
+
+                    dm = new DataManager(cnf, fm, lg, 0);
+                var result = dm.GetFilesByHashOrTitle(HashCode, Title);
+
+                if (result.Count() == 0)
+                {
+                    System.Windows.Forms.MessageBox.Show("Файл не найден");
+                }
+                else
+                {
+                    var msg = new StringBuilder();
+                    msg.AppendLine(string.Format("{0} {1}", HashCode, Title));
+                    foreach (var item in result)
+                    {
+                        msg.AppendLine(item);
+                    }
+                    System.Windows.Forms.MessageBox.Show(msg.ToString());
+                }
+            }
+
         }
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
@@ -114,12 +146,12 @@ namespace HomeArchiveX.WpfUI
 
                     try
                     {
-                         DriveCode = ((WizardData)_window.DataContext).DriveCode;
-                         DriveTitle = ((WizardData)_window.DataContext).DriveTitle;
+                        DriveCode = ((WizardData)_window.DataContext).DriveCode;
+                        DriveTitle = ((WizardData)_window.DataContext).DriveTitle;
 
-                         DriveLetter = ((WizardData)_window.DataContext).DriveLetter;
-                         MaxImagesInDirectory = ((WizardData)_window.DataContext).MaxImagesInDirectory;
-                         IsSecret = ((WizardData)_window.DataContext).IsSecret;
+                        DriveLetter = ((WizardData)_window.DataContext).DriveLetter;
+                        MaxImagesInDirectory = ((WizardData)_window.DataContext).MaxImagesInDirectory;
+                        IsSecret = ((WizardData)_window.DataContext).IsSecret;
 
                         //var fm = new FileManager(cnf, lg);
 
@@ -143,7 +175,7 @@ namespace HomeArchiveX.WpfUI
                         _drivesViewModel.Load();
                         System.Windows.Forms.MessageBox.Show("Обработка Завершена");
                         progressBar.Value = 0;
-                       var Log = lg.GetLog();
+                        var Log = lg.GetLog();
                         if (!string.IsNullOrWhiteSpace(Log))
                         {
                             System.Windows.Forms.MessageBox.Show(Log);

@@ -33,5 +33,7 @@ namespace HomeArchiveX.Infrastructure
         string[] GetDirectories(int id);
         string[] GetFiles(int id);
         Dictionary<string, string> GetMediaFileInfoById(int id);
+
+        string[] GetFilesByHashOrTitle(int hash, string title);
     }
 }
