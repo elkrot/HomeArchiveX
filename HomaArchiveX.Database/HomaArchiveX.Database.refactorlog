@@ -56,4 +56,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="UserId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="d1433a1a-c16a-4ee2-b6de-d56e60b31b1e" ChangeDateTime="12/01/2017 09:12:34">
+    <Property Name="ElementName" Value="[dbo].[ArchiveEntity].[HashCode]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ArchiveEntity]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FileSize" />
+  </Operation>
 </Operations>

@@ -21,10 +21,11 @@ namespace HomeArchiveX.Model
         public string EntityPath { get; set; }
         public string EntityExtension { get; set; }
         public string Description { get; set; }
-        public Nullable<int> HashCode { get; set; }
+        public Nullable<int> FileSize { get; set; }
         public byte[] EntityInfo { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public byte[] MFileInfo { get; set; }
+        public string Checksum { get; set; }
         public virtual ICollection<ArchiveEntity> ArchiveEntity1 { get; set; }
         public virtual ArchiveEntity ArchiveEntity2 { get; set; }
         public virtual Drive Drive { get; set; }

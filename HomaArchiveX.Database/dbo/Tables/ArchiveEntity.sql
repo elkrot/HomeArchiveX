@@ -7,10 +7,11 @@
     [EntityPath]       NVARCHAR (250)  NOT NULL,
     [EntityExtension]  NCHAR (20)      NULL,
     [Description]      XML             NULL,
-    [HashCode]         INT             NULL,
+    [FileSize]         INT             NULL,
     [EntityInfo]       VARBINARY (MAX) NULL,
     [CreatedDate]      DATETIME2 (7)   CONSTRAINT [DF_ArchiveEntity_CreatedDate] DEFAULT (getdate()) NOT NULL,
     [MFileInfo]        VARBINARY (MAX) NULL,
+    [Checksum] NVARCHAR(MAX) NULL, 
     CONSTRAINT [PK_ArchiveEntity] PRIMARY KEY CLUSTERED ([ArchiveEntityKey] ASC),
     CONSTRAINT [FK_ArchiveEntity_ArchiveEntity] FOREIGN KEY ([ParentEntityKey]) REFERENCES [dbo].[ArchiveEntity] ([ArchiveEntityKey]),
     CONSTRAINT [FK_ArchiveEntity_Drive] FOREIGN KEY ([DriveId]) REFERENCES [dbo].[Drive] ([DriveId])

@@ -110,16 +110,16 @@ namespace HomeArchiveX.WpfUI.Wrapper
         public bool DescriptionIsChanged => GetIsChanged(nameof(Description));
         #endregion
 
-        #region HashCode
-        public System.Nullable<System.Int32> HashCode
+        #region FileSize
+        public System.Nullable<System.Int32> FileSize
         {
             get { return GetValue<System.Nullable<System.Int32>>(); }
             set { SetValue(value); }
         }
 
-        public System.Nullable<System.Int32> HashCodeOriginalValue => GetOriginalValue<System.Nullable<System.Int32>>(nameof(HashCode));
+        public System.Nullable<System.Int32> FileSizeOriginalValue => GetOriginalValue<System.Nullable<System.Int32>>(nameof(FileSize));
 
-        public bool HashCodeIsChanged => GetIsChanged(nameof(HashCode));
+        public bool FileSizeIsChanged => GetIsChanged(nameof(FileSize));
         #endregion
 
         #region CreatedDate
@@ -134,7 +134,17 @@ namespace HomeArchiveX.WpfUI.Wrapper
         public bool CreatedDateIsChanged => GetIsChanged(nameof(CreatedDate));
         #endregion
 
+        #region Checksum
+        public System.String Checksum
+        {
+            get { return GetValue<System.String>(); }
+            set { SetValue(value); }
+        }
 
+        public System.String ChecksumOriginalValue => GetOriginalValue<System.String>(nameof(Checksum));
+
+        public bool ChecksumIsChanged => GetIsChanged(nameof(Checksum));
+        #endregion
 
         private byte[] EntityInfo {get { return GetValue<byte[]>(); } }
 
@@ -160,6 +170,7 @@ namespace HomeArchiveX.WpfUI.Wrapper
         }
 
         #endregion
+
         #region MediaInfo
         public Dictionary<string,string> MediaInfo
         {

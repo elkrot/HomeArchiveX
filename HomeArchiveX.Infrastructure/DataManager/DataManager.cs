@@ -784,6 +784,60 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         }
         #endregion
 
+
+        #region Получить Ключи файлов по ИД Диска 
+        public int[] GetFilesByDestinationKey(int driveId=0)
+        {
+            #region Guard
+            if (driveId <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(driveId));
+            #endregion
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    var result = new List<int>();
+                    connection.Open();
+                    string addWhere = "";
+                    if (driveId > 0) {
+                        addWhere = "and DriveId = @id";
+                    }
+
+                    string sql = @"select ltrim(str(ArchiveEntityKey))) from ArchiveEntity where EntityType=2 "+ addWhere;
+                    SqlCommand command = new SqlCommand(sql, connection);
+                    command.Parameters.Clear();
+                    if (driveId > 0)
+                    {
+                        command.Parameters.AddWithValue("id", driveId);
+                    }
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    int key = 0;
+
+                    while (reader.Read())
+                    {
+                        int.TryParse(reader.GetString(0), out key);
+                        if (key > 0)
+                        {
+                            result.Add(key);
+                        }
+                    }
+
+                    return result.ToArray();
+
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе GetFiles. {0}", e.Message));
+                throw new Exception("Ошибка в методе GetFiles");
+            }
+        }
+        #endregion
+
+
+
+
         #region GetDriveInfoById Описание диска по ИД
         public DriveInfo GetDriveInfoById(int id)
         {
@@ -948,6 +1002,59 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         }
         #endregion
         //*********************
+
+           public void SetFileSizeByKeys(int driveId = 0)
+        {
+            int[] keys = GetFilesByDestinationKey(driveId);
+            foreach (var ArchiveEntityKey in keys)
+            {
+                Dictionary<string, string> info= GetFileInfoById(ArchiveEntityKey);
+
+                if (info.ContainsKey("FileSize")) {
+                    int fileSize = 0;
+                    string strFileSize = "";
+                    info.TryGetValue("FileSize", out strFileSize);
+                    int.TryParse(strFileSize, out fileSize);
+                    if (fileSize > 0) {
+                        SetFileSize( ArchiveEntityKey,  fileSize);
+                    }
+
+                }
+            }
+
+
+            
+        }
+
+        public void SetFileSize(int  archiveEntityKey,  int fileSize)
+        {
+            #region Guard
+            if (archiveEntityKey <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(archiveEntityKey));
+            if (fileSize <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(fileSize));
+            #endregion
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
+                {
+                    var result = new List<string>();
+                    connection.Open();
+                    string sql = @"update ArchiveEntity set  fileSize=@fileSize
+                               from ArchiveEntity where  ArchiveEntityKey = @archiveEntityKey";
+                    SqlCommand command = new SqlCommand(sql, connection);
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("archiveEntityKey", archiveEntityKey);
+                    command.Parameters.AddWithValue("fileSize", fileSize);
+
+                   command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Add(string.Format("Ошибка в методе GetFiles. {0}", e.Message));
+                throw new Exception("Ошибка в методе GetFiles");
+            }
+        }
 
         public string[] GetFilesByHashOrTitle(int hash,string title)
         {

@@ -35,5 +35,8 @@ namespace HomeArchiveX.Infrastructure
         Dictionary<string, string> GetMediaFileInfoById(int id);
 
         string[] GetFilesByHashOrTitle(int hash, string title);
+
+        void SetFileSize(int archiveEntityKey, int fileSize);
+        void SetFileSizeByKeys(int driveId );
     }
 }
