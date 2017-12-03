@@ -35,10 +35,11 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
             this.Property(t => t.EntityPath).HasColumnName("EntityPath");
             this.Property(t => t.EntityExtension).HasColumnName("EntityExtension");
             this.Property(t => t.Description).HasColumnName("Description");
-            this.Property(t => t.HashCode).HasColumnName("HashCode");
+            this.Property(t => t.FileSize).HasColumnName("FileSize");
             this.Property(t => t.EntityInfo).HasColumnName("EntityInfo");
             this.Property(t => t.CreatedDate).HasColumnName("CreatedDate");
             this.Property(t => t.MFileInfo).HasColumnName("MFileInfo");
+            this.Property(t => t.Checksum).HasColumnName("Checksum");
 
             // Relationships
             this.HasOptional(t => t.ArchiveEntity2)

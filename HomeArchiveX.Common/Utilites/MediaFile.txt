@@ -1,0 +1,58 @@
+﻿public class MediaFile : IDisposable
+{
+
+    private const int SECTION_SIZE = 8192;
+
+    public string FilePath { get; private set; }
+    public List<byte[]> Checksums { get; private set; }
+
+    private FileInfo fileInfo;
+    private MemoryMappedFile memoryMappedFile;
+
+    public MediaFile(string filePath)
+    {
+        if (!File.Exists(filePath))
+            throw new FileNotFoundException($"{filePath} was not found!");
+
+        this.FilePath = filePath;
+        this.Checksums = null;
+
+        this.fileInfo = new FileInfo(filePath);
+        this.memoryMappedFile = MemoryMappedFile.CreateFromFile(filePath, FileMode.Open);
+
+        this.Checksums = this.GenerateChecksums();
+    }
+
+    public void Dispose()
+    {
+        this.memoryMappedFile.Dispose();
+    }
+
+    public byte[] Read(long offset, int size)
+    {
+        using (MemoryMappedViewStream memoryMappedViewStream = this.memoryMappedFile.CreateViewStream(offset, size, MemoryMappedFileAccess.Read))
+        using (BinaryReader binaryReader = new BinaryReader(memoryMappedViewStream))
+            return binaryReader.ReadBytes(size);
+    }
+
+    private List<byte[]> GenerateChecksums()
+    {
+        List<byte[]> checksums = new List<byte[]>();
+
+        double sectionsCalc = this.fileInfo.Length / (double) SECTION_SIZE;
+
+        long normalSizedSectionCount = (long) Math.Floor(sectionsCalc);
+        int lastSectionSize = (int) ((sectionsCalc - normalSizedSectionCount) * (double) SECTION_SIZE);
+
+        using (MD5 hashProvider = MD5.Create())
+        {
+            for (long i = 0; i < normalSizedSectionCount; i++)
+                checksums.Add(hashProvider.ComputeHash(this.Read(i * SECTION_SIZE, SECTION_SIZE)));
+
+            checksums.Add(hashProvider.ComputeHash(this.Read(normalSizedSectionCount * SECTION_SIZE, lastSectionSize)));
+        }
+
+        return checksums;
+    }
+
+}

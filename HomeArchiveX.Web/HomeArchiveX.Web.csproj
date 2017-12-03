@@ -303,6 +303,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HomeArchiveX.Common\HomeArchiveX.Common.csproj">
+      <Project>{5a70a4d3-5f79-4f30-b3d3-7318840964f0}</Project>
+      <Name>HomeArchiveX.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HomeArchiveX.DataAccess\HomeArchiveX.DataAccess.csproj">
       <Project>{fee4a0b2-886b-4d5f-bb3d-75ce1783ffda}</Project>
       <Name>HomeArchiveX.DataAccess</Name>

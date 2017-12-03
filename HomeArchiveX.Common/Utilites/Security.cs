@@ -11,18 +11,89 @@ namespace HomeArchiveX.Common.Utilites
 {
     public static class Security
     {
+        public const int SECTION_SIZE = 4096;
+        public static int MB_SIZE = (int)Math.Pow(2, 20);
+
 
         #region ComputeMD5Checksum
-        static string ComputeMD5Checksum(string path)
+        public static string ComputeMD5Checksum(string path)
+        {
+            using (Stream stream = System.IO.File.OpenRead(path))
+            {
+                byte[] buffer = new byte[MB_SIZE];
+                int bytesRead = stream.Read(buffer, 0, buffer.Length);
+
+                if (bytesRead != 0)
+                {
+                    MD5 md5 = new MD5CryptoServiceProvider();
+                    MemoryStream ms = new MemoryStream();
+                    
+                    ms.Write(buffer, 0, buffer.Length);
+                    byte[] checkSum = md5.ComputeHash(ms.GetBuffer());
+                    string result = BitConverter.ToString(checkSum).Replace("-", String.Empty);
+                    return result;
+                }
+                return null;
+            }
+        }
+
+        public static string MD5Sum(string fileName, string salt, int byteCount)
+        {
+            byte[] saltBuf = System.Text.Encoding.UTF8.GetBytes(salt);
+            byte[] buffer = new byte[byteCount];
+            Stream stream = File.OpenRead(fileName);
+
+            int bytesRead = stream.Read(buffer, 0, buffer.Length);
+
+            if (bytesRead != 0)
+            {
+                MemoryStream ms = new MemoryStream();
+                ms.Write(saltBuf, 0, saltBuf.Length);
+                ms.Write(buffer, 0, buffer.Length);
+                MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+                buffer = md5.ComputeHash(ms.GetBuffer());
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in buffer)
+                {
+                    sb.Append(b.ToString("x2").ToLower());
+                }
+                return sb.ToString();
+            }
+            else
+            {
+                //Better to throw an exception but...
+                return null;
+            }
+        }
+
+        public static string ComputeMD5Checksum2(string path)
         {
             using (FileStream fs = System.IO.File.OpenRead(path))
             {
                 MD5 md5 = new MD5CryptoServiceProvider();
-                byte[] fileData = new byte[fs.Length];
-                fs.Read(fileData, 0, (int)fs.Length);
-                byte[] checkSum = md5.ComputeHash(fileData);
+                BufferedStream bs = new BufferedStream(fs);
+                List<byte[]> checkSums = new List<byte[]>();
+
+                byte[] b = new byte[SECTION_SIZE];
+                int buf = 0;
+                while ((buf = bs.Read(b, 0, SECTION_SIZE)) > 0)
+                {
+                    checkSums.Add(md5.ComputeHash(bs));
+                }
+
+                byte[] checkSum = null;
+
+                foreach (var item in checkSums)
+                {
+                    // Array.Copy(,,)
+                    //  item.CopyTo(checkSum, += item;
+                }
+
+
                 string result = BitConverter.ToString(checkSum).Replace("-", String.Empty);
                 return result;
+
+                /**/
             }
         }
         #endregion
@@ -119,15 +190,16 @@ namespace HomeArchiveX.Common.Utilites
 
         #region MSDNVersion
 
-        public static bool VerefyMd5Msdn(string source) {
-            
+        public static bool VerefyMd5Msdn(string source)
+        {
+
             using (MD5 md5Hash = MD5.Create())
             {
                 string hash = GetMd5Hash(md5Hash, source);
 
-               // Console.WriteLine("The MD5 hash of " + source + " is: " + hash + ".");
+                // Console.WriteLine("The MD5 hash of " + source + " is: " + hash + ".");
 
-               // Console.WriteLine("Verifying the hash...");
+                // Console.WriteLine("Verifying the hash...");
 
                 if (VerifyMd5Hash(md5Hash, source, hash))
                 {
@@ -183,8 +255,8 @@ namespace HomeArchiveX.Common.Utilites
 
         #endregion
 
-  
-        
+
+
 
     }
 }

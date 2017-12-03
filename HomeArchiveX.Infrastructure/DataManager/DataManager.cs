@@ -86,8 +86,9 @@ namespace HomeArchiveX.Infrastructure
                 diDict.Add("FullName", di.FullName);
                 diDict.Add("Name", di.Name);
                 #endregion
+
                 var id = CreateArchiveEntity<Dictionary<string, string>>(
-                    driveId, diDict, di.Name, di.GetHashCode(), parentId, EntityType.Folder, path, "", "");
+                    driveId, diDict, di.Name,0, parentId, EntityType.Folder, path, "", "","");
                 _directoryCash.Add(path, id);
                 return id;
             }
@@ -127,9 +128,9 @@ namespace HomeArchiveX.Infrastructure
                 fiDict.Add("FullName", fi.FullName);
                 fiDict.Add("Name", fi.Name);
                 fiDict.Add("Length", string.Format("{0}", fi.Length));
-
-                var id = CreateArchiveEntity<Dictionary<string, string>>(driveId, fiDict, fi.Name, fi.GetHashCode(), parentId
-                    , EntityType.File, path, fi.Extension, "");
+                var checksum = HomeArchiveX.Common.Utilites.Security.ComputeMD5Checksum(path);
+                var id = CreateArchiveEntity<Dictionary<string, string>>(driveId, fiDict, fi.Name, (int)fi.Length, parentId
+                    , EntityType.File, path, fi.Extension, "", checksum);
                 return id;
             }
             catch (Exception e)
@@ -555,23 +556,26 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         /// <param name="description">описание</param>
         /// <returns></returns>
         public int CreateArchiveEntity<T>(int driveId, T entity, string title,
-           int hashCode, int parentEntityKey, EntityType entityType, string entityPath, string extension, string description)
+           int fileSize, int parentEntityKey, EntityType entityType, string entityPath, string extension, string description,
+           string checksum)
         {
 
             #region Guard
             if (string.IsNullOrWhiteSpace(title)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(title));
             if (string.IsNullOrWhiteSpace(entityPath)) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(entityPath));
             if (driveId <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(driveId));
-            if (hashCode <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(hashCode));
+            //if (FileSize <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(FileSize));
             #endregion
 
 
             try
             {
                 string queryString = @"insert into ArchiveEntity( 
-                                    ParentEntityKey,DriveId,Title,EntityType ,EntityPath,EntityExtension ,Description ,HashCode ,EntityInfo, MFileInfo)
-                                    values ( 
-                                    @ParentEntityKey,@DriveId,@Title,@EntityType,@EntityPath,@EntityExtension,@Description,@HashCode,@EntityInfo,@MFileInfo);
+                ParentEntityKey,DriveId,Title,EntityType ,EntityPath,EntityExtension ,Description
+,FileSize ,EntityInfo, MFileInfo,Checksum)
+values ( 
+@ParentEntityKey,@DriveId,@Title,@EntityType,@EntityPath,@EntityExtension,@Description
+,@FileSize,@EntityInfo,@MFileInfo,@Checksum);
                                      select SCOPE_IDENTITY();";
                 using (SqlConnection ce = new SqlConnection(_configuration.GetConnectionString()))
                 {
@@ -585,16 +589,18 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
                     command.Parameters.Add("@EntityPath", SqlDbType.NVarChar, 100);
                     command.Parameters.Add("@EntityExtension", SqlDbType.NVarChar, 20);
                     command.Parameters.Add("@Description", SqlDbType.NVarChar, 100);
-                    command.Parameters.Add("@HashCode", SqlDbType.Int);
+                    command.Parameters.Add("@FileSize", SqlDbType.Int);
                     command.Parameters.Add("@EntityInfo", SqlDbType.VarBinary, Int32.MaxValue);
                     command.Parameters.Add("@MFileInfo", SqlDbType.VarBinary, Int32.MaxValue);
                     command.Parameters.Add("@Title", SqlDbType.NVarChar, 250);
+                    command.Parameters.Add("@Checksum", SqlDbType.NVarChar, 250);
                     var mfi = MFIFactory.GetMediaFileInfoDictionary(extension, entityPath);
 
                     command.Parameters["@MFileInfo"].Value = _fileManager.GetBinaryData<Dictionary<string, string>>(mfi);
                     command.Parameters["@EntityInfo"].Value = _fileManager.GetBinaryData<T>(entity);
                     command.Parameters["@Title"].Value = title;
-                    command.Parameters["@HashCode"].Value = hashCode;
+                    command.Parameters["@FileSize"].Value = fileSize;
+                    command.Parameters["@Checksum"].Value = checksum;
                     if (parentEntityKey != -1)
                     {
                         command.Parameters["@ParentEntityKey"].Value = parentEntityKey;
@@ -789,7 +795,7 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
         public int[] GetFilesByDestinationKey(int driveId=0)
         {
             #region Guard
-            if (driveId <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(driveId));
+          //  if (driveId <= 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(driveId));
             #endregion
 
             try
@@ -803,7 +809,7 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
                         addWhere = "and DriveId = @id";
                     }
 
-                    string sql = @"select ltrim(str(ArchiveEntityKey))) from ArchiveEntity where EntityType=2 "+ addWhere;
+                    string sql = @"select ltrim(str(ArchiveEntityKey)) from ArchiveEntity where EntityType=2 "+ addWhere;
                     SqlCommand command = new SqlCommand(sql, connection);
                     command.Parameters.Clear();
                     if (driveId > 0)
@@ -1056,34 +1062,45 @@ where  HashCode = @HashCode)>0 then 2 else 0 end vl";
             }
         }
 
-        public string[] GetFilesByHashOrTitle(int hash,string title)
+        public string[] CheckFilesByHashOrTitle(int fileSize, string checksum,string title)
         {
             #region Guard
-            if (hash == 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(hash));
+            if (fileSize == 0) throw new ArgumentNullException(ERROR_ARGUMENT_EXCEPTION_MSG, nameof(fileSize));
             #endregion
 
             try
             {
+                
                 using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString()))
                 {
                     var result = new List<string>();
                     connection.Open();
-                    string sql = @"  select concat(rtrim(ltrim(str(ae.ArchiveEntityKey))),'::',rtrim(ae.Title)+'::',d.Title,'::',d.DriveCode)
+                    string sql = @"  
+                                    select rtrim(ltrim(str(ae.ArchiveEntityKey)))+'::'+rtrim(ae.Title)+'::'+d.Title+'::'+d.DriveCode
                                  from ArchiveEntity ae 
 								 join Drive d on ae.DriveId=d.DriveId
-								 where ae.EntityType=2 and ae.HashCode=@hash
+								 where ae.EntityType=2 and ae.Checksum=@Checksum
 								 union all
-								 select * from(
-								 select '=============by name============' fld
+								 select * from(select '=============by Filesize============' fld
 								 union all
-								 select concat(rtrim(ltrim(str(ae.ArchiveEntityKey))),'::',rtrim(ae.Title)+'::',d.Title,'::',d.DriveCode)
+                                    select rtrim(ltrim(str(ae.ArchiveEntityKey)))+'::'+rtrim(ae.Title)+'::'+d.Title+'::'+d.DriveCode
                                  from ArchiveEntity ae 
 								 join Drive d on ae.DriveId=d.DriveId
-								 where ae.EntityType=2 and ae.HashCode!=213149 and ae.Title=@title)as x where exists (select 1 from ArchiveEntity
-								 where EntityType=2 and HashCode!=@hash and Title=@title)";
+								 where ae.EntityType=2 and ae.FileSize=@FileSize)z where exists (select 1 from ArchiveEntity
+								 where EntityType=2 and FileSize=@FileSize )
+								 union all
+								 select * from (select '=============by name============' fld
+								 union all
+								 select rtrim(ltrim(str(ae.ArchiveEntityKey)))+'::'+rtrim(ae.Title)+'::'+d.Title+'::'+d.DriveCode
+                                 from ArchiveEntity ae 
+								 join Drive d on ae.DriveId=d.DriveId
+								 where ae.EntityType=2 and ae.FileSize=@FileSize and ae.Title=@title) as x 
+								 where exists (select 1 from ArchiveEntity
+								 where EntityType=2 and FileSize=@FileSize and Title=@title)";
                     SqlCommand command = new SqlCommand(sql, connection);
                     command.Parameters.Clear();
-                    command.Parameters.AddWithValue("hash", hash);
+                    command.Parameters.AddWithValue("Checksum", checksum);
+                    command.Parameters.AddWithValue("FileSize", fileSize);
                     command.Parameters.AddWithValue("title", title);
 
                     SqlDataReader reader = command.ExecuteReader();

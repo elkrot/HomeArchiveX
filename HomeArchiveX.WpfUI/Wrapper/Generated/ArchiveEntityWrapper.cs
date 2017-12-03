@@ -111,13 +111,13 @@ namespace HomeArchiveX.WpfUI.Wrapper
         #endregion
 
         #region FileSize
-        public System.Nullable<System.Int32> FileSize
+        public System.Nullable<long> FileSize
         {
-            get { return GetValue<System.Nullable<System.Int32>>(); }
+            get { return GetValue<System.Nullable<long>>(); }
             set { SetValue(value); }
         }
 
-        public System.Nullable<System.Int32> FileSizeOriginalValue => GetOriginalValue<System.Nullable<System.Int32>>(nameof(FileSize));
+        public System.Nullable<long> FileSizeOriginalValue => GetOriginalValue<System.Nullable<long>>(nameof(FileSize));
 
         public bool FileSizeIsChanged => GetIsChanged(nameof(FileSize));
         #endregion

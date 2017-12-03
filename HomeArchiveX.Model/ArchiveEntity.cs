@@ -21,7 +21,7 @@ namespace HomeArchiveX.Model
         public string EntityPath { get; set; }
         public string EntityExtension { get; set; }
         public string Description { get; set; }
-        public Nullable<int> FileSize { get; set; }
+        public Nullable<long> FileSize { get; set; }
         public byte[] EntityInfo { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public byte[] MFileInfo { get; set; }

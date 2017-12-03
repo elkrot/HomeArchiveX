@@ -19,7 +19,9 @@ namespace HomeArchiveX.Infrastructure
         int GetEntityIdByPath(string path, int driveId, EntityType entityType);
         int CreateDrive(string path, string title, string diskCode, Dictionary<string, object> addParams=null);
         int CreateArchiveEntity<T>(int driveId, T entity, string title,
-        int hashCode, int parentEntityKey, EntityType entityType, string entityPath, string extension, string description);
+                   int fileSize, int parentEntityKey, EntityType entityType, string entityPath
+            , string extension, string description,
+                   string checksum);
         Dictionary<string, string> GetFileInfoById(int id);
         DriveInfo GetDriveInfoById(int id);
         Dictionary<string, string> GetDirectoryInfoById(int id);
@@ -34,7 +36,7 @@ namespace HomeArchiveX.Infrastructure
         string[] GetFiles(int id);
         Dictionary<string, string> GetMediaFileInfoById(int id);
 
-        string[] GetFilesByHashOrTitle(int hash, string title);
+        string[] CheckFilesByHashOrTitle(int fileSize, string checksum, string title);
 
         void SetFileSize(int archiveEntityKey, int fileSize);
         void SetFileSizeByKeys(int driveId );

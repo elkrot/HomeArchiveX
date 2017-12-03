@@ -93,21 +93,21 @@ namespace HomeArchiveX.WpfUI
                 FileInfo fi = fm.GetFileInfoByPath(myDialog.FileName);
 
                 var Title = fi.Name;
-                var HashCode = fi.GetHashCode();
+                var checksum = HomeArchiveX.Common.Utilites.Security.ComputeMD5Checksum(myDialog.FileName);
 
                 IDataManager dm;
 
                     dm = new DataManager(cnf, fm, lg, 0);
-                var result = dm.GetFilesByHashOrTitle(HashCode, Title);
+                var result = dm.CheckFilesByHashOrTitle((int)fi.Length,  checksum,  Title); 
 
                 if (result.Count() == 0)
                 {
-                    System.Windows.Forms.MessageBox.Show("Файл не найден");
+                    System.Windows.Forms.MessageBox.Show(string.Format("Файл {0} не найден", checksum));
                 }
                 else
                 {
                     var msg = new StringBuilder();
-                    msg.AppendLine(string.Format("{0} {1}", HashCode, Title));
+                    msg.AppendLine(string.Format("{0} {1}", checksum, Title));
                     foreach (var item in result)
                     {
                         msg.AppendLine(item);

@@ -7,7 +7,7 @@
     [EntityPath]       NVARCHAR (250)  NOT NULL,
     [EntityExtension]  NCHAR (20)      NULL,
     [Description]      XML             NULL,
-    [FileSize]         INT             NULL,
+    [FileSize]         BIGINT             NULL,
     [EntityInfo]       VARBINARY (MAX) NULL,
     [CreatedDate]      DATETIME2 (7)   CONSTRAINT [DF_ArchiveEntity_CreatedDate] DEFAULT (getdate()) NOT NULL,
     [MFileInfo]        VARBINARY (MAX) NULL,
@@ -22,3 +22,16 @@ GO
 CREATE NONCLUSTERED INDEX [IX_DriveId]
     ON [dbo].[ArchiveEntity]([DriveId] ASC);
 
+
+GO
+
+CREATE INDEX [IX_ArchiveEntity_Title] ON [dbo].[ArchiveEntity] ([Title])
+
+GO
+
+CREATE INDEX [IX_ArchiveEntity_FileSize] ON [dbo].[ArchiveEntity] ([FileSize])
+
+
+GO
+
+CREATE INDEX [IX_ArchiveEntity_FileSize_Title] ON [dbo].[ArchiveEntity] ([FileSize], [Title])

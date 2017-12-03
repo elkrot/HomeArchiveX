@@ -126,7 +126,7 @@ namespace HomeArchiveX
         {
             Console.Clear();
             Console.WriteLine("Сделай выбор");
-            Console.WriteLine("1. Очистить данные");
+            Console.WriteLine("1. Обновть размер файла");
             Console.WriteLine("2. Сохранить данные о диске");
             Console.WriteLine("----------------------------");
             Console.WriteLine("3. Диски");
@@ -249,7 +249,7 @@ namespace HomeArchiveX
             switch (choise)
             {
                 case 1:
-                    ClearData(dm);
+                    dm.SetFileSizeByKeys(0);
                     break;
                 case 2:
                     Console.WriteLine("Введите Номер устройства");
