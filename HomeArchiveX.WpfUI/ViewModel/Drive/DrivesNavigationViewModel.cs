@@ -157,9 +157,9 @@ namespace HomeArchiveX.WpfUI.ViewModel
         {
             IEnumerable<LookupItem> items;
 
-            itemsCount = _driveLookupProvider.GetLookupWithCondition(x => x.Title.Contains(FilterText), x => x.Title
+            itemsCount = _driveLookupProvider.GetLookupWithCondition(x => x.Title.Contains(FilterText), x => x.DriveCode
                 , false, 1, int.MaxValue).Count();
-                items = _driveLookupProvider.GetLookupWithCondition(x => x.Title.Contains(FilterText), x => x.Title
+                items = _driveLookupProvider.GetLookupWithCondition(x => x.Title.Contains(FilterText), x => x.DriveCode
                 , false, CurrentPage, PageLength);
             
             NavigationItems.Clear();

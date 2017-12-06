@@ -29,7 +29,7 @@ namespace HomeArchiveX.WpfUI.DataProvider
                             .Select(f => new LookupItem
                             {
                                 Id = f.DriveId,
-                                DisplayValue = string.Format("{0}({1})", f.Title,f.DriveCode.Trim())
+                                DisplayValue = string.Format("{1} {0}", f.Title,f.DriveCode.Trim())
                             })
                             .OrderBy(l => l.DisplayValue)
                             .ToList();
@@ -45,7 +45,7 @@ namespace HomeArchiveX.WpfUI.DataProvider
                         .Select(f => new LookupItem
                         {
                             Id = f.DriveId,
-                            DisplayValue = string.Format("{0}({1})", f.Title, f.DriveCode.Trim())
+                            DisplayValue = string.Format("{1} {0}", f.Title, f.DriveCode.Trim())
                         })
                         ;
             }
@@ -60,7 +60,7 @@ namespace HomeArchiveX.WpfUI.DataProvider
                         .Select(f => new LookupItem
                         {
                             Id = f.DriveId,
-                            DisplayValue = string.Format("{0}({1})", f.Title, f.DriveCode.Trim())
+                            DisplayValue = string.Format("{1} {0}", f.Title, f.DriveCode.Trim())
                         })
                         ;
             }
