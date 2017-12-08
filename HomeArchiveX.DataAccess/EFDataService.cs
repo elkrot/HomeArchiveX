@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using System.IO;
 using System.Drawing;
 using HomeArchiveX.Common;
+using System.Data.SqlClient;
 
 namespace HomeArchiveX.DataAccess
 {
@@ -16,15 +17,12 @@ namespace HomeArchiveX.DataAccess
         #region Диски
         public MethodResult<int> DeleteDrive(int id)
         {
+            var strsql = @"exec[dbo].[DeleteDrive] @DriveId";
 
-
-            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            using (var context =new HmeArhXContext())
             {
-                var repo = uofw.GetRepository<Drive>();
-                var drive = repo.Find(x => x.DriveId == id).FirstOrDefault();
-                repo.Remove(drive);
-
-                return uofw.Complete();
+                context.Database.ExecuteSqlCommand(strsql, new SqlParameter("@DriveId", id ));
+                return default(MethodResult<int>);
             }
         }
 

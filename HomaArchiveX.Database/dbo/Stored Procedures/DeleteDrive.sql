@@ -1,4 +1,5 @@
 ﻿
+
 /*IF EXISTS (
   SELECT * 
     FROM INFORMATION_SCHEMA.ROUTINES 
@@ -19,14 +20,28 @@ BEGIN
 
 BEGIN TRANSACTION;
 
-BEGIN TRY
-    -- Generate a constraint violation error.
-delete from ImageToEntity where TargetEntityKey in(select ArchiveEntityKey from ArchiveEntity where 
-isnull(DriveId,0)=@DriveId)
-delete from [Image] where ImageKey in(select ImageKey from ImageToEntity where TargetEntityKey in(select ArchiveEntityKey from ArchiveEntity 
-where isnull(DriveId,0)=@DriveId))
+  BEGIN TRY
+    -- Удаление записей об изображениях
+
+delete t FROM ImageToEntity t join ArchiveEntity a on t.TargetEntityKey=a.ArchiveEntityKey join Drive d on a.DriveId =d.DriveId 
+  where d.DriveId=@DriveId
+
+  delete i FROM [Image] i join ImageToEntity t on i.ImageKey = t.ImageKey join ArchiveEntity a on t.TargetEntityKey=a.ArchiveEntityKey 
+  join Drive d on a.DriveId =d.DriveId 
+  where d.DriveId=@DriveId
+  
+  delete  t FROM TagToEntity t join ArchiveEntity a on t.TargetEntityKey=a.ArchiveEntityKey  join Drive d on a.DriveId =d.DriveId 
+  where d.DriveId=@DriveId
+
+  delete t FROM CategoryToEntity t join ArchiveEntity a on t.TargetEntityKey=a.ArchiveEntityKey  join Drive d on a.DriveId =d.DriveId 
+  where d.DriveId=@DriveId
+
+
 delete from ArchiveEntity where isnull(DriveId,0)=@DriveId
+
 delete from Drive where DriveId=@DriveId
+
+
 END TRY
 BEGIN CATCH
     SELECT 

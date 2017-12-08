@@ -156,11 +156,11 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private void OnDeleteExecute(object obj)
         {
             var result = _messageDialogService.ShowYesNoDialog(
-                "Удалить заказ?",
-                string.Format("Вы действительно хотите удалить {2} '{0} от {1:d}'"
-                , Drive.Title, Drive.DriveId, Environment.NewLine),
+                "Удалить Расположение?",
+                string.Format("Вы действительно хотите удалить расположение {0} "
+                , Drive.Title  ),
                 MessageDialogResult.No);
-
+//Environment.NewLine
             if (result == MessageDialogResult.Yes)
             {
 
