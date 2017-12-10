@@ -22,7 +22,9 @@ namespace HomeArchiveX.DataAccess
             using (var context =new HmeArhXContext())
             {
                 context.Database.ExecuteSqlCommand(strsql, new SqlParameter("@DriveId", id ));
-                return default(MethodResult<int>);
+                var ret = new MethodResult<int>(0);
+                ret.Success = true;
+                return ret;
             }
         }
 

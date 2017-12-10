@@ -25,7 +25,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private readonly IEventAggregator _eventAggregator;
         private readonly ILookupProvider<Drive> _driveLookupProvider;
         public int itemsCount { get; set; }
-        const int PAGE_LENGTH = 10;
+        const int PAGE_LENGTH = 15;
         public int PageLength { get { return PAGE_LENGTH; } }
         public int TotalPages { get {
                 var result = itemsCount / PageLength +(itemsCount % PageLength>0?1:0);

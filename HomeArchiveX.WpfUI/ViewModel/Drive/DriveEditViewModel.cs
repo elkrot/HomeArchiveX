@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using HomeArchiveX.Infrastructure;
 using HomeArchiveX.Model;
 using HomeArchiveX.WpfU.Command;
 using HomeArchiveX.WpfU.Startup;
@@ -10,6 +11,7 @@ using HomeArchiveX.WpfUI.Wrapper;
 using Microsoft.Practices.Prism.PubSubEvents;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -164,6 +166,12 @@ namespace HomeArchiveX.WpfUI.ViewModel
             if (result == MessageDialogResult.Yes)
             {
 
+                
+                ConfigurationData cfg = new ConfigurationData();
+               string imgPath =  cfg.GetTargetImagePath();
+
+                DirectoryInfo di = new DirectoryInfo(Path.Combine(imgPath, string.Format("drive{0}", Drive.DriveId)));
+                di.Delete(true);
                 var saveRet = _driveDataProvider.DeleteDrive(Drive.DriveId);
 
                 if (!saveRet.Success)
