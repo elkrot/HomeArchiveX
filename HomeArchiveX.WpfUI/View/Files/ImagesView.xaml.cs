@@ -24,5 +24,6 @@ namespace HomeArchiveX.WpfUI.View.Files
         {
             InitializeComponent();
         }
+
     }
 }

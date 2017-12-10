@@ -18,7 +18,8 @@
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                           CanContentScroll="True"  Margin="10"  VerticalAlignment="Top" HorizontalAlignment="Left"  >
-                    <ListBox x:Name="imageListView" ItemsSource="{Binding Path=ImageToEntities}" Grid.Column="0" Height="Auto" Width="250" MaxHeight="400">
+                    <ListBox x:Name="imageListView" ItemsSource="{Binding Path=ImageToEntities}" 
+                             Grid.Column="0" Height="Auto" Width="250" MaxHeight="400">
                         <!--<i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectedIndexChanged">
                                 <i:InvokeCommandAction Command="{Binding DataContextChangedCommand}" CommandParameter="{Binding ElementName=imageListView, 
@@ -44,20 +45,24 @@
 
 
                 <StackPanel Grid.Column="1" >
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
-                          CanContentScroll="True"  Margin="10"  VerticalAlignment="Top" HorizontalAlignment="Left"  >
+                    <Viewbox Stretch="Uniform"  Margin="10"  VerticalAlignment="Top" HorizontalAlignment="Left"  >
                         <StackPanel  Height="Auto" MinWidth="300" Width="Auto"  MinHeight="380">
                             <Border BorderThickness="1" BorderBrush="#FF2D23F7" Margin="10" Height="354" >
                                 <Image Margin="10,10,10,9" x:Name="image" gif:ImageBehavior.RepeatBehavior="Forever" 
                                                    gif:ImageBehavior.AnimatedSource="{Binding ElementName=imageListView,Path=SelectedItem.Image.ImagePath }" /> <!--Path=ImageToEntities[0].Image.ImagePath-->
                             </Border>
+                            <Button Command="{Binding }" Click="Button_Click" >Просмотр</Button>
                         </StackPanel>
-                    </ScrollViewer>
+                    </Viewbox>
 
 
                 </StackPanel>
 
-                <!--<ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" >
+                <!--
+                Process.Start(ПутьИмяФайла);
+
+                
+                <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" >
                 <Canvas Width="{Binding ActualWidth, ElementName=image}" Height="{Binding ActualHeight, ElementName=image}" >
                     <Canvas.Background>
                         <VisualBrush  >
