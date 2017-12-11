@@ -51,7 +51,7 @@
                                 <Image Margin="10,10,10,9" x:Name="image" gif:ImageBehavior.RepeatBehavior="Forever" 
                                                    gif:ImageBehavior.AnimatedSource="{Binding ElementName=imageListView,Path=SelectedItem.Image.ImagePath }" /> <!--Path=ImageToEntities[0].Image.ImagePath-->
                             </Border>
-                            <Button Command="{Binding }" Click="Button_Click" >Просмотр</Button>
+                            <Button Click="Button_Click" >Просмотр</Button>
                         </StackPanel>
                     </Viewbox>
 
