@@ -392,6 +392,46 @@ namespace HomeArchiveX.DataAccess
             }
         }
 
+        public MethodResult<int> DeleteCategory(int id)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<Category>();
+                var file = repo.Find(x => x.CategoryKey == id).FirstOrDefault();
+                repo.Remove(file);
+
+                return uofw.Complete();
+            }
+        }
+
+        public Category GetCategoryBy(int id)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<HomeArchiveX.Model.Category>();
+
+                return repo.Find(x => x.CategoryKey == id).FirstOrDefault();
+            }
+        }
+
+        public MethodResult<int> SaveCategory(Category category)
+        {
+            throw new NotImplementedException();
+        }
+
+        public MethodResult<int> AddCategory(Category category)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<Category>();
+                repo.Add(category);
+                var ret = uofw.Complete();
+                if (!ret.Success)
+                    return ret;
+                return new MethodResult<int>(category.CategoryKey);
+            }
+        }
+
 
 
 

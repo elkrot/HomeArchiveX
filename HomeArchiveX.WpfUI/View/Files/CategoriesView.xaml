@@ -27,7 +27,7 @@
 
 
             <TreeView.ItemTemplate >
-                <HierarchicalDataTemplate ItemsSource="{Binding Path=NavigationItems}">
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=NavigationItems}" >
 
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{Binding ImagePath}" Width="50" Margin="0"/>
@@ -39,6 +39,6 @@
             </TreeView.ItemTemplate>
 
         </TreeView>
-
+      
     </Grid>
 </UserControl>

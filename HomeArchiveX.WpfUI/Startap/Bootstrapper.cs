@@ -43,6 +43,9 @@ namespace HomeArchiveX.WpfU.Startup
             builder.RegisterType<CategoryLookupProvider>().As<ITreeViewLookupProvider<Category>>();
 
             builder.RegisterType<FilesOnDriveDataProvider>().As<IFilesOnDriveDataProvider>();
+            builder.RegisterType<CategoryDataProvider>().As<ICategoryDataProvider>();
+            
+
             builder.RegisterType<FilesOnDriveEditViewModel>().As<IFilesOnDriveEditViewModel>();
             builder.RegisterType<FilesOnDriveNavigationViewModel>().As<IFilesOnDriveNavigationViewModel>();
             builder.RegisterType<CategoryNavigationViewModel>().As<ICategoryNavigationViewModel>();

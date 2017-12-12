@@ -24,14 +24,18 @@ namespace HomeArchiveX.DataAccess
         IEnumerable<Drive> GetDrivesByCondition(
     Expression<Func<Drive, bool>> where, Expression<Func<Drive, object>> orderby
     , bool isDescending, int index, int length);
+        MethodResult<int> DeleteCategory(int id);
+        Category GetCategoryBy(int id);
         #endregion
 
         #region Файлы
         MethodResult<int> DeleteFileOnDriveDrive(int id);
         ArchiveEntity GetFileOnDriveDriveById(int id);
         MethodResult<int> SaveFileOnDriveDrive(ArchiveEntity archiveEntity);
+        MethodResult<int> SaveCategory(Category category);
         IEnumerable<ArchiveEntity> GetAllFilesOnDrive(int id);
         IEnumerable<ArchiveEntity> GetFilesOnDriveByCondition(Expression<Func<ArchiveEntity, bool>> where, Expression<Func<ArchiveEntity, object>> orderby);
+        MethodResult<int> AddCategory(Category category);
         #endregion
 
         #region Изображения

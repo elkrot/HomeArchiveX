@@ -113,6 +113,8 @@
     <Compile Include="Converters\ComboBoxOriginalValueConverter.cs" />
     <Compile Include="Converters\DatePickerOriginalValueConverter.cs" />
     <Compile Include="DataProvider\CategoryLookupProvider.cs" />
+    <Compile Include="DataProvider\CategoryProvider\CategoryDataProvider.cs" />
+    <Compile Include="DataProvider\CategoryProvider\ICategoryDataProvider.cs" />
     <Compile Include="DataProvider\FilesOnDriveLookupProvider.cs" />
     <Compile Include="DataProvider\FilesOnDrive\FilesOnDriveDataProvider.cs" />
     <Compile Include="DataProvider\Lookups\DriveLookupProvider.cs" />

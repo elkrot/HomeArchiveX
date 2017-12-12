@@ -28,6 +28,8 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private readonly IEventAggregator _eventAggregator;
         private readonly IMessageDialogService _messageDialogService;
         private readonly IFilesOnDriveDataProvider _fileOnDriveDataProvider;
+        private readonly ICategoryDataProvider _categoryDataProvider;
+
         private ArchiveEntityWrapper _archiveEntity;
         private ICategoryNavigationViewModel _categoryNavigationViewModel;
 
@@ -35,11 +37,13 @@ namespace HomeArchiveX.WpfUI.ViewModel
             IMessageDialogService messageDialogService,
             IFilesOnDriveNavigationViewModel filesOnDriveNavigationViewModel
             , IFilesOnDriveDataProvider fileOnDriveDataProvider
-            , ICategoryNavigationViewModel categoryNavigationViewModel)
+            , ICategoryNavigationViewModel categoryNavigationViewModel
+            , ICategoryDataProvider categoryDataProvider)
         {
             _eventAggregator = eventAggregator;
             _messageDialogService = messageDialogService;
             _fileOnDriveDataProvider = fileOnDriveDataProvider;
+            _categoryDataProvider = categoryDataProvider;
 
             FilesOnDriveNavigationViewModel = filesOnDriveNavigationViewModel;
 
@@ -49,7 +53,22 @@ namespace HomeArchiveX.WpfUI.ViewModel
             OpenFileDialogCommand = new DelegateCommand(OnOpenFileDialogExecute, OnOpenFileDialogCanExecute);
             AddTagCommand = new DelegateCommand(OnAddTagExecute, OnAddTagCanExecute);
             AddCategoryCommand = new DelegateCommand(OnAddCategoryExecute, OnAddCategoryCanExecute);
+            AddNewCategoryCommand = new DelegateCommand(OnAddNewCategoryExecute, OnAddNewCategoryCanExecute);
+
             _categoryNavigationViewModel = categoryNavigationViewModel;
+
+        }
+
+        private bool OnAddNewCategoryCanExecute(object arg)
+        {
+            return true;
+        }
+
+        private void OnAddNewCategoryExecute(object obj)
+        {
+            var strkey = obj.ToString();
+            System.Windows.Forms.MessageBox.Show(strkey);
+            _categoryDataProvider.AddCategory(new Category() { CategoryTitle="Новая категория"});
 
         }
 
@@ -118,6 +137,8 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
         public ICommand AddCategoryCommand { get; private set; }
 
+        public ICommand AddNewCategoryCommand { get; private set; }
+
         #region OnOpenFileDialog
         private void OnOpenFileDialogExecute(object obj)
         {
@@ -127,10 +148,8 @@ namespace HomeArchiveX.WpfUI.ViewModel
             myDialog.Multiselect = true;
             if (myDialog.ShowDialog() == true)
             {
-
                 var ret = _fileOnDriveDataProvider.AddImageToFileOnDrive(ArchiveEntity.Model.ArchiveEntityKey
                     , myDialog.FileName, (int)ArchiveEntity.Model.DriveId);
-
                 if (ret.Success)
                 {
                     var imte = _fileOnDriveDataProvider.GetImageToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
@@ -138,13 +157,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
                     var imtew = new ImageToEntityWrapper(imte);
                     ArchiveEntity.ImageToEntities.Add(imtew);
                     ArchiveEntity.ImageToEntities.AcceptChanges();
-
-
-
                 }
-
-
-
             }
         }
 

@@ -92,7 +92,14 @@
 
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
-
+                        <TreeView.ContextMenu>
+                            <ContextMenu><!--{Binding CategoriesTreeView.SelectedValue}-->
+                                <MenuItem Header="Добавить" Command="{Binding AddNewCategoryCommand}" 
+                                          CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, 
+                                    Path=PlacementTarget.SelectedValue}"/>
+                                <MenuItem Header="Удалить"/>
+                            </ContextMenu>
+                        </TreeView.ContextMenu>
                     </TreeView>
 
 
