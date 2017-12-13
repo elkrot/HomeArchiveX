@@ -145,6 +145,7 @@
     <Compile Include="ViewModel\FilesOnDrive\FilesOnDriveViewModel.cs" />
     <Compile Include="ViewModel\Observable.cs" />
     <Compile Include="ViewModel\Security\AuthenticationViewModel.cs" />
+    <Compile Include="ViewModel\Services\AddCategoryViewModel.cs" />
     <Compile Include="View\Drivers\DrivesEditView.xaml.cs">
       <DependentUpon>DrivesEditView.xaml</DependentUpon>
     </Compile>
@@ -184,6 +185,9 @@
     <Compile Include="Security\LoginWindow.cs" />
     <Compile Include="View\Security\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Services\AddCategoryDialog.xaml.cs">
+      <DependentUpon>AddCategoryDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Services\IMessageDialogService.cs" />
     <Compile Include="View\Services\MessageDialog.xaml.cs">
@@ -322,6 +326,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Security\LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Services\AddCategoryDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

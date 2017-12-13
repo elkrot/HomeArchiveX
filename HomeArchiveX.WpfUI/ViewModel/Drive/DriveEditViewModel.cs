@@ -171,23 +171,27 @@ namespace HomeArchiveX.WpfUI.ViewModel
                string imgPath =  cfg.GetTargetImagePath();
 
                 DirectoryInfo di = new DirectoryInfo(Path.Combine(imgPath, string.Format("drive{0}", Drive.DriveId)));
-                di.Delete(true);
-                var saveRet = _driveDataProvider.DeleteDrive(Drive.DriveId);
 
-                if (!saveRet.Success)
+                if (di.Exists)
                 {
-                    _messageDialogService.ShowMessageDialog(
-       "Ошибка при сохранении",
-       string.Format("Во время сохранения записи {0}{2} возникла исключительная ситуация  {1}"
-       , Drive.Title.Trim(), saveRet.Messages.FirstOrDefault(), Environment.NewLine), MessageDialogResult.Ok);
-                    Drive.RejectChanges();
-                }
-                else
-                {
-                    Drive.AcceptChanges();
+                    di.Delete(true);
+                    var saveRet = _driveDataProvider.DeleteDrive(Drive.DriveId);
 
-                    _eventAggregator.GetEvent<DriveDeletedEvent>().Publish(Drive.DriveId);
+                    if (!saveRet.Success)
+                    {
+                        _messageDialogService.ShowMessageDialog(
+           "Ошибка при сохранении",
+           string.Format("Во время сохранения записи {0}{2} возникла исключительная ситуация  {1}"
+           , Drive.Title.Trim(), saveRet.Messages.FirstOrDefault(), Environment.NewLine), MessageDialogResult.Ok);
+                        Drive.RejectChanges();
+                    }
+                    else
+                    {
+                        Drive.AcceptChanges();
 
+                        _eventAggregator.GetEvent<DriveDeletedEvent>().Publish(Drive.DriveId);
+
+                    }
                 }
             }
         }

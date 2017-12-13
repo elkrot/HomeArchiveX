@@ -5,6 +5,7 @@ using HomeArchiveX.WpfUI.Event;
 using HomeArchiveX.WpfUI.View.Services;
 using HomeArchiveX.WpfUI.ViewModel;
 using HomeArchiveX.WpfUI.ViewModel.FilesOnDrive;
+using HomeArchiveX.WpfUI.ViewModel.Services;
 using HomeArchiveX.WpfUI.Wrapper;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Win32;
@@ -67,8 +68,30 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private void OnAddNewCategoryExecute(object obj)
         {
             var strkey = obj.ToString();
-            System.Windows.Forms.MessageBox.Show(strkey);
-            _categoryDataProvider.AddCategory(new Category() { CategoryTitle="Новая категория"});
+
+            AddCategoryViewModel vm = new AddCategoryViewModel();
+            vm.CategoryTitle = "Новая категория";
+            int parentKey = 0;
+
+            int.TryParse(strkey, out parentKey);
+
+
+            AddCategoryDialog dlg = new AddCategoryDialog();
+            dlg.DataContext = vm;
+
+            var result = dlg.ShowDialog();
+
+            if (result==true)
+            {
+                Category category = new Category() { CategoryTitle = vm.CategoryTitle };
+                if (parentKey > 0)
+                {
+                    category.ParentCategoryKey = parentKey;
+                }
+
+                _categoryDataProvider.AddCategory(category);
+                CategoryNavigationViewModel.Load();
+            }
 
         }
 
