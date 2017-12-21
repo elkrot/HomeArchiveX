@@ -123,6 +123,7 @@
     <Compile Include="DataProvider\FilesOnDrive\IFilesOnDriveDataProvider.cs" />
     <Compile Include="DataProvider\Lookups\ILookupProvider.cs" />
     <Compile Include="DataProvider\Lookups\LookupItem.cs" />
+    <Compile Include="DemoView.cs" />
     <Compile Include="Event\Driver\DriverSavedEvent.cs" />
     <Compile Include="Event\Driver\DriverDeletedEvent.cs" />
     <Compile Include="Event\Driver\OpenDriverEditViewEvent.cs" />
@@ -146,6 +147,9 @@
     <Compile Include="ViewModel\Observable.cs" />
     <Compile Include="ViewModel\Security\AuthenticationViewModel.cs" />
     <Compile Include="ViewModel\Services\AddCategoryViewModel.cs" />
+    <Compile Include="View\Admin\AdminView.xaml.cs">
+      <DependentUpon>AdminView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Drivers\DrivesEditView.xaml.cs">
       <DependentUpon>DrivesEditView.xaml</DependentUpon>
     </Compile>
@@ -214,6 +218,14 @@
     <Compile Include="Wrapper\Generated\TagToEntityWrapper.g.cs" />
     <Compile Include="Wrapper\Generated\TagWrapper.g.cs" />
     <Page Include="Styles\ListBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\TextBlockStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Admin\AdminView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
