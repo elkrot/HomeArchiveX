@@ -1,0 +1,18 @@
+﻿<Page x:Class="HomeArchiveX.WpfUI.View.Admin.AdminMainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:HomeArchiveX.WpfUI.View.Admin"
+      xmlns:view="clr-namespace:HomeArchiveX.WpfUI"
+      mc:Ignorable="d" 
+      d:DesignHeight="310" d:DesignWidth="380"
+      Background="Aqua"
+      Title="AdminMainPage">
+
+    <Grid >
+        <StackPanel></StackPanel>
+        <view:AdminView Margin="0,10,0,0" Height="Auto" Grid.Row="1"/>
+        <!--DataContext="{Binding ArchiveEntity}"-->
+    </Grid>
+</Page>

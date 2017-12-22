@@ -8,18 +8,8 @@
              xmlns:s="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
                 FontSize="8" d:DesignHeight="510"
+                Background="Azure"
              >
-
-    <local:DemoView.Description>
-        <Paragraph FontSize="14"
-               FontFamily="Segoe">
-            The PropertyGrid control allows you to view and edit the properties of a specific object instance, 
-           or values from a list of custom objects. This PropertyGrid allows you to autogenerate all properties 
-           or specify the specific properties you want to display. You can use the standard editors that are provided 
-           with the PropertyGrid or you can use custom editors that target a type, specific properties, or both.  
-           The PropertyGrid also supports complex properties, which allows you to drill down into a nested property hierarchy.
-        </Paragraph>
-    </local:DemoView.Description>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -168,12 +158,6 @@
                     <ColumnDefinition Width="150" />
                     <ColumnDefinition MaxWidth="530" />
                 </Grid.ColumnDefinitions>
-                <Button x:Name="_button"
-                Height="100"
-                Width="100"
-                Margin="20"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">Button</Button>
 
                 <xctk:PropertyGrid Grid.Column="1"
                            x:Name="_propertyGrid"
@@ -187,7 +171,7 @@
                            IsMiscCategoryLabelHidden="False"
                            ShowPreview="True"
                            HideInheritedProperties="False"
-                           SelectedObject="{Binding ElementName=_button}">
+                           SelectedObject="{Binding _config}">
                 </xctk:PropertyGrid>
             </Grid>
         </DockPanel>

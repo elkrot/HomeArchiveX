@@ -13,19 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HomeArchiveX.WpfUI
+namespace HomeArchiveX.WpfUI.View.Admin
 {
     /// <summary>
-    /// Interaction logic for AdminView.xaml
+    /// Interaction logic for AdminMainPage.xaml
     /// </summary>
-    public partial class AdminView : DemoView
+    public partial class AdminMainPage : Page
     {
-        ConfigurationDTO _config;
-        public AdminView()
+        public AdminMainPage()
         {
-
-            _config = new ConfigurationDTO();
-           // InitializeComponent();
+            InitializeComponent();
         }
     }
 }

@@ -110,6 +110,7 @@
     <Compile Include="Behaviors\ChangeBehavior.cs" />
     <Compile Include="Behaviors\DataGridChangeBehavior.cs" />
     <Compile Include="Command\DelegateCommand.cs" />
+    <Compile Include="ConfigurationDTO.cs" />
     <Compile Include="Converters\ComboBoxOriginalValueConverter.cs" />
     <Compile Include="Converters\DatePickerOriginalValueConverter.cs" />
     <Compile Include="DataProvider\CategoryLookupProvider.cs" />
@@ -147,6 +148,9 @@
     <Compile Include="ViewModel\Observable.cs" />
     <Compile Include="ViewModel\Security\AuthenticationViewModel.cs" />
     <Compile Include="ViewModel\Services\AddCategoryViewModel.cs" />
+    <Compile Include="View\Admin\AdminMainPage.xaml.cs">
+      <DependentUpon>AdminMainPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Admin\AdminView.xaml.cs">
       <DependentUpon>AdminView.xaml</DependentUpon>
     </Compile>
@@ -222,6 +226,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\TextBlockStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Admin\AdminMainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -2,6 +2,7 @@
 using HomeArchiveX.Infrastructure;
 using HomeArchiveX.WpfU.Startup;
 using HomeArchiveX.WpfUI.View;
+using HomeArchiveX.WpfUI.View.Admin;
 using HomeArchiveX.WpfUI.View.Security;
 using HomeArchiveX.WpfUI.ViewModel;
 using HomeArchiveX.WpfUI.ViewModel.Security;
@@ -327,6 +328,11 @@ namespace HomeArchiveX.WpfUI
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             cancelTokenSource.Cancel();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            Main.Content = new AdminMainPage();
         }
     }
 }
