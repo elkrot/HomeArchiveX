@@ -20,9 +20,17 @@ namespace HomeArchiveX.WpfUI.View.Admin
     /// </summary>
     public partial class AdminMainPage : Page
     {
+
+        ConfigurationDTO _config;
+       
+
+            
         public AdminMainPage()
         {
+ _config = new ConfigurationDTO();
+            _config.ImgPath = "path";
             InitializeComponent();
+           
         }
     }
 }

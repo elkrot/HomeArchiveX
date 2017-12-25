@@ -13,18 +13,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HomeArchiveX.WpfUI
+namespace HomeArchiveX.WpfUI.View.Admin
 {
     /// <summary>
-    /// Interaction logic for AdminView.xaml
+    /// Interaction logic for GridView.xaml
     /// </summary>
-    public partial class AdminView : UserControl
+    public partial class GridView : UserControl
     {
-       
-        public AdminView()
+        public GridView()
         {
-
-         
+            InitializeComponent();
+            this.DataContext = new GridViewModel();
         }
     }
 }

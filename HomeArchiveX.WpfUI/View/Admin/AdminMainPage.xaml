@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:HomeArchiveX.WpfUI.View.Admin"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:view="clr-namespace:HomeArchiveX.WpfUI"
       mc:Ignorable="d" 
       d:DesignHeight="310" d:DesignWidth="380"
@@ -11,8 +12,7 @@
       Title="AdminMainPage">
 
     <Grid >
-        <StackPanel></StackPanel>
-        <view:AdminView Margin="0,10,0,0" Height="Auto" Grid.Row="1"/>
-        <!--DataContext="{Binding ArchiveEntity}"-->
+
+        <local:GridView />
     </Grid>
 </Page>
