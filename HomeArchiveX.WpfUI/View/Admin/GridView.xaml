@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HomeArchiveX.WpfUI.View.Admin"
+             xmlns:my="clr-namespace:HomeArchiveX.WpfUI"
              xmlns:xceedPg="clr-namespace:Xceed.Wpf.Toolkit.PropertyGrid;assembly=Xceed.Wpf.Toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <xceedPg:PropertyGrid SelectedObject="{Binding}"/>
+        <xceedPg:PropertyGrid SelectedObject="{my:SettingBinding .}"/>
     </Grid>
 </UserControl>

@@ -7,7 +7,11 @@
         xmlns:view="clr-namespace:HomeArchiveX.WpfUI"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Width="{view:SettingBinding MainWindow.Width}"
+    Height="{view:SettingBinding MainWindow.Height}"
+    Top="{view:SettingBinding MainWindow.Top}"
+    Left="{view:SettingBinding MainWindow.Left}"
+    WindowState="{view:SettingBinding MainWindow.WindowState}">
     <Window.Resources>
         <xctk:Wizard x:Key="_wizard" FinishButtonClosesWindow="True" Help="OnWizardHelp">
             <xctk:WizardPage Title="Добро пожаловать"

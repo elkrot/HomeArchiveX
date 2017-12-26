@@ -1,9 +1,11 @@
 ﻿using Autofac;
 using HomeArchiveX.DataAccess;
 using HomeArchiveX.DataAccess.Implementations;
+using HomeArchiveX.Infrastructure.Config;
 using HomeArchiveX.Model;
 using HomeArchiveX.Security;
 using HomeArchiveX.WpfU.Startup;
+using HomeArchiveX.WpfUI.Properties;
 using HomeArchiveX.WpfUI.View.Security;
 using HomeArchiveX.WpfUI.ViewModel;
 using HomeArchiveX.WpfUI.ViewModel.Security;
@@ -28,10 +30,21 @@ namespace HomeArchiveX.WpfUI
     {
         private DrivesViewModel _driveViewModel;
 
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+            Settings.Default.Save();
+        }
         protected override void OnStartup(StartupEventArgs e)
         {
             var pathToMdfFileDirectory = Directory.GetCurrentDirectory();// @"d:\temp\";
             AppDomain.CurrentDomain.SetData("DataDirectory", pathToMdfFileDirectory);
+
+            if (Settings.Default.Config == null)
+            {
+                Settings.Default.Config = new MyConfig();
+            }
+
 
 
             try

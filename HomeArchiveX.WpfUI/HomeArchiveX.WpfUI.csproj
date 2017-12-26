@@ -124,7 +124,6 @@
     <Compile Include="DataProvider\FilesOnDrive\IFilesOnDriveDataProvider.cs" />
     <Compile Include="DataProvider\Lookups\ILookupProvider.cs" />
     <Compile Include="DataProvider\Lookups\LookupItem.cs" />
-    <Compile Include="DemoView.cs" />
     <Compile Include="Event\Driver\DriverSavedEvent.cs" />
     <Compile Include="Event\Driver\DriverDeletedEvent.cs" />
     <Compile Include="Event\Driver\OpenDriverEditViewEvent.cs" />
@@ -137,6 +136,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
+    <Compile Include="SettingBindingExtension.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

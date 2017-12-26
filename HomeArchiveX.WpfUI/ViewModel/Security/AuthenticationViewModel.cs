@@ -111,6 +111,10 @@ namespace HomeArchiveX.WpfUI.ViewModel.Security
                 Username = string.Empty; //reset
                 passwordBox.Password = string.Empty; //reset
                 Status = string.Empty;
+                if (IsAuthenticated) {
+                    ShowView(null);
+                }
+
             }
             catch (UnauthorizedAccessException)
             {

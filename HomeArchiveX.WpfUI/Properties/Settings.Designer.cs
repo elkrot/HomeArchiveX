@@ -23,12 +23,14 @@ namespace HomeArchiveX.WpfUI.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Setting {
+        public global::HomeArchiveX.Infrastructure.Config.MyConfig Config {
             get {
-                return ((string)(this["Setting"]));
+                return ((global::HomeArchiveX.Infrastructure.Config.MyConfig)(this["Config"]));
+            }
+            set {
+                this["Config"] = value;
             }
         }
     }
