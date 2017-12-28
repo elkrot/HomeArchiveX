@@ -52,12 +52,12 @@
                       Margin="0,10,0,0" VerticalAlignment="Top" Width="230" Grid.Column="1" Grid.Row="0">
             <ToolBar Height="50" VerticalAlignment="Top" Margin="0,0,-515,0">
                 <Button Click="Button_Click_1" VerticalAlignment="Top" Height="40" >
-                    <Image Source="/HomeArchiveX.WpfUI;component/img/drive_add.png" Width="50" Margin="0"/>
+                    <Image Source="/HomeArchiveX.WpfUI;component/img/adddst.png" Width="50" Margin="0"/>
 
                 </Button>
                 <Separator />
                 <Button Click="Button_Click">
-                    <Image Width="50" Margin="0" Source="/HomeArchiveX.WpfUI;component/img/cog.png" RenderTransformOrigin="0.61,0.5"/>
+                    <Image Width="50" Margin="0" Source="/HomeArchiveX.WpfUI;component/img/compare.png" RenderTransformOrigin="0.61,0.5"/>
                 </Button>
                 <Separator />
                 <Button VerticalAlignment="Bottom" Height="45" Click="Button_Click_3">

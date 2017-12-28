@@ -176,6 +176,10 @@ namespace HomeArchiveX.WpfUI.ViewModel.Security
                 view.Show();
                 _driveViewModel.Load();
 
+                var window = System.Windows.Application.Current.Windows[0];
+
+                if (window != null)
+                    window.Close();
                 // else
                 // view = new AdminWindow();
 
