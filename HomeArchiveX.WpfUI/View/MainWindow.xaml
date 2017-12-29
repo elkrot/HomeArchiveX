@@ -7,6 +7,7 @@
         xmlns:view="clr-namespace:HomeArchiveX.WpfUI"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
+        Icon="/HomeArchiveX.WpfUI;component/img/appico.ico"
         Width="{view:SettingBinding MainWindow.Width}"
     Height="{view:SettingBinding MainWindow.Height}"
     Top="{view:SettingBinding MainWindow.Top}"

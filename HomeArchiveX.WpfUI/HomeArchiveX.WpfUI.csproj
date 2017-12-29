@@ -50,6 +50,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>AppIco.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.5.0\lib\net45\Autofac.dll</HintPath>
@@ -417,6 +420,11 @@
     <Resource Include="img\cog_delete.png" />
     <Resource Include="img\compare.png" />
     <Resource Include="img\AddDst.png" />
+    <Resource Include="img\MainIco.png" />
+    <Resource Include="MainIco.ico" />
+    <Resource Include="AppIco.ico" />
+    <SplashScreen Include="img\zastavka.jpg" />
+    <Resource Include="img\AppIco.ico" />
     <Content Include="Xceed.Wpf.Toolkit.dll" />
     <Resource Include="img\drive.png" />
     <Resource Include="img\drive_add.png" />
