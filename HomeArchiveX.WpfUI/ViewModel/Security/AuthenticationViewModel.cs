@@ -34,6 +34,10 @@ namespace HomeArchiveX.WpfUI.ViewModel.Security
             _logoutCommand = new DelegateCommand(Logout, CanLogout);
             _showViewCommand = new DelegateCommand(ShowView, null);
             _createAdminCommand = new DelegateCommand(CreateAdmin, null);
+            var cmdArgs = System.Environment.GetCommandLineArgs();
+           
+                Username = "Admin";
+        
         }
 
         #region Properties

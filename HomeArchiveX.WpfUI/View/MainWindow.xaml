@@ -17,8 +17,8 @@
         <xctk:Wizard x:Key="_wizard" FinishButtonClosesWindow="True" Help="OnWizardHelp">
             <xctk:WizardPage Title="Добро пожаловать"
                              Description="Этот помошник поможет создать описание дирректории." >
-                
-                </xctk:WizardPage>
+
+            </xctk:WizardPage>
             <xctk:WizardPage PageType="Interior"
                              Title="Страница 1"
                              Description="Первый шаг процесса." >
@@ -43,6 +43,14 @@
 
         </xctk:Wizard>
     </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="Help"
+CanExecute="HelpCanExecute" Executed="HelpExecuted"/>
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="Help" Key="F2"/>
+        <KeyBinding Command="NotACommand" Key="F1"/>
+    </Window.InputBindings>
     <Grid ShowGridLines="False"  Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -52,32 +60,44 @@
         <ToolBarTray HorizontalAlignment="Left" Height="50" 
                       Margin="0,10,0,0" VerticalAlignment="Top" Width="230" Grid.Column="1" Grid.Row="0">
             <ToolBar Height="50" VerticalAlignment="Top" Margin="0,0,-515,0">
-                <Button Click="Button_Click_1" VerticalAlignment="Top" Height="40" >
-                    <Image Source="/HomeArchiveX.WpfUI;component/img/adddst.png" Width="50" Margin="0"/>
+
+                <Button Click="Button_Click_5" VerticalAlignment="Top" Height="40" ToolTip="Извлечь">
+                    <ContentControl Content="{StaticResource Eject}" Margin="0" />
 
                 </Button>
-                <Separator />
+                
+                <Button Click="Button_Click_1" VerticalAlignment="Top" Height="40" ToolTip="Создать расположение">
+                    <ContentControl Content="{StaticResource NewDest}" Margin="0" />
+
+                </Button>
+
                 <Button Click="Button_Click">
-                    <Image Width="50" Margin="0" Source="/HomeArchiveX.WpfUI;component/img/compare.png" RenderTransformOrigin="0.61,0.5"/>
+                    <ContentControl Content="{StaticResource Compare}" Margin="0" />
                 </Button>
-                <Separator />
+
                 <Button VerticalAlignment="Bottom" Height="45" Click="Button_Click_3">
-                    <Image Source="/HomeArchiveX.WpfUI;component/img/drive_user.png" Width="50" Margin="0"/>
+                    <ContentControl Content="{StaticResource Admin}" Margin="0" />
+                    <!--<Image Source="/HomeArchiveX.WpfUI;component/img/Admin.png" Width="50" Margin="0"/>-->
                 </Button>
-                <Separator />
+
                 <Button>
 
                 </Button>
+                <!--Content="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}"-->
+                <Button  Command="Help" >
 
-                <Button >
-                    <Image Width="50" Margin="0" Source="/HomeArchiveX.WpfUI;component/img/drive_magnify.png"/>
+                    <ContentControl Content="{StaticResource Help}" Margin="0" />
                 </Button>
-                <TextBox Foreground="LightGray" Width="100">Поиск...</TextBox>
+                <Button Click="Button_Click_4" >
+                    <ContentControl Content="{StaticResource Search}" Margin="0" />
 
-                <ProgressBar Name="progressBar" Height="Auto" Width="80"/>
+                </Button>
+                <TextBox Foreground="LightGray" Width="100" Margin="5">Поиск...</TextBox>
+
+                <ProgressBar Name="progressBar" Height="Auto" Width="180" Margin="10" />
                 <Button Click="Button_Click_2">Отмена</Button>
             </ToolBar>
-            
+
         </ToolBarTray>
         <Frame x:Name="Main" Margin="0,0,0,0" Grid.Row="1"/>
     </Grid>

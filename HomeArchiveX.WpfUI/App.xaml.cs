@@ -33,6 +33,9 @@ namespace HomeArchiveX.WpfUI
         protected override void OnExit(ExitEventArgs e)
         {
             base.OnExit(e);
+            this.Properties["test"] = "test";
+            Application.Current.Properties["current"] = "current";
+            var commandLineArgs = System.Environment.GetCommandLineArgs();
             Settings.Default.Save();
         }
         protected override void OnStartup(StartupEventArgs e)

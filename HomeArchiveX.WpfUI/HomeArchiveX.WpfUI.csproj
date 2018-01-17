@@ -139,6 +139,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
+    <Compile Include="OpenOrCloseCDDrive.cs" />
     <Compile Include="SettingBindingExtension.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -155,6 +156,8 @@
     <Compile Include="ViewModel\FilesOnDrive\FilesOnDriveNavigationViewModel.cs" />
     <Compile Include="ViewModel\FilesOnDrive\FilesOnDriveViewModel.cs" />
     <Compile Include="ViewModel\Observable.cs" />
+    <Compile Include="ViewModel\Search\SearchResultViewModel.cs" />
+    <Compile Include="ViewModel\Search\SearchNavigationViewModel.cs" />
     <Compile Include="ViewModel\Security\AuthenticationViewModel.cs" />
     <Compile Include="ViewModel\Services\AddCategoryViewModel.cs" />
     <Compile Include="View\Admin\AdminMainPage.xaml.cs">
@@ -204,6 +207,15 @@
       <DependentUpon>TagsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Security\LoginWindow.cs" />
+    <Compile Include="View\Search\SearchNavigation.xaml.cs">
+      <DependentUpon>SearchNavigation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Search\SearchPage.xaml.cs">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Search\SearchResult.xaml.cs">
+      <DependentUpon>SearchResult.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Security\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
@@ -234,6 +246,10 @@
     <Compile Include="Wrapper\Generated\ImageWrapper.g.cs" />
     <Compile Include="Wrapper\Generated\TagToEntityWrapper.g.cs" />
     <Compile Include="Wrapper\Generated\TagWrapper.g.cs" />
+    <Page Include="Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\ListBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -362,6 +378,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\Search\SearchNavigation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Search\SearchPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Search\SearchResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Security\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -425,6 +453,7 @@
     <Resource Include="AppIco.ico" />
     <SplashScreen Include="img\zastavka.jpg" />
     <Resource Include="img\AppIco.ico" />
+    <Resource Include="img\Admin.png" />
     <Content Include="Xceed.Wpf.Toolkit.dll" />
     <Resource Include="img\drive.png" />
     <Resource Include="img\drive_add.png" />

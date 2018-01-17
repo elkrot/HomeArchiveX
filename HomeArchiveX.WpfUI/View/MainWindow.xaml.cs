@@ -3,6 +3,7 @@ using HomeArchiveX.Infrastructure;
 using HomeArchiveX.WpfU.Startup;
 using HomeArchiveX.WpfUI.View;
 using HomeArchiveX.WpfUI.View.Admin;
+using HomeArchiveX.WpfUI.View.Search;
 using HomeArchiveX.WpfUI.View.Security;
 using HomeArchiveX.WpfUI.ViewModel;
 using HomeArchiveX.WpfUI.ViewModel.Security;
@@ -72,6 +73,9 @@ namespace HomeArchiveX.WpfUI
         public MainWindow(DrivesViewModel drivesViewModel)
         {
             InitializeComponent();
+            this.InputBindings.Add(new KeyBinding(ApplicationCommands.Help,new KeyGesture(Key.F2)));
+            this.InputBindings.Add(new KeyBinding(ApplicationCommands.NotACommand, new KeyGesture(Key.F1)));
+
             cancelTokenSource = new CancellationTokenSource();
             token = cancelTokenSource.Token;
 
@@ -134,7 +138,7 @@ namespace HomeArchiveX.WpfUI
                 _window = new System.Windows.Window();
                 _window.Title = "Создание Описания Файлов для дирректории.";
                 _window.Content = wizard;
-                _window.DataContext = new WizardData() { DriveCode = "2017_000", DriveLetter = @"e:\", MaxImagesInDirectory = 999 };
+                _window.DataContext = new WizardData() { DriveCode = "2018_00", DriveLetter = @"e:\", MaxImagesInDirectory = 0 };
                 _window.Width = 600;
                 _window.Height = 400;
                 _window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
@@ -333,6 +337,27 @@ namespace HomeArchiveX.WpfUI
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             Main.Content = new AdminMainPage();
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            Main.Content = new SearchPage();
+        }
+
+        void HelpCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+        void HelpExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("notepad.exe");
+}
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            OpenOrCloseCDDrive openOrClose = new OpenOrCloseCDDrive();
+            var drives = openOrClose.GetCDDrives;
+            openOrClose.Open(drives[0]);
         }
     }
 }

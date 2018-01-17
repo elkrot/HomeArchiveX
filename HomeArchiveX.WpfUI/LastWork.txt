@@ -1,12 +1,233 @@
-﻿FilesOnDriveLookupProvider -> GetNodesById
- delete  FROM ImageToEntity
-where TargetEntityKey in (select ArchiveEntityKey FROM ArchiveEntity where DriveId in(36))
+﻿<Button Command="Cut" CommandTarget="{Binding ElementName=textBox}"
+Content="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}"/>
+<Button Command="Copy" CommandTarget="{Binding ElementName=textBox}"
+Content="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}"/>
+<Button Command="Paste" CommandTarget="{Binding ElementName=textBox}"
+Content="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}"/>
+<Button Command="Undo" CommandTarget="{Binding ElementName=textBox}"
+Content="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}"/>
+<Button Command="Redo" CommandTarget="{Binding ElementName=textBox}"
+Content="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}"/>
+<TextBox x:Name="textBox"
+</StackPanel>
 
-  delete  FROM [Image]
-	  where ImageKey in(  SELECT ImageKey     FROM ImageToEntity
-where TargetEntityKey in (select ArchiveEntityKey FROM ArchiveEntity where DriveId in(36)))
-delete
-  FROM ArchiveEntity where DriveId in(36)
-  
-   delete
-  FROM Drive where DriveId in(36)
+
+
+bool mutexIsNew;
+using (System.Threading.Mutex m = new System.Threading.Mutex(true, uniqueName, out
+mutexIsNew))
+if (mutexIsNew)
+// Это первый экземпляр, запускаем пр
+// Экземпляр уже работает. Выходим!
+
+
+protectedoverridevoid OnInitialized(EventArgs e)
+{
+base.OnInitialized(e);
+// В момент инициализации приложения считываем все избранные елементы
+IsolatedStorageFile f = IsolatedStorageFile.GetUserStoreForAssembly();
+using (IsolatedStorageFileStream stream =
+new IsolatedStorageFileStream(‚myFile‛, FileMode.OpenOrCreate, f))
+using (StreamReader reader = new StreamReader(stream))
+{
+string line = reader.ReadLine();
+while (line != null)
+{
+AddFavorite(line);
+line = reader.ReadLine();
+}
+}
+
+
+<TextBlock>
+Click <Hyperlink NavigateUri="PhotoPage.xaml">here</Hyperlink> to view the photo.
+</TextBlock>
+
+
+int photoId = 10;
+// Перейти к экземпляру Page
+PhotoPage nextPage = new PhotoPage();
+this.NavigationService.Navigate(nextPage, photoId);
+// Или перейти к странице по URI
+this.NavigationService.Navigate(
+new Uri(‚PhotoPage.xaml‛, UriKind.Relative), photoId);
+
+this.NavigationService.LoadCompleted += new
+LoadCompletedEventHandler(container_LoadCompleted);
+
+void container_LoadCompleted(object sender, NavigationEventArgs e)
+{
+if (e.ExtraData != null)
+LoadPhoto((int)e.ExtraData);
+}
+
+
+int photoId = 10;
+// Перейти к экземпляру Раgе
+PhotoPage nextPage = new PhotoPage(photoId);
+this.NavigationService.Navigate(nextPage);
+Чтобы этот пример заработал, в классе PhotoPage должен быть такой конструктор:
+public PhotoPage(int id)
+{
+LoadPhoto(id);
+}
+
+
+Возврат
+PageFunction1 nextPage = new PageFunction1<string>();
+this.NavigationService.Navigate(nextPage);
+Для получения возвращенного значения исходная страница должна обработать событие 
+Return объекта PageFunction:
+nextPage.Return += new ReturnEventHandler
+<string>(nextPage_Return);
+…
+void nextPage_Return(object sender, ReturnEventArgs <string>e)
+{
+string returnValue = e.Result;
+}
+
+
+
+
+System.Environment.GetCommandLineArgs
+
+
+
+<JumpList.JumpList>
+<JumpList>
+<JumpTask Title="Magnifier"
+Description="Open the Windows Magnifier."
+ApplicationPath="%WINDIR%\system32\magnify.exe"/>
+<JumpTask Title="Calculator"
+Description="Open the Windows Calculator."
+ApplicationPath="%WINDIR%\system32\calc.exe"
+IconResourcePath="%WINDIR%\system32\calc.exe"/>
+<JumpTask Title="Notepad"
+Description="Open Notepad."
+ApplicationPath="%WINDIR%\system32\notepad.exe"
+IconResourcePath="%WINDIR%\system32\notepad.exe"
+WorkingDirectory="%HOMEDRIVE%%HOMEPATH%"/>
+<JumpTask Title="Internet Explorer (No Add-Ons)"
+Description="Start without ActiveX controls or extensions."
+ApplicationPath="%PROGRAMFILES%\Internet Explorer\iexplore.exe"
+IconResourcePath="%PROGRAMFILES%\Internet Explorer\iexplore.exe
+WorkingDirectory="%HOMEDRIVE%%HOMEPATH%"
+IconResourceIndex="6" Arguments="-extoff"/>
+</JumpList>
+</JumpList.JumpList>
+
+
+В файлах %WINDIR%\System32\shell32.dll и %WINDIR%\System32\imageres.dll
+имеется много готовых значков
+
+<JumpTask Title="Magnifier" CustomCategory="One"
+
+Закрепление JumpTask не работает, если не задано свойство Arguments!
+
+
+<JumpTask Title="DSC06397.jpg"
+Arguments="C:\Users\Adam\Pictures\DSC06397.jpg"
+Description="DSC06397 (C:\Users\Adam\My Pictures)"
+CustomCategory="Photos"/>
+
+JumpList.AddToRecentCategory
+
+
+<Window …>
+<Window.TaskbarItemInfo>
+<TaskbarItemInfo Description="Custom tooltip"/>
+</Window.TaskbarItemInfo>
+…
+</Window>
+Или в программе на С#: 
+public MainWindow()
+{
+…
+this.TaskbarItemInfo = new TaskbarItemInfo();
+this.TaskbarItemInfo.Description = ‚Custom tooltip‛;
+}
+
+
+TaskbarItemInfo: ProgressValue и ProgressState. ProgressValue может принимать значение 
+типа  double  от 0 (0%) до 1 (100%), показывающее процент заполненности полосы 
+индикатора.  ProgressState  может принимать следующие значения, принадлежащие 
+перечислению TaskbarItemProgressState:
+  Normal - показывать зеленый индикатор.
+  Paused - показывать желтый индикатор.
+  Error - показывать красный индикатор.
+  Indeterminate  -  показывать зеленый анимированный индикатор, а не стандартную 
+частично заполненную полосу, отражающую значение ProgressValue.
+  None - не показывать индикатор. Это значение по умолчанию.
+
+
+<Window.TaskbarItemInfo>
+<TaskbarItemInfo Overlay="overlay.png"/>
+</Window.TaskbarItemInfo>
+
+<TaskbarItemInfo>
+<TaskbarItemInfo.ThumbButtonInfos>
+<ThumbButtonInfo Description="Previous" Click="…"
+ImageSource="Images\previousSmall.gif"/>
+<ThumbButtonInfo Description="Slideshow" Click="…"
+ImageSource="Images\slideshowSmall.gif"/>
+<ThumbButtonInfo Description="Next" Click="…"
+ImageSource="Images\nextSmall.gif"/>
+<ThumbButtonInfo Description="Undo" Click="…"
+ImageSource="Images\counterclockwiseSmall.gif"/>
+<ThumbButtonInfo Description="Redo" Click="…"
+ImageSource="Images\clockwiseSmall.gif"/>
+<ThumbButtonInfo Description="Delete" Click="…"
+ImageSource="Images\deleteSmall.gif"/>
+</TaskbarItemInfo.ThumbButtonInfos>
+</TaskbarItemInfo>
+
+ следующая XAML-разметка передает фокус элементу  TextBox  при 
+нажатии сочетания клавиш Alt+U:
+<Label Target="userNameBox">_User Name:</Label>
+<TextBox x:Name="userNameBox"/>
+
+<Button>
+OK
+<Button.ToolTip>
+<ToolTip>
+Clicking this will submit your request.
+</ToolTip>
+</Button.ToolTip>
+</Button>
+
+
+<Button Content="OK" ToolTip="Clicking this will submit your request."/>
+
+
+
+<CheckBox>
+CheckBox
+<CheckBox.ToolTip>
+<StackPanel>
+<Label FontWeight="Bold" Background="Blue" Foreground="White">
+The CheckBox
+</Label>
+<TextBlock Padding="10" TextWrapping="WrapWithOverflow" Width="200">
+CheckBox is a familiar control. But in WPF, it’s not much
+more than a ToggleButton styled differently!
+</TextBlock>
+<Line Stroke="Black" StrokeThickness="1" X2="200"/>
+<StackPanel Orientation="Horizontal">
+<Image Margin="2" Source="help.gif"/>
+<Label FontWeight="Bold">Press F1 for more help.</Label>
+</StackPanel>
+</StackPanel>
+</CheckBox.ToolTip>
+</CheckBox>
+
+
+
+<Expander Header="Grammar">
+<StackPanel>
+<CheckBox>Check grammar as you type</CheckBox>
+<CheckBox>Hide grammatical errors in this document</CheckBox>
+<CheckBox>Check grammar with spelling</CheckBox>
+</StackPanel>
+</Expander>
+
+
