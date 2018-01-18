@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -9,21 +8,15 @@ using System.Threading.Tasks;
 namespace HomeArchiveX.Search
 {
 
-
-
     #region Item Виджета 
-    public class SearchByTagWidgetItem : ISearchWidgetItem
+    public class SearchByCategoryWidgetItem : ISearchWidgetItem
     {
         public Expression QueryExpression { get; set; }
         public string Title { get; set; }
     }
     #endregion
 
-
-    #region  Виджет поиска
-    public class SearchByTagWidget : SearchWidget<SearchByTagWidgetItem>
+    public class SearchByCategoryWidget :  SearchWidget<SearchByCategoryWidgetItem>
     {
-
     }
-    #endregion
 }

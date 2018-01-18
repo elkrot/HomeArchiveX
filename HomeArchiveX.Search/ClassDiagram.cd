@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HomeArchiveX.Search.SearchByCategoryWidget" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="1" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Widget\SearchByCategoryWidget.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeArchiveX.Search.SearchByFileSizeWiget" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Widget\SearchByFileSizeWiget.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeArchiveX.Search.SearchByFileSizeWidgetItem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="1" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Widget\SearchByFileSizeWiget.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HomeArchiveX.Search.SearchByStringWidget" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Widget\SearchByStringWidget.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeArchiveX.Search.SearchByTagWidget" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Widget\SearchByTagWidget.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeArchiveX.Search.Condition.SearchCondition" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Condition\SearchCondition.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.26" Collapsed="true" />
+  </Class>
+  <Interface Name="HomeArchiveX.Search.ISearchCondition">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Condition\ISearchCondition.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="HomeArchiveX.Search.ISearchConditionItem" Collapsed="true">
+    <Position X="7.5" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Condition\ISearchConditionItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="HomeArchiveX.Search.ISearchResult" Collapsed="true">
+    <Position X="1.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Result\ISearchResult.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="HomeArchiveX.Search.ISearchResultItem" Collapsed="true">
+    <Position X="3" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Result\ISearchResultItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="HomeArchiveX.Search.ISearchWidget&lt;T&gt;">
+    <Position X="0.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACCAAAAAAAAAAAgAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Widget\ISearchWidget.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="HomeArchiveX.Search.ISearchWidgetItem">
+    <Position X="5" Y="1" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Widget\ISearchWidgetItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

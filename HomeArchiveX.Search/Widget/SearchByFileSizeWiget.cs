@@ -1,29 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HomeArchiveX.Search
 {
-    public class SearchByFileSizeWiget : ISearchWidget
+
+    #region Item Виджета 
+    public class SearchByFileSizeWidgetItem : ISearchWidgetItem
     {
-        public List<ISearchWidgetItem> Items
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
+        public Expression QueryExpression { get; set; }
+        public string Title { get; set; }
+    }
+    #endregion
 
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
 
-        public void LoadWidget()
-        {
-            throw new NotImplementedException();
-        }
+    public class SearchByFileSizeWiget :   SearchWidget<SearchByFileSizeWidgetItem>
+    {
+       
     }
 }

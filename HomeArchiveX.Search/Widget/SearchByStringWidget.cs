@@ -7,66 +7,20 @@ using System.Threading.Tasks;
 
 namespace HomeArchiveX.Search
 {
+    #region Item Виджета 
     public class SearchByStringWidgetItem : ISearchWidgetItem
     {
-        public Expression QueryExpression
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public string Title
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public Expression QueryExpression { get; set; }
+        public string Title { get; set; }
     }
+    #endregion
 
-    public class SearchByStringWidget : ISearchWidget
+
+    #region  Виджет поиска
+    public class SearchByStringWidget : SearchWidget<SearchByStringWidgetItem>
     {
-        public List<SearchByStringWidgetItem> Items
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
 
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        List<ISearchWidgetItem> ISearchWidget.Items
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public void LoadWidget()
-        {
-            throw new NotImplementedException();
-        }
     }
+    #endregion
+
 }

@@ -32,7 +32,7 @@ namespace HomeArchiveX.Search.Condition
 
             Expression<Func<ArchiveEntity, bool>> ex = specfication.IsSatisfiedBy();
             /*			
-             *			TrueSpecification
+            TrueSpecification
 			DirectSpecification
 			NotSpecification
 			OrSpecification

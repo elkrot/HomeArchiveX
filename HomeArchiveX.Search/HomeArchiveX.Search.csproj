@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="Condition\SearchCondition.cs" />
     <Compile Include="Widget\SearchByFileSizeWiget.cs" />
-    <Compile Include="Widget\CategorySearchWidget.cs" />
+    <Compile Include="Widget\SearchByCategoryWidget.cs" />
     <Compile Include="Condition\ISearchCondition.cs" />
     <Compile Include="Condition\ISearchConditionItem.cs" />
     <Compile Include="Result\ISearchResultItem.cs" />
@@ -61,6 +61,9 @@
       <Project>{3b0639d8-648a-4e6c-aa33-ebcc1aa12aa4}</Project>
       <Name>HomeArchiveX.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
