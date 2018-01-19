@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HomeArchiveX.Model;
+using LinqSpecs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -8,15 +10,20 @@ using System.Threading.Tasks;
 namespace HomeArchiveX.Search
 {
 
-    #region Item Виджета 
-    public class SearchByCategoryWidgetItem : ISearchWidgetItem
+    public class SearchByCategoryWidget :  SearchWidget<SearchWidgetItem>
     {
-        public Expression QueryExpression { get; set; }
-        public string Title { get; set; }
-    }
-    #endregion
+        public void AddQuery(string searchString)
+        {
+            //var category = new AdHocSpecification<ArchiveEntity>(x => x.CategoryToEntities(searchString));
+            //var str2 = new AdHocSpecification<ArchiveEntity>(x => x.Description.Contains(searchString));
 
-    public class SearchByCategoryWidget :  SearchWidget<SearchByCategoryWidgetItem>
-    {
+            //var specification = new OrSpecification<ArchiveEntity>(str1, str2);
+            //AddItem(new SearchWidgetItem()
+            //{
+            //    Title = string.Format(@"Содержимое содержит строку '{0}'", searchString)
+            //    ,
+            //    Specification = specification
+            //});
+        }
     }
 }
