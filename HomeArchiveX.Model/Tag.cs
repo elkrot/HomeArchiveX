@@ -7,12 +7,13 @@ namespace HomeArchiveX.Model
     {
         public Tag()
         {
-            this.TagToEntities = new List<TagToEntity>();
+            this.ArchiveEntities = new HashSet<ArchiveEntity>();
         }
 
         public int TagKey { get; set; }
         public string TagTitle { get; set; }
         public System.DateTime ModififedDate { get; set; }
-        public virtual ICollection<TagToEntity> TagToEntities { get; set; }
+       // public virtual ICollection<TagToEntity> TagToEntities { get; set; }
+        public virtual ICollection<ArchiveEntity> ArchiveEntities { get; set; }
     }
 }

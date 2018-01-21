@@ -31,6 +31,9 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
                 .WithMany(t => t.TagToEntities)
                 .HasForeignKey(d => d.TagKey);
 
+
+            
+
         }
     }
 }

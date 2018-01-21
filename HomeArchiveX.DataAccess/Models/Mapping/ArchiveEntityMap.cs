@@ -48,8 +48,29 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
             this.HasOptional(t => t.Drive)
                 .WithMany(t => t.ArchiveEntities)
                 .HasForeignKey(d => d.DriveId);
-            
 
+            this.HasMany<Tag>(s => s.Tags)
+                .WithMany(c => c.ArchiveEntities)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("TagKey");
+                    cs.MapRightKey("CourseRefId");
+                    cs.ToTable("ArchiveEntityKey");
+                });
+
+
+
+            /*
+              modelBuilder.Entity<Student>()
+                .HasMany<Course>(s => s.Courses)
+                .WithMany(c => c.Students)
+                .Map(cs =>
+                        {
+                            cs.MapLeftKey("StudentRefId");
+                            cs.MapRightKey("CourseRefId");
+                            cs.ToTable("StudentCourse");
+                        });
+             */
         }
     }
 }
