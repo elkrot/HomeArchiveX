@@ -8,8 +8,8 @@ namespace HomeArchiveX.Model
         public ArchiveEntity()
         {
             this.ArchiveEntity1 = new List<ArchiveEntity>();
-            this.CategoryToEntities = new List<CategoryToEntity>();
-            this.ImageToEntities = new List<ImageToEntity>();
+            this.Categories = new HashSet<Category>();
+            this.Images = new HashSet<Image>();
             this.Tags = new HashSet<Tag>();
         }
 
@@ -29,9 +29,11 @@ namespace HomeArchiveX.Model
         public virtual ICollection<ArchiveEntity> ArchiveEntity1 { get; set; }
         public virtual ArchiveEntity ArchiveEntity2 { get; set; }
         public virtual Drive Drive { get; set; }
-        public virtual ICollection<CategoryToEntity> CategoryToEntities { get; set; }
-        public virtual ICollection<ImageToEntity> ImageToEntities { get; set; }
+        //public virtual ICollection<CategoryToEntity> CategoryToEntities { get; set; }
+        //public virtual ICollection<ImageToEntity> ImageToEntities { get; set; }
        // public virtual ICollection<TagToEntity> TagToEntities { get; set; }
         public virtual ICollection<Tag> Tags { get; set; }
+        public virtual ICollection<Image> Images { get; set; }
+        public virtual ICollection<Category> Categories { get; set; }
     }
 }

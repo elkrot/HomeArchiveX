@@ -53,24 +53,30 @@ namespace HomeArchiveX.DataAccess.Models.Mapping
                 .WithMany(c => c.ArchiveEntities)
                 .Map(cs =>
                 {
-                    cs.MapLeftKey("TagKey");
-                    cs.MapRightKey("CourseRefId");
-                    cs.ToTable("ArchiveEntityKey");
+                    cs.MapLeftKey("TargetEntityKey");
+                    cs.MapRightKey("TagKey");
+                    cs.ToTable("TagToEntity");
                 });
 
 
-
-            /*
-              modelBuilder.Entity<Student>()
-                .HasMany<Course>(s => s.Courses)
-                .WithMany(c => c.Students)
+            this.HasMany<Image>(s => s.Images)
+                .WithMany(c => c.ArchiveEntities)
                 .Map(cs =>
-                        {
-                            cs.MapLeftKey("StudentRefId");
-                            cs.MapRightKey("CourseRefId");
-                            cs.ToTable("StudentCourse");
-                        });
-             */
+                {
+                    cs.MapLeftKey("TargetEntityKey");
+                    cs.MapRightKey("ImageKey");
+                    cs.ToTable("ImageToEntity");
+                });
+
+
+            this.HasMany<Category>(s => s.Categories)
+                .WithMany(c => c.ArchiveEntities)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("TargetEntityKey");
+                    cs.MapRightKey("CategoryKey");
+                    cs.ToTable("CategoryToEntity");
+                });
         }
     }
 }

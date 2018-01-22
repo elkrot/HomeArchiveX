@@ -31,7 +31,7 @@ namespace HomeArchiveX.Search
             var specification = new AdHocSpecification<ArchiveEntity>(x => x.Tags.Where(t=>t.TagTitle==TagTitle).Count()>0);
             AddItem(new SearchWidgetItem()
             {
-                Title = string.Format(@"Содержимое Tag '{0}'", TagTitle)
+                Title = string.Format(@"{0}", TagTitle)
                 ,
                 Specification = specification
             });

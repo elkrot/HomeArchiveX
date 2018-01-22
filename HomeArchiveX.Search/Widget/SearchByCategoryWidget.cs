@@ -14,16 +14,15 @@ namespace HomeArchiveX.Search
     {
         public void AddQuery(string CategoryTitle)
         {
-            //var category = new AdHocSpecification<ArchiveEntity>(x => x.CategoryToEntities(searchString));
-            //var str2 = new AdHocSpecification<ArchiveEntity>(x => x.Description.Contains(searchString));
 
-            //var specification = new OrSpecification<ArchiveEntity>(str1, str2);
-            //AddItem(new SearchWidgetItem()
-            //{
-            //    Title = string.Format(@"Содержимое содержит строку '{0}'", searchString)
-            //    ,
-            //    Specification = specification
-            //});
+            var specification = new AdHocSpecification<ArchiveEntity>(x => x.Categories.Where(t => t.CategoryTitle == CategoryTitle).Count() > 0);
+            AddItem(new SearchWidgetItem()
+            {
+                Title = string.Format(@"{0}", CategoryTitle)
+                ,
+                Specification = specification
+            });
+
         }
     }
 }

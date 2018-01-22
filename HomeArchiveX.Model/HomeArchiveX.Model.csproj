@@ -42,13 +42,10 @@
   <ItemGroup>
     <Compile Include="ArchiveEntity.cs" />
     <Compile Include="Category.cs" />
-    <Compile Include="CategoryToEntity.cs" />
     <Compile Include="Drive.cs" />
     <Compile Include="Image.cs" />
-    <Compile Include="ImageToEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tag.cs" />
-    <Compile Include="TagToEntity.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

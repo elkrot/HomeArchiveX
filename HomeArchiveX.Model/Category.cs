@@ -7,13 +7,14 @@ namespace HomeArchiveX.Model
     {
         public Category()
         {
-            this.CategoryToEntities = new List<CategoryToEntity>();
+            this.ArchiveEntities = new HashSet<ArchiveEntity>();
         }
 
         public int CategoryKey { get; set; }
         public string CategoryTitle { get; set; }
         public Nullable<int> ParentCategoryKey { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
-        public virtual ICollection<CategoryToEntity> CategoryToEntities { get; set; }
+        // public virtual ICollection<CategoryToEntity> CategoryToEntities { get; set; }
+        public virtual ICollection<ArchiveEntity> ArchiveEntities { get; set; }
     }
 }

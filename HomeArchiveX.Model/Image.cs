@@ -7,7 +7,7 @@ namespace HomeArchiveX.Model
     {
         public Image()
         {
-            this.ImageToEntities = new List<ImageToEntity>();
+            this.ArchiveEntities = new HashSet<ArchiveEntity>();
         }
 
         public int ImageKey { get; set; }
@@ -17,6 +17,7 @@ namespace HomeArchiveX.Model
         public string ImageTitle { get; set; }
         public Nullable<int> HashCode { get; set; }
         public System.DateTime CreatedDate { get; set; }
-        public virtual ICollection<ImageToEntity> ImageToEntities { get; set; }
+        //public virtual ICollection<ImageToEntity> ImageToEntities { get; set; }
+        public virtual ICollection<ArchiveEntity> ArchiveEntities { get; set; }
     }
 }

@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EFDataService.cs" />
-    <Compile Include="IDataService.cs" />
+    <Compile Include="Interfaces\IDataService.cs" />
     <Compile Include="Implementations\ArchiveEntityRepository.cs" />
     <Compile Include="Implementations\CategoryRepository.cs" />
     <Compile Include="Implementations\CategoryToEntityRepository.cs" />
@@ -65,12 +65,9 @@
     <Compile Include="Models\HmeArhXContext.cs" />
     <Compile Include="Models\Mapping\ArchiveEntityMap.cs" />
     <Compile Include="Models\Mapping\CategoryMap.cs" />
-    <Compile Include="Models\Mapping\CategoryToEntityMap.cs" />
     <Compile Include="Models\Mapping\DriveMap.cs" />
     <Compile Include="Models\Mapping\ImageMap.cs" />
-    <Compile Include="Models\Mapping\ImageToEntityMap.cs" />
     <Compile Include="Models\Mapping\TagMap.cs" />
-    <Compile Include="Models\Mapping\TagToEntityMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -94,9 +91,7 @@
       <Name>HomeArchiveX.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
