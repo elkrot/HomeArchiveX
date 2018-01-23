@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace HomeArchiveX.DataAccess.Implementations
 {
-    public class CategoryToEntityRepository : Repository<CategoryToEntity>
-    {
-        public CategoryToEntityRepository(IDbContext context) : base(context)
-        {
-        }
-    }
+    //public class CategoryToEntityRepository : Repository<CategoryToEntity>
+    //{
+    //    public CategoryToEntityRepository(IDbContext context) : base(context)
+    //    {
+    //    }
+    //}
 }

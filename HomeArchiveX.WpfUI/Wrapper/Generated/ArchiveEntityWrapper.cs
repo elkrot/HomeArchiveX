@@ -189,41 +189,41 @@ namespace HomeArchiveX.WpfUI.Wrapper
 
         #endregion
 
-        public ChangeTrackingCollection<CategoryToEntityWrapper> CategoryToEntities { get; private set; }
+        public ChangeTrackingCollection<CategoryWrapper> Categories { get; private set; }
 
-        public ChangeTrackingCollection<ImageToEntityWrapper> ImageToEntities { get; private set; }
+        public ChangeTrackingCollection<ImageWrapper> Images { get; private set; }
 
-        public ChangeTrackingCollection<TagToEntityWrapper> TagToEntities { get; private set; }
+        public ChangeTrackingCollection<TagWrapper> Tags { get; private set; }
 
 
         protected override void InitializeCollectionProperties(ArchiveEntity model)
         {
-            if (model.ImageToEntities == null)
+            if (model.Images == null)
             {
                 throw new ArgumentException("Images cannot be null");
             }
 
-            ImageToEntities = new ChangeTrackingCollection<ImageToEntityWrapper>(
-              model.ImageToEntities.Select(e => new ImageToEntityWrapper(e)));
-            RegisterCollection(ImageToEntities, model.ImageToEntities);
+            Images = new ChangeTrackingCollection<ImageWrapper>(
+              model.Images.Select(e => new ImageWrapper(e)));
+            RegisterCollection(Images, model.Images.ToList());
 
-            if (model.TagToEntities == null)
+            if (model.Tags == null)
             {
                 throw new ArgumentException("Tags cannot be null");
             }
 
-            TagToEntities = new ChangeTrackingCollection<TagToEntityWrapper>(
-              model.TagToEntities.Select(e => new TagToEntityWrapper(e)));
-            RegisterCollection(TagToEntities, model.TagToEntities);
+            Tags = new ChangeTrackingCollection<TagWrapper>(
+              model.Tags.Select(e => new TagWrapper(e)));
+            RegisterCollection(Tags, model.Tags.ToList());
 
-            if (model.CategoryToEntities == null)
+            if (model.Categories == null)
             {
                 throw new ArgumentException("Categorys cannot be null");
             }
 
-            CategoryToEntities = new ChangeTrackingCollection<CategoryToEntityWrapper>(
-              model.CategoryToEntities.Select(e => new CategoryToEntityWrapper(e)));
-            RegisterCollection(CategoryToEntities, model.CategoryToEntities);
+            Categories = new ChangeTrackingCollection<CategoryWrapper>(
+              model.Categories.Select(e => new CategoryWrapper(e)));
+            RegisterCollection(Categories, model.Categories.ToList());
 
         }
 

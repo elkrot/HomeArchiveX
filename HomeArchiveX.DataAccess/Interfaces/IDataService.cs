@@ -40,19 +40,19 @@ namespace HomeArchiveX.DataAccess
 
         #region Изображения
         MethodResult<int> AddImageToFileOnDrive(int ArchiveEntityKey, string img,int DriveId);
-        ImageToEntity GetImageToEntityById(int EntityId, int ImageId);
+      //  HashSet<Model.Image> GetImageToEntityById(int EntityId, int ImageId);
         Model.Image GetImageById(int id);
         #endregion
 
         #region Метки
         Tag GetTagById(int TagId);
-        TagToEntity GetTagToEntityById(int EntityId, int TagId);
+      //  HashSet<Tag> GetTagToEntityById(int EntityId, int TagId);
         MethodResult<int> AddTagToEntity(int ArchiveEntityKey, string Tag);
         #endregion
 
         #region Категории
         IEnumerable<Category> GetAllCategories();
-        CategoryToEntity GetCategoryToEntityById(int EntityId, int CategoryId);
+      //  HashSet<Category> GetCategoryToEntityById(int EntityId, int CategoryId);
         Category GetCategoryById( int CategoryId);
         MethodResult<int> AddCategoryToEntity(int ArchiveEntityKey, int CategoryId);
         #endregion

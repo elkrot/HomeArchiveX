@@ -234,7 +234,6 @@
     <Compile Include="Wrapper\Base\ModelWrapper.cs" />
     <Compile Include="Wrapper\Base\NotifyDataErrorInfoBase.cs" />
     <Compile Include="Wrapper\Generated\ArchiveEntityWrapper.cs" />
-    <Compile Include="Wrapper\Generated\CategoryToEntityWrapper.g.cs" />
     <Compile Include="Wrapper\Generated\CategoryWrapper.g.cs" />
     <Compile Include="Wrapper\Generated\DriveWrapper.g.cs" />
     <Compile Include="Wrapper\Generated\GenerateModelWrappers.cs">
@@ -242,9 +241,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GenerateModelWrappers.tt</DependentUpon>
     </Compile>
-    <Compile Include="Wrapper\Generated\ImageToEntityWrapper.g.cs" />
     <Compile Include="Wrapper\Generated\ImageWrapper.g.cs" />
-    <Compile Include="Wrapper\Generated\TagToEntityWrapper.g.cs" />
     <Compile Include="Wrapper\Generated\TagWrapper.g.cs" />
     <Page Include="Icons.xaml">
       <SubType>Designer</SubType>
