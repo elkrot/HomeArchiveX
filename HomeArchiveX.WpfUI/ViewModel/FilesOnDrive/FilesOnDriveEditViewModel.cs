@@ -163,6 +163,10 @@ namespace HomeArchiveX.WpfUI.ViewModel
         public ICommand AddNewCategoryCommand { get; private set; }
 
         #region OnOpenFileDialog
+        /// <summary>
+        /// Добавление картинки к сущности
+        /// </summary>
+        /// <param name="obj"></param>
         private void OnOpenFileDialogExecute(object obj)
         {
             OpenFileDialog myDialog = new OpenFileDialog();
@@ -175,10 +179,11 @@ namespace HomeArchiveX.WpfUI.ViewModel
                     , myDialog.FileName, (int)ArchiveEntity.Model.DriveId);
                 if (ret.Success)
                 {
-                    var imte = _fileOnDriveDataProvider.GetImageToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
+                    var imageKey = ret.Result;
+                    var imte = _fileOnDriveDataProvider.GetImageById(ArchiveEntity.Model.ArchiveEntityKey,
                         ret.Result);
                     var imtew = new ImageToEntityWrapper(imte);
-                    ArchiveEntity.ImageToEntities.Add(imtew);
+                    ArchiveEntity. ImageToEntities.Add(imtew);
                     ArchiveEntity.ImageToEntities.AcceptChanges();
                 }
             }

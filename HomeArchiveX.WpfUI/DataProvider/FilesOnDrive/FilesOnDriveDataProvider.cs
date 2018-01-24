@@ -72,13 +72,13 @@ namespace HomeArchiveX.WpfUI.DataProvider
         #endregion
 
         #region ImageToEntity по ключу
-        //public Model.ImageToEntity GetImageToEntityById(int EntityId,int ImageId)
-        //{
-        //    using (var dataService = _dataServiceCreator())
-        //    {
-        //        return dataService.GetImageToEntityById(EntityId, ImageId);
-        //    }
-        //}
+        public Model.Image GetImageToEntityById(int EntityId, int ImageId)
+        {
+            using (var dataService = _dataServiceCreator())
+            {
+                return dataService.GetImageToEntityById(EntityId, ImageId);
+            }
+        }
         #endregion
 
 
@@ -103,13 +103,13 @@ namespace HomeArchiveX.WpfUI.DataProvider
         #endregion
 
         #region TagToEntity по ключу
-        //public Model.TagToEntity GetTagToEntityById(int EntityId, int TagId)
-        //{
-        //    using (var dataService = _dataServiceCreator())
-        //    {
-        //        return dataService.GetTagToEntityById(EntityId, TagId);
-        //    }
-        //}
+        public Model.Tag GetTagToEntityById(int EntityId, int TagId)
+        {
+            using (var dataService = _dataServiceCreator())
+            {
+                return dataService.GetTagToEntityById(EntityId, TagId);
+            }
+        }
         #endregion
 
 
@@ -134,13 +134,13 @@ namespace HomeArchiveX.WpfUI.DataProvider
         #endregion
 
         #region CategoryToEntity по ключу
-        //public Model.CategoryToEntity GetCategoryToEntityById(int EntityId, int CategoryId)
-        //{
-        //    using (var dataService = _dataServiceCreator())
-        //    {
-        //        return dataService.GetCategoryToEntityById(EntityId, CategoryId);
-        //    }
-        //}
+        public Model.Category GetCategoryToEntityById(int EntityId, int CategoryId)
+        {
+            using (var dataService = _dataServiceCreator())
+            {
+                return dataService.GetCategoryToEntityById(EntityId, CategoryId);
+            }
+        }
         #endregion
 
 

@@ -19,9 +19,9 @@ namespace HomeArchiveX.DataAccess
         {
             var strsql = @"exec[dbo].[DeleteDrive] @DriveId";
 
-            using (var context =new HmeArhXContext())
+            using (var context = new HmeArhXContext())
             {
-                context.Database.ExecuteSqlCommand(strsql, new SqlParameter("@DriveId", id ));
+                context.Database.ExecuteSqlCommand(strsql, new SqlParameter("@DriveId", id));
                 var ret = new MethodResult<int>(0);
                 ret.Success = true;
                 return ret;
@@ -67,13 +67,13 @@ namespace HomeArchiveX.DataAccess
         public IEnumerable<Drive> GetDrivesByCondition(
             Expression<Func<Drive, bool>> where
             , Expression<Func<Drive, object>> orderby
-            , bool isDescending , int index , int length)
+            , bool isDescending, int index, int length)
         {
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var skip = (index - 1) * length;
                 var repo = uofw.GetRepository<Drive>();
-                return repo.Find(where,orderby).Skip(skip).Take(length).ToList<Drive>();
+                return repo.Find(where, orderby).Skip(skip).Take(length).ToList<Drive>();
             }
         }
 
@@ -134,7 +134,7 @@ namespace HomeArchiveX.DataAccess
                 {
                     repo.Add(archiveEntity);
                 }
-               
+
                 return uofw.Complete();
             }
         }
@@ -173,7 +173,7 @@ namespace HomeArchiveX.DataAccess
         #endregion
 
         #region Рисунки
-        public MethodResult<int> AddImageToFileOnDrive(int ArchiveEntityKey, string img,int DriveId)
+        public MethodResult<int> AddImageToFileOnDrive(int ArchiveEntityKey, string img, int DriveId)
         {
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
@@ -187,7 +187,7 @@ namespace HomeArchiveX.DataAccess
 
                 // Сохранить запись об изображении в БД
                 var entityRepository = uofw.GetRepository<ArchiveEntity>();
-                var entity = entityRepository.Find(x=>x.ArchiveEntityKey== ArchiveEntityKey).First();
+                var entity = entityRepository.Find(x => x.ArchiveEntityKey == ArchiveEntityKey).First();
                 entity.Images.Add(im);
                 var ret = uofw.Complete();
                 if (!ret.Success)
@@ -246,46 +246,60 @@ namespace HomeArchiveX.DataAccess
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var repo = uofw.GetRepository<HomeArchiveX.Model.Image>();
-               
+
                 return repo.Find(x => x.ImageKey == id).FirstOrDefault();
             }
         }
 
-        //public HashSet<Model.Image> GetImageToEntityById(int EntityId, int ImageId)
-        //{
-        //    using (var uofw = new UnitOfWork(new HmeArhXContext()))
-        //    {
-        //        var repo = uofw.GetRepository<HomeArchiveX.Model.Image>();
-        //        var includes = new List<string>() { "Image" };
-        //        return repo.Find(x => x.ImageKey == ImageId && x.TargetEntityKey== EntityId, includes,null).FirstOrDefault();
-        //    }
-        //}
+        public Model.Image GetImageToEntityById(int EntityId, int ImageId)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var imageRepo = uofw.GetRepository<HomeArchiveX.Model.Image>();
+                var includes = new List<string>() { "ArchiveEntity" };
+                var image = imageRepo.Find(
+                    x => x.ImageKey == ImageId && x.ArchiveEntities.Where(a => a.ArchiveEntityKey == EntityId).Count() > 0
+                    , includes, null).FirstOrDefault();
+                if (image != null)
+                    return image;
+
+                return default(Model.Image);
+            }
+        }
 
         #endregion
+
+
         #endregion
 
 
 
         #region Метки
-        public Tag GetTagById( int TagId)
+        public Tag GetTagById(int TagId)
         {
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var repo = uofw.GetRepository<HomeArchiveX.Model.Tag>();
-                
+
                 return repo.Find(x => x.TagKey == TagId).FirstOrDefault();
             }
         }
 
-        //public HashSet<Tag> GetTagToEntityById(int EntityId, int TagId)
-        //{
-        //    using (var uofw = new UnitOfWork(new HmeArhXContext()))
-        //    {
-        //        var repo = uofw.GetRepository<HomeArchiveX.Model.TagToEntity>();
-        //        var includes = new List<string>() { "Tag" , "ArchiveEntity" };
-        //        return repo.Find(x => x.TagKey == TagId && x.TargetEntityKey == EntityId, includes, null).FirstOrDefault();
-        //    }
-        //}
+        public Tag GetTagToEntityById(int EntityId, int TagId)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var tagRepo = uofw.GetRepository<HomeArchiveX.Model.Tag>();
+                var includes = new List<string>() { "ArchiveEntity" };
+                var image = tagRepo.Find(
+                    x => x.TagKey == TagId && x.ArchiveEntities.Where(a => a.ArchiveEntityKey == EntityId).Count() > 0
+                    , includes, null).FirstOrDefault();
+                if (image != null)
+                    return image;
+
+                return default(Model.Tag);
+            }
+        }
 
 
         public MethodResult<int> AddTagToEntity(int ArchiveEntityKey, string Tag)
@@ -324,20 +338,26 @@ namespace HomeArchiveX.DataAccess
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var repo = uofw.GetRepository<HomeArchiveX.Model.Category>();
-                
+
                 return repo.Find(x => x.CategoryKey == CategoryId).FirstOrDefault();
             }
         }
 
-        //public HashSet<Category> GetCategoryToEntityById(int EntityId, int CategoryId)
-        //{
-        //    using (var uofw = new UnitOfWork(new HmeArhXContext()))
-        //    {
-        //        var repo = uofw.GetRepository<HomeArchiveX.Model.CategoryToEntity>();
-        //        var includes = new List<string>() { "Category" };
-        //        return repo.Find(x => x.CategoryKey == CategoryId && x.TargetEntityKey == EntityId, includes, null).FirstOrDefault();
-        //    }
-        //}
+        public Category GetCategoryToEntityById(int EntityId, int CategoryId)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var categoryRepo = uofw.GetRepository<HomeArchiveX.Model.Category>();
+                var includes = new List<string>() { "ArchiveEntity" };
+                var image = categoryRepo.Find(
+                    x => x.CategoryKey == CategoryId && x.ArchiveEntities.Where(a => a.ArchiveEntityKey == EntityId).Count() > 0
+                    , includes, null).FirstOrDefault();
+                if (image != null)
+                    return image;
+
+                return default(Model.Category);
+            }
+        }
 
 
         public MethodResult<int> AddCategoryToEntity(int ArchiveEntityKey, int CategoryId)
@@ -350,7 +370,8 @@ namespace HomeArchiveX.DataAccess
 
                 var categoryRepo = uofw.GetRepository<Category>();
                 var category = categoryRepo.Find(x => x.CategoryKey == CategoryId).FirstOrDefault();
-                if (category == null) {
+                if (category == null)
+                {
                     throw new ArgumentException("Не верный параметр", "CategoryId");
                 }
                 entity.Categories.Add(category);
