@@ -143,9 +143,7 @@ namespace HomeArchiveX.DataAccess
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var repo = uofw.GetRepository<ArchiveEntity>();
-                var includes = new List<string>() { "ImageToEntities","ImageToEntities.Image"
-                    , "CategoryToEntities", "CategoryToEntities.Category"
-                    , "TagToEntities", "TagToEntities.Tag"};
+                var includes = new List<string>() { "Images","Categories","Tags"};
                 return repo.Find(x => x.ArchiveEntityKey == id,
                     includes,
                     o => o.Title).FirstOrDefault();
@@ -256,7 +254,7 @@ namespace HomeArchiveX.DataAccess
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var imageRepo = uofw.GetRepository<HomeArchiveX.Model.Image>();
-                var includes = new List<string>() { "ArchiveEntity" };
+                var includes = new List<string>() { "ArchiveEntities" };
                 var image = imageRepo.Find(
                     x => x.ImageKey == ImageId && x.ArchiveEntities.Where(a => a.ArchiveEntityKey == EntityId).Count() > 0
                     , includes, null).FirstOrDefault();

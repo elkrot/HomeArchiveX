@@ -30,7 +30,7 @@ namespace HomeArchiveX.WpfUI.View.Files
         {
             if (imageListView.SelectedValue != null)
             {
-                string imagePath = ((HomeArchiveX.WpfUI.Wrapper.ImageToEntityWrapper)imageListView.SelectedValue).Image.ImagePath;
+                string imagePath = ((HomeArchiveX.WpfUI.Wrapper.ImageWrapper)imageListView.SelectedValue).ImagePath;
                 if (!string.IsNullOrWhiteSpace(imagePath))
                 {
                     Process.Start(imagePath);

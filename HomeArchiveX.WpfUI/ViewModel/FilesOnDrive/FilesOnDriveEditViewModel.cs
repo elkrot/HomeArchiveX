@@ -180,11 +180,11 @@ namespace HomeArchiveX.WpfUI.ViewModel
                 if (ret.Success)
                 {
                     var imageKey = ret.Result;
-                    var imte = _fileOnDriveDataProvider.GetImageById(ArchiveEntity.Model.ArchiveEntityKey,
+                    var img = _fileOnDriveDataProvider.GetImageToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
                         ret.Result);
-                    var imtew = new ImageToEntityWrapper(imte);
-                    ArchiveEntity. ImageToEntities.Add(imtew);
-                    ArchiveEntity.ImageToEntities.AcceptChanges();
+                    var imgw = new ImageWrapper(img);
+                    ArchiveEntity. Images.Add(imgw);
+                    ArchiveEntity.Images.AcceptChanges();
                 }
             }
         }
@@ -205,12 +205,12 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
             if (ret.Success)
             {
-                var tte = _fileOnDriveDataProvider.GetTagToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
+                var tag = _fileOnDriveDataProvider.GetTagToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
                     ret.Result);
-                var imtew = new TagToEntityWrapper(tte);
+                var tagw = new TagWrapper(tag);
 
-                ArchiveEntity.TagToEntities.Add(imtew);
-                ArchiveEntity.TagToEntities.AcceptChanges();
+                ArchiveEntity.Tags.Add(tagw);
+                ArchiveEntity.Tags.AcceptChanges();
                
 
 
@@ -228,24 +228,23 @@ namespace HomeArchiveX.WpfUI.ViewModel
         {
             var CategoryId = 0;
             Int32.TryParse(obj.ToString(), out CategoryId);
-            var cte = _fileOnDriveDataProvider.GetCategoryToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
+            var category = _fileOnDriveDataProvider.GetCategoryToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
                     CategoryId);
 
-            if (cte == null)
+            if (category == null)
             {
                 var ret = _fileOnDriveDataProvider.AddCategoryToEntity(ArchiveEntity.Model.ArchiveEntityKey
                     , CategoryId);
 
                 if (ret.Success)
                 {
-                    cte = _fileOnDriveDataProvider.GetCategoryToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
+                    category = _fileOnDriveDataProvider.GetCategoryToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
                        ret.Result);
                 }
             }
-            var imtew = new CategoryToEntityWrapper(cte);
-             ArchiveEntity.CategoryToEntities.Add(imtew);
-
-            ArchiveEntity.CategoryToEntities.AcceptChanges();
+            var categoryew = new CategoryWrapper(category);
+            ArchiveEntity.Categories.Add(categoryew);
+            ArchiveEntity.Categories.AcceptChanges();
         }
 
         private bool OnAddCategoryCanExecute(object arg)

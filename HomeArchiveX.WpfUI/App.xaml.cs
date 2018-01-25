@@ -28,7 +28,7 @@ namespace HomeArchiveX.WpfUI
     /// </summary>
     public partial class App : Application
     {
-        private DrivesViewModel _driveViewModel;
+       // private DrivesViewModel _driveViewModel;
 
         protected override void OnExit(ExitEventArgs e)
         {
