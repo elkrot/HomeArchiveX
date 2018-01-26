@@ -13,7 +13,6 @@ namespace HomeArchiveX.Model
         public int TagKey { get; set; }
         public string TagTitle { get; set; }
         public System.DateTime ModififedDate { get; set; }
-       // public virtual ICollection<TagToEntity> TagToEntities { get; set; }
         public virtual ICollection<ArchiveEntity> ArchiveEntities { get; set; }
     }
 }
