@@ -81,7 +81,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
             var result = dlg.ShowDialog();
 
-            if (result==true)
+            if (result == true)
             {
                 Category category = new Category() { CategoryTitle = vm.CategoryTitle };
                 if (parentKey > 0)
@@ -177,13 +177,16 @@ namespace HomeArchiveX.WpfUI.ViewModel
             {
                 var ret = _fileOnDriveDataProvider.AddImageToFileOnDrive(ArchiveEntity.Model.ArchiveEntityKey
                     , myDialog.FileName, (int)ArchiveEntity.Model.DriveId);
+
+                var imageKey = ret.Result;
+
                 if (ret.Success)
                 {
-                    var imageKey = ret.Result;
+
                     var img = _fileOnDriveDataProvider.GetImageToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
                         ret.Result);
                     var imgw = new ImageWrapper(img);
-                    ArchiveEntity. Images.Add(imgw);
+                    ArchiveEntity.Images.Add(imgw);
                     ArchiveEntity.Images.AcceptChanges();
                 }
             }
@@ -211,7 +214,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
                 ArchiveEntity.Tags.Add(tagw);
                 ArchiveEntity.Tags.AcceptChanges();
-               
+
 
 
             }

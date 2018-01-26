@@ -178,7 +178,7 @@ namespace HomeArchiveX.DataAccess
                 var cnf = new ConfigurationData();
                 var lg = new Logger();
                 var fm = new FileManager(cnf, lg);
-
+                int ImageKey = 0;
                 // Сохранить изображение, Сохранить эскиз
                 string targetDir = string.Format(@"drive{0}\img{1}", DriveId, ArchiveEntityKey);
                 var im = CreateImage(img, targetDir, cnf, lg, fm);
@@ -186,11 +186,22 @@ namespace HomeArchiveX.DataAccess
                 // Сохранить запись об изображении в БД
                 var entityRepository = uofw.GetRepository<ArchiveEntity>();
                 var entity = entityRepository.Find(x => x.ArchiveEntityKey == ArchiveEntityKey).First();
+
+                var imageRepository = uofw.GetRepository<Model.Image>();
+                imageRepository.Add(im);
                 entity.Images.Add(im);
+                entityRepository.Update(entity);
+
                 var ret = uofw.Complete();
-                if (!ret.Success)
+                ImageKey = im.ImageKey;
+
+                if (!ret.Success|| ImageKey==0)
+                {
+                    ret.Success = false;
                     return ret;
-                return new MethodResult<int>(im.ImageKey);
+                }else
+
+                return new MethodResult<int>(ImageKey);
             }
         }
 
@@ -309,19 +320,20 @@ namespace HomeArchiveX.DataAccess
                 var entityRepository = uofw.GetRepository<ArchiveEntity>();
                 var entity = entityRepository.Find(x => x.ArchiveEntityKey == ArchiveEntityKey).First();
 
-                var tagRepo = uofw.GetRepository<HomeArchiveX.Model.Tag>();
-                Tag tag = tagRepo.Find(x => x.TagTitle == Tag).FirstOrDefault();
+                var tagRepository = uofw.GetRepository<HomeArchiveX.Model.Tag>();
+                Tag tag = tagRepository.Find(x => x.TagTitle == Tag).FirstOrDefault();
 
                 if (tag == null)
                 {
                     tag = new Model.Tag() { TagTitle = Tag };
+                    tagRepository.Add(tag);
                 }
+                
                 entity.Tags.Add(tag);
-                entityRepository.Add(entity);
+                entityRepository.Update(entity);
 
                 var ret = uofw.Complete();
 
-                ret = uofw.Complete();
                 if (!ret.Success)
                     return ret;
                 return new MethodResult<int>(tag.TagKey);
@@ -345,13 +357,13 @@ namespace HomeArchiveX.DataAccess
         {
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
-                var categoryRepo = uofw.GetRepository<HomeArchiveX.Model.Category>();
+                var categoryRepository = uofw.GetRepository<HomeArchiveX.Model.Category>();
                 var includes = new List<string>() { "ArchiveEntity" };
-                var image = categoryRepo.Find(
+                var category = categoryRepository.Find(
                     x => x.CategoryKey == CategoryId && x.ArchiveEntities.Where(a => a.ArchiveEntityKey == EntityId).Count() > 0
                     , includes, null).FirstOrDefault();
-                if (image != null)
-                    return image;
+                if (category != null)
+                    return category;
 
                 return default(Model.Category);
             }
@@ -366,15 +378,15 @@ namespace HomeArchiveX.DataAccess
                 var entityRepository = uofw.GetRepository<ArchiveEntity>();
                 var entity = entityRepository.Find(x => x.ArchiveEntityKey == ArchiveEntityKey).First();
 
-                var categoryRepo = uofw.GetRepository<Category>();
-                var category = categoryRepo.Find(x => x.CategoryKey == CategoryId).FirstOrDefault();
+                var categoryRepository = uofw.GetRepository<Category>();
+                var category = categoryRepository.Find(x => x.CategoryKey == CategoryId).FirstOrDefault();
                 if (category == null)
                 {
                     throw new ArgumentException("Не верный параметр", "CategoryId");
                 }
                 entity.Categories.Add(category);
+                entityRepository.Update(entity);
 
-                entityRepository.Add(entity);
                 var ret = uofw.Complete();
                 if (!ret.Success)
                     return ret;
