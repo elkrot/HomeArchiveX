@@ -39,7 +39,7 @@ namespace HomeArchiveX.Common.Implementations
         }
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
-            return Context.Set<TEntity>().AsNoTracking().Where(predicate);
+            return Context.Set<TEntity>().Where(predicate);
         }
 
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate
@@ -87,6 +87,7 @@ namespace HomeArchiveX.Common.Implementations
         public void Update(TEntity entity)
         {
             (Context as DbContext).Entry(entity).State = System.Data.Entity.EntityState.Modified;
+            
         }
 
         public IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties)

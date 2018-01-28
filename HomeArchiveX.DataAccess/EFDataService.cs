@@ -299,7 +299,7 @@ namespace HomeArchiveX.DataAccess
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var tagRepo = uofw.GetRepository<HomeArchiveX.Model.Tag>();
-                var includes = new List<string>() { "ArchiveEntity" };
+                var includes = new List<string>() { "ArchiveEntities" };
                 var image = tagRepo.Find(
                     x => x.TagKey == TagId && x.ArchiveEntities.Where(a => a.ArchiveEntityKey == EntityId).Count() > 0
                     , includes, null).FirstOrDefault();
@@ -330,7 +330,7 @@ namespace HomeArchiveX.DataAccess
                 }
                 
                 entity.Tags.Add(tag);
-                entityRepository.Update(entity);
+                
 
                 var ret = uofw.Complete();
 
@@ -358,12 +358,13 @@ namespace HomeArchiveX.DataAccess
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var categoryRepository = uofw.GetRepository<HomeArchiveX.Model.Category>();
-                var includes = new List<string>() { "ArchiveEntity" };
+                var includes = new List<string>() { "ArchiveEntities" };
                 var category = categoryRepository.Find(
                     x => x.CategoryKey == CategoryId && x.ArchiveEntities.Where(a => a.ArchiveEntityKey == EntityId).Count() > 0
                     , includes, null).FirstOrDefault();
                 if (category != null)
-                    return category;
+                { return category; }
+                
 
                 return default(Model.Category);
             }
@@ -384,9 +385,8 @@ namespace HomeArchiveX.DataAccess
                 {
                     throw new ArgumentException("Не верный параметр", "CategoryId");
                 }
+                
                 entity.Categories.Add(category);
-                entityRepository.Update(entity);
-
                 var ret = uofw.Complete();
                 if (!ret.Success)
                     return ret;
@@ -398,10 +398,7 @@ namespace HomeArchiveX.DataAccess
         {
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
-                var includes = new List<string>() { "Category" };
-                var repo = uofw.GetRepository<HomeArchiveX.Model.Category>();
-
-                //return repo.GetAll(includes).ToList();
+                var repo = uofw.GetRepository<HomeArchiveX.Model.Category>();     
                 return repo.GetAll();
             }
         }
@@ -423,7 +420,6 @@ namespace HomeArchiveX.DataAccess
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
                 var repo = uofw.GetRepository<HomeArchiveX.Model.Category>();
-
                 return repo.Find(x => x.CategoryKey == id).FirstOrDefault();
             }
         }
@@ -445,10 +441,6 @@ namespace HomeArchiveX.DataAccess
                 return new MethodResult<int>(category.CategoryKey);
             }
         }
-
-
-
-
         #endregion
 
     }

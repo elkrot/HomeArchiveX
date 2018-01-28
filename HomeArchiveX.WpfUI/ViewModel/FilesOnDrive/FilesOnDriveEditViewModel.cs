@@ -210,11 +210,13 @@ namespace HomeArchiveX.WpfUI.ViewModel
             {
                 var tag = _fileOnDriveDataProvider.GetTagToEntityById(ArchiveEntity.Model.ArchiveEntityKey,
                     ret.Result);
-                var tagw = new TagWrapper(tag);
+                if (tag != null)
+                {
+                    var tagw = new TagWrapper(tag);
 
-                ArchiveEntity.Tags.Add(tagw);
-                ArchiveEntity.Tags.AcceptChanges();
-
+                    ArchiveEntity.Tags.Add(tagw);
+                    ArchiveEntity.Tags.AcceptChanges();
+                }
 
 
             }

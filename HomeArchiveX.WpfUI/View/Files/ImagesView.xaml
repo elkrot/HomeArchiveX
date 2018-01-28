@@ -18,7 +18,7 @@
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                           CanContentScroll="True"  Margin="10"  VerticalAlignment="Top" HorizontalAlignment="Left"  >
-                    <ListBox x:Name="imageListView" ItemsSource="{Binding Path=ImageToEntities}" 
+                    <ListBox x:Name="imageListView" ItemsSource="{Binding Path=Images}" 
                              Grid.Column="0" Height="Auto" Width="250" MaxHeight="400">
                         <!--<i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectedIndexChanged">
@@ -36,7 +36,7 @@
 
                             <DataTemplate>
                                 <Border BorderBrush="#FF165FDE">
-                                    <Image Source="{Binding Path=Image.ThumbnailPath}" Width="150" Height="150"/>
+                                    <Image Source="{Binding Path=ThumbnailPath}" Width="150" Height="150"/>
                                 </Border>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
