@@ -49,7 +49,7 @@
                         <StackPanel  Height="Auto" MinWidth="300" Width="Auto"  MinHeight="380">
                             <Border BorderThickness="1" BorderBrush="#FF2D23F7" Margin="10" Height="354" >
                                 <Image Margin="10,10,10,9" x:Name="image" gif:ImageBehavior.RepeatBehavior="Forever" 
-                                                   gif:ImageBehavior.AnimatedSource="{Binding ElementName=imageListView,Path=SelectedItem.Image.ImagePath }" /> <!--Path=ImageToEntities[0].Image.ImagePath-->
+                                                   gif:ImageBehavior.AnimatedSource="{Binding ElementName=imageListView,Path=SelectedItem.ImagePath }" /> <!--Path=ImageToEntities[0].Image.ImagePath-->
                             </Border>
                             <Button Click="Button_Click" >Просмотр</Button>
                         </StackPanel>

@@ -55,6 +55,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             AddTagCommand = new DelegateCommand(OnAddTagExecute, OnAddTagCanExecute);
             AddCategoryCommand = new DelegateCommand(OnAddCategoryExecute, OnAddCategoryCanExecute);
             AddNewCategoryCommand = new DelegateCommand(OnAddNewCategoryExecute, OnAddNewCategoryCanExecute);
+            DeleteTagCommand =   new DelegateCommand(OnDeleteTagExecute, OnDeleteTagCanExecute); 
 
             _categoryNavigationViewModel = categoryNavigationViewModel;
 
@@ -162,6 +163,9 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
         public ICommand AddNewCategoryCommand { get; private set; }
 
+        public ICommand DeleteTagCommand { get; private set; }
+        
+
         #region OnOpenFileDialog
         /// <summary>
         /// Добавление картинки к сущности
@@ -222,7 +226,18 @@ namespace HomeArchiveX.WpfUI.ViewModel
             }
         }
 
+
         private bool OnAddTagCanExecute(object arg)
+        {//errrororororor
+            return true;
+        }
+        #endregion
+
+        #region OnDeleteTag
+        private void OnDeleteTagExecute(object obj) {
+            var tagKey = (int)obj;
+        }
+        private bool OnDeleteTagCanExecute(object arg)
         {//errrororororor
             return true;
         }
@@ -347,6 +362,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             ((DelegateCommand)OpenFileDialogCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)AddTagCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)AddCategoryCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand)DeleteTagCommand).RaiseCanExecuteChanged();
         }
         #endregion
     }
