@@ -59,7 +59,8 @@
                     </StackPanel>
                     <!---->
                     <view:TagsView DataContext="{Binding ArchiveEntity}" 
-                                   RemoveItem="{Binding Path = DataContext.DeleteTagCommand, ElementName=rootFileEdit}" Margin="0,10,0,0"/>
+                                   RemoveItem="{Binding Path = DataContext.DeleteTagCommand, 
+                        ElementName=rootFileEdit}" Margin="0,10,0,0"/>
                 </StackPanel>
 
             </TabItem>
@@ -110,7 +111,10 @@
                     <Button Content="+>>" Command="{Binding AddCategoryCommand}" 
                             CommandParameter="{Binding ElementName=CategoriesTreeView,Path=SelectedValue}"
                             Width="30" Grid.Column="1" Margin="3,0"/>
-                    <view:CategoryToEntitiesView DataContext="{Binding ArchiveEntity}"  Margin="0,10,0,0" Grid.Column="2"/>
+                    <view:CategoryToEntitiesView DataContext="{Binding ArchiveEntity}" 
+                                 RemoveItem="{Binding Path = DataContext.DeleteCategoryToEntityCommand, 
+                        ElementName=rootFileEdit}"                 
+                                                 Margin="0,10,0,0" Grid.Column="2"/>
                 </Grid>
 
             </TabItem>
@@ -123,7 +127,10 @@
                     </Grid.RowDefinitions>
                     
                     <Button Command="{Binding OpenFileDialogCommand}" Width="Auto" Grid.Row="0">Добавить</Button>
-                    <view:ImagesView DataContext="{Binding ArchiveEntity}" Margin="0,10,0,0" Height="Auto" Grid.Row="1"/>
+                    <view:ImagesView DataContext="{Binding ArchiveEntity}"
+                               RemoveItem="{Binding Path = DataContext.DeleteImageCommand, 
+                        ElementName=rootFileEdit}"       
+                                     Margin="0,10,0,0" Height="Auto" Grid.Row="1"/>
 
                 </Grid>
             </TabItem>

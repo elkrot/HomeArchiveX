@@ -55,10 +55,35 @@ namespace HomeArchiveX.WpfUI.ViewModel
             AddTagCommand = new DelegateCommand(OnAddTagExecute, OnAddTagCanExecute);
             AddCategoryCommand = new DelegateCommand(OnAddCategoryExecute, OnAddCategoryCanExecute);
             AddNewCategoryCommand = new DelegateCommand(OnAddNewCategoryExecute, OnAddNewCategoryCanExecute);
-            DeleteTagCommand =   new DelegateCommand(OnDeleteTagExecute, OnDeleteTagCanExecute); 
-
+            DeleteTagCommand =   new DelegateCommand(OnDeleteTagExecute, OnDeleteTagCanExecute);
+            DeleteImageCommand = new DelegateCommand(OnDeleteImageExecute, OnDeleteImageCanExecute);
+            DeleteCategoryToEntityCommand = new DelegateCommand(OnDeleteCategoryToEntityExecute,
+                OnDeleteCategoryToEntityCanExecute);
             _categoryNavigationViewModel = categoryNavigationViewModel;
 
+        }
+
+        private bool OnDeleteCategoryToEntityCanExecute(object arg)
+        {
+            return true;
+        }
+
+        private void OnDeleteCategoryToEntityExecute(object obj)
+        {
+            int CategoryKey = (int)obj;
+            CategoryWrapper category = new CategoryWrapper(_categoryDataProvider.GetCategoryById(CategoryKey));
+            _archiveEntity.Categories.Remove(category);
+        }
+
+        private bool OnDeleteImageCanExecute(object arg)
+        {
+            return true;
+        }
+
+        private void OnDeleteImageExecute(object obj)
+        {
+            int ImageKey = (int)obj;
+            
         }
 
         private bool OnAddNewCategoryCanExecute(object arg)
@@ -164,7 +189,10 @@ namespace HomeArchiveX.WpfUI.ViewModel
         public ICommand AddNewCategoryCommand { get; private set; }
 
         public ICommand DeleteTagCommand { get; private set; }
-        
+
+        public ICommand DeleteImageCommand { get; private set; }
+
+        public ICommand DeleteCategoryToEntityCommand { get; private set; }
 
         #region OnOpenFileDialog
         /// <summary>

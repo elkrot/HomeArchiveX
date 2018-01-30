@@ -7,7 +7,8 @@
              xmlns:gif="http://wpfanimatedgif.codeplex.com"
              mc:Ignorable="d" 
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             d:DesignHeight="445" d:DesignWidth="920">
+             d:DesignHeight="445" d:DesignWidth="920"
+             Name="imageViewControl">
     <Border BorderBrush="#FF1A5AB8" BorderThickness="1" Height="Auto"   >
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" CanContentScroll="True">
             <Grid Width="Auto" Height="Auto">
@@ -52,6 +53,10 @@
                                                    gif:ImageBehavior.AnimatedSource="{Binding ElementName=imageListView,Path=SelectedItem.ImagePath }" /> <!--Path=ImageToEntities[0].Image.ImagePath-->
                             </Border>
                             <Button Click="Button_Click" >Просмотр</Button>
+                            <Button Width="74" Height="30" Margin="3" 
+                                    Command="{Binding Path=RemoveItem, ElementName=imageViewControl}" 
+                                    CommandParameter="{Binding ImageKey}"
+                                >Удалить</Button>
                         </StackPanel>
                     </Viewbox>
 

@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HomeArchiveX.WpfUI.View.Files"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="categoryToEntityView">
     <UserControl.Resources>
         <Style TargetType="StackPanel" x:Key="CategoryItem">
             <Setter Property="Margin" Value="5"/>
@@ -70,7 +71,10 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Style="{StaticResource CategoryItem}" Height="40">
                             <!--Style="{StaticResource CloseItem}"-->
-                            <Button Width="30" Height="30" Margin="3">x</Button>
+                            <Button Width="30" Height="30" Margin="3"
+                                    Command="{Binding Path=RemoveItem, ElementName=categoryToEntityView}" 
+                                    CommandParameter="{Binding CategoryKey}"
+                                    >x</Button>
                             <TextBlock Text="{Binding Path=CategoryTitle}"/>
                         </StackPanel>
                     </DataTemplate>

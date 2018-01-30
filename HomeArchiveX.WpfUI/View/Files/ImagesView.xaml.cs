@@ -25,6 +25,19 @@ namespace HomeArchiveX.WpfUI.View.Files
         {
             InitializeComponent();
         }
+        #region RemoveItem
+        public static readonly DependencyProperty RemoveItemProperty =
+            DependencyProperty.Register(
+                "RemoveItem",
+                typeof(ICommand),
+                typeof(TagsView),
+                new UIPropertyMetadata(null));
+        public ICommand RemoveItem
+        {
+            get { return (ICommand)GetValue(RemoveItemProperty); }
+            set { SetValue(RemoveItemProperty, value); }
+        }
+        #endregion
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
