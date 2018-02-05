@@ -55,7 +55,7 @@
                             <Button Click="Button_Click" >Просмотр</Button>
                             <Button Width="74" Height="30" Margin="3" 
                                     Command="{Binding Path=RemoveItem, ElementName=imageViewControl}" 
-                                    CommandParameter="{Binding ImageKey}"
+                                    CommandParameter="{Binding ElementName=imageListView,Path=SelectedItem.ImageKey}"
                                 >Удалить</Button>
                         </StackPanel>
                     </Viewbox>

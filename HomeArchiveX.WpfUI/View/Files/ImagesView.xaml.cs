@@ -30,7 +30,7 @@ namespace HomeArchiveX.WpfUI.View.Files
             DependencyProperty.Register(
                 "RemoveItem",
                 typeof(ICommand),
-                typeof(TagsView),
+                typeof(ImagesView),
                 new UIPropertyMetadata(null));
         public ICommand RemoveItem
         {

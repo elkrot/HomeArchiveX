@@ -25,7 +25,7 @@ namespace HomeArchiveX.WpfUI.View.Files
             DependencyProperty.Register(
                 "RemoveItem",
                 typeof(ICommand),
-                typeof(TagsView),
+                typeof(CategoryToEntitiesView),
                 new UIPropertyMetadata(null));
         public ICommand RemoveItem
         {

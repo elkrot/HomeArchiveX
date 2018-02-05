@@ -72,7 +72,25 @@ namespace HomeArchiveX.WpfUI.ViewModel
         {
             int CategoryKey = (int)obj;
             CategoryWrapper category = new CategoryWrapper(_categoryDataProvider.GetCategoryById(CategoryKey));
-            _archiveEntity.Categories.Remove(category);
+            
+            ArchiveEntity.Categories.Remove(category);
+
+            var saveRet = _fileOnDriveDataProvider.SaveFileOnDrive(ArchiveEntity.Model);
+
+            if (!saveRet.Success)
+            {
+                var result = _messageDialogService.ShowMessageDialog(
+    "Ошибка при сохранении",
+    string.Format("Во время сохранения записи {0}{2} возникла исключительная ситуация{2}  {1}"
+    , ArchiveEntity.Title, saveRet.Messages.FirstOrDefault(), Environment.NewLine), MessageDialogResult.Ok);
+                ArchiveEntity.RejectChanges();
+            }
+            else
+            {
+                ArchiveEntity.AcceptChanges();
+            }
+            _eventAggregator.GetEvent<FileOnDriveSavedEvent>().Publish(ArchiveEntity.Model);
+            InvalidateCommands();
         }
 
         private bool OnDeleteImageCanExecute(object arg)
