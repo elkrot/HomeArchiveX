@@ -409,6 +409,8 @@ namespace HomeArchiveX.WpfUI.ViewModel
             ((DelegateCommand)AddTagCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)AddCategoryCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)DeleteTagCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand)DeleteCategoryToEntityCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand)DeleteImageCommand).RaiseCanExecuteChanged();
         }
         #endregion
     }
