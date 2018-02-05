@@ -60,7 +60,7 @@ void container_LoadCompleted(object sender, NavigationEventArgs e)
 if (e.ExtraData != null)
 LoadPhoto((int)e.ExtraData);
 }
-
+ 
 
 int photoId = 10;
 // Перейти к экземпляру Раgе
