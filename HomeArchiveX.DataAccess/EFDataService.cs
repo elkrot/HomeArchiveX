@@ -109,7 +109,7 @@ namespace HomeArchiveX.DataAccess
         #region Файлы
 
 
-        public MethodResult<int> DeleteFileOnDriveDrive(int id)
+        public MethodResult<int> DeleteFileOnDrive(int id)
         {
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
@@ -120,7 +120,7 @@ namespace HomeArchiveX.DataAccess
                 return uofw.Complete();
             }
         }
-        public MethodResult<int> SaveFileOnDriveDrive(ArchiveEntity archiveEntity)
+        public MethodResult<int> SaveFileOnDrive(ArchiveEntity archiveEntity)
         {
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
@@ -439,6 +439,55 @@ namespace HomeArchiveX.DataAccess
                 if (!ret.Success)
                     return ret;
                 return new MethodResult<int>(category.CategoryKey);
+            }
+        }
+
+
+        #endregion
+
+        #region Remove from Entities
+        public MethodResult<int> RemoveTagFromEntity(int ArchiveEntityKey, int TagKey)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<ArchiveEntity>();
+                var file = repo.Find(x => x.ArchiveEntityKey == ArchiveEntityKey).FirstOrDefault();
+                var tagRepository = uofw.GetRepository<Tag>();
+                var tag = tagRepository.Find(x => x.TagKey == TagKey).First();
+                file.Tags.Remove(tag);
+                repo.Update(file);
+
+                return uofw.Complete();
+            }
+        }
+
+        public MethodResult<int> RemoveCategoryFromEntity(int ArchiveEntityKey,int CategoryKey)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<ArchiveEntity>();
+                var file = repo.Find(x => x.ArchiveEntityKey == ArchiveEntityKey).FirstOrDefault();
+                var categoryRepository = uofw.GetRepository<Category>();
+                var category = categoryRepository.Find(x=>x.CategoryKey==CategoryKey).First();
+                file.Categories.Remove(category);
+                repo.Update(file);
+
+                return uofw.Complete();
+            }
+        }
+
+        public MethodResult<int> RemoveImageFromEntity(int ArchiveEntityKey, int ImageKey)
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<ArchiveEntity>();
+                var file = repo.Find(x => x.ArchiveEntityKey == ArchiveEntityKey).FirstOrDefault();
+                var imageRepository = uofw.GetRepository<Model.Image>();
+                var image = imageRepository.Find(x => x.ImageKey == ImageKey).First();
+                file.Images.Remove(image);
+                repo.Update(file);
+
+                return uofw.Complete();
             }
         }
         #endregion

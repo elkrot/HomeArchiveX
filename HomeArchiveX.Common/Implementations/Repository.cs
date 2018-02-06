@@ -24,7 +24,7 @@ namespace HomeArchiveX.Common.Implementations
 
         public IEnumerable<TEntity> GetAll()
         {
-            return Context.Set<TEntity>().AsNoTracking().ToList();
+            return Context.Set<TEntity>().ToList();
         }
         public IEnumerable<TEntity> GetAll(List<string> includes)
         {
@@ -34,8 +34,8 @@ namespace HomeArchiveX.Common.Implementations
             {
                 ret = ret.Include(item);
             }
-
-            return ret.AsNoTracking();
+            //AsNoTracking
+            return ret;
         }
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
@@ -110,14 +110,14 @@ namespace HomeArchiveX.Common.Implementations
 
          IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            IQueryable<TEntity> query = Context.Set<TEntity>().AsNoTracking();
+            IQueryable<TEntity> query = Context.Set<TEntity>();
             return includeProperties
                 .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
         }
 
         IQueryable<TEntity> IRepository<TEntity>.Include(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            IQueryable<TEntity> query = Context.Set<TEntity>().AsNoTracking();
+            IQueryable<TEntity> query = Context.Set<TEntity>();
             return includeProperties
                 .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
         }

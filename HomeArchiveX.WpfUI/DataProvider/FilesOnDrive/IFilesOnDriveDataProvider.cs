@@ -14,11 +14,16 @@ namespace HomeArchiveX.WpfUI.DataProvider
         ArchiveEntity GetArchiveEntityById(int id);
         MethodResult<int> SaveFileOnDrive(ArchiveEntity archiveEntity);
         MethodResult<int> DeleteArchiveEntity(int id);
+
+        MethodResult<int> RemoveCategoryFromEntity(int ArchiveEntityKey,int CategoryKey);
+        MethodResult<int> RemoveTagFromEntity(int ArchiveEntityKey, int TagKey);
+        MethodResult<int> RemoveImageFromEntity(int ArchiveEntityKey, int ImageKey);
+
         MethodResult<int> AddImageToFileOnDrive(int id, string img,int driveId);
         Model.Image GetImageToEntityById(int EntityId, int ImageId);
 
         Model.Tag GetTagById(int TagId);
-         Model.Tag GetTagToEntityById(int EntityId, int TagId);
+        Model.Tag GetTagToEntityById(int EntityId, int TagId);
         MethodResult<int> AddTagToEntity(int ArchiveEntityKey, string Tag);
 
         MethodResult<int> AddCategoryToEntity(int ArchiveEntityKey, int CategoryId);

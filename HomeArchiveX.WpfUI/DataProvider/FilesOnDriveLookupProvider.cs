@@ -19,9 +19,6 @@ namespace HomeArchiveX.WpfUI.DataProvider
         public FilesOnDriveLookupProvider(Func<IDataService> dataServiceCreator)
         {
             _dataServiceCreator = dataServiceCreator;
-
-            
-
         }
 
         public IEnumerable<LookupItemNode> GetLookup()

@@ -443,14 +443,11 @@
     <Resource Include="img\cog.png" />
     <Resource Include="img\cog_add.png" />
     <Resource Include="img\cog_delete.png" />
-    <Resource Include="img\compare.png" />
-    <Resource Include="img\AddDst.png" />
     <Resource Include="img\MainIco.png" />
     <Resource Include="MainIco.ico" />
     <Resource Include="AppIco.ico" />
     <SplashScreen Include="img\zastavka.jpg" />
     <Resource Include="img\AppIco.ico" />
-    <Resource Include="img\Admin.png" />
     <Content Include="Xceed.Wpf.Toolkit.dll" />
     <Resource Include="img\drive.png" />
     <Resource Include="img\drive_add.png" />

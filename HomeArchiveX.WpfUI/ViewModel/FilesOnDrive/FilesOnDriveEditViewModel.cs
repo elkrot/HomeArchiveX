@@ -1,4 +1,5 @@
-﻿using HomeArchiveX.Model;
+﻿using HomeArchiveX.Common;
+using HomeArchiveX.Model;
 using HomeArchiveX.WpfU.Command;
 using HomeArchiveX.WpfUI.DataProvider;
 using HomeArchiveX.WpfUI.Event;
@@ -67,15 +68,10 @@ namespace HomeArchiveX.WpfUI.ViewModel
         {
             return true;
         }
+        delegate MethodResult<int> RemoveEntityCollectionItem( int ArchiveEntityKey, int CollectionKey);
 
-        private void OnDeleteCategoryToEntityExecute(object obj)
-        {
-            int CategoryKey = (int)obj;
-            CategoryWrapper category = new CategoryWrapper(_categoryDataProvider.GetCategoryById(CategoryKey));
-            
-            ArchiveEntity.Categories.Remove(category);
-
-            var saveRet = _fileOnDriveDataProvider.SaveFileOnDrive(ArchiveEntity.Model);
+        private void RemoveItemFromEntityCollection(RemoveEntityCollectionItem action, int CollectionKey) {
+            var saveRet = action(ArchiveEntity.ArchiveEntityKey, CollectionKey);
 
             if (!saveRet.Success)
             {
@@ -93,6 +89,14 @@ namespace HomeArchiveX.WpfUI.ViewModel
             InvalidateCommands();
         }
 
+        private void OnDeleteCategoryToEntityExecute(object obj)
+        {
+            int CategoryKey = (int)obj;
+            CategoryWrapper categoryW = ArchiveEntity.Categories.Where(x => x.CategoryKey == CategoryKey).First();
+            ArchiveEntity.Categories.Remove(categoryW);
+            RemoveItemFromEntityCollection(_fileOnDriveDataProvider.RemoveCategoryFromEntity, CategoryKey);
+        }
+
         private bool OnDeleteImageCanExecute(object arg)
         {
             return true;
@@ -101,7 +105,11 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private void OnDeleteImageExecute(object obj)
         {
             int ImageKey = (int)obj;
-            
+            ImageWrapper image = ArchiveEntity.Images.Where(x => x.ImageKey == ImageKey).First();
+            ArchiveEntity.Images.Remove(image);
+            ///   Дописать удаление файла !!!!!!!!!!!!
+            RemoveItemFromEntityCollection(_fileOnDriveDataProvider.RemoveImageFromEntity, ImageKey);
+
         }
 
         private bool OnAddNewCategoryCanExecute(object arg)
@@ -281,7 +289,10 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
         #region OnDeleteTag
         private void OnDeleteTagExecute(object obj) {
-            var tagKey = (int)obj;
+            var TagKey = (int)obj;
+            TagWrapper tag = ArchiveEntity.Tags.Where(x => x.TagKey == TagKey).First();
+            ArchiveEntity.Tags.Remove(tag);
+            RemoveItemFromEntityCollection(_fileOnDriveDataProvider.RemoveTagFromEntity, TagKey);
         }
         private bool OnDeleteTagCanExecute(object arg)
         {//errrororororor

@@ -25,9 +25,35 @@ namespace HomeArchiveX.WpfUI.DataProvider
         {
             using (var dataService = _dataServiceCreator())
             {
-                return dataService.DeleteFileOnDriveDrive(id);
+                return dataService.DeleteFileOnDrive(id);
             }
         }
+
+        public MethodResult<int> RemoveCategoryFromEntity(int ArchiveEntityKey,int CategoryKey)
+        {
+            using (var dataService = _dataServiceCreator())
+            {
+                return dataService.RemoveCategoryFromEntity(ArchiveEntityKey,CategoryKey);
+            }
+        }
+
+        public MethodResult<int> RemoveTagFromEntity(int ArchiveEntityKey, int TagKey)
+        {
+            using (var dataService = _dataServiceCreator())
+            {
+                return dataService.RemoveTagFromEntity(ArchiveEntityKey, TagKey);
+            }
+        }
+
+        public MethodResult<int> RemoveImageFromEntity(int ArchiveEntityKey, int ImageKey)
+        {
+            using (var dataService = _dataServiceCreator())
+            {
+                return dataService.RemoveImageFromEntity(ArchiveEntityKey, ImageKey);
+            }
+        }
+
+
         #endregion
 
         #region Файл по ключу
@@ -45,7 +71,7 @@ namespace HomeArchiveX.WpfUI.DataProvider
         {
             using (var dataService = _dataServiceCreator())
             {
-                return dataService.SaveFileOnDriveDrive(archiveEntity);
+                return dataService.SaveFileOnDrive(archiveEntity);
             }
         }
         #endregion
@@ -141,6 +167,8 @@ namespace HomeArchiveX.WpfUI.DataProvider
                 return dataService.GetCategoryToEntityById(EntityId, CategoryId);
             }
         }
+
+
         #endregion
 
 
