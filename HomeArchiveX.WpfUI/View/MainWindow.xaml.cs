@@ -6,6 +6,7 @@ using HomeArchiveX.WpfUI.View.Admin;
 using HomeArchiveX.WpfUI.View.Search;
 using HomeArchiveX.WpfUI.View.Security;
 using HomeArchiveX.WpfUI.ViewModel;
+using HomeArchiveX.WpfUI.ViewModel.Search;
 using HomeArchiveX.WpfUI.ViewModel.Security;
 using Microsoft.Win32;
 using System;
@@ -339,9 +340,14 @@ namespace HomeArchiveX.WpfUI
             Main.Content = new AdminMainPage();
         }
 
+        private SearchEngineViewModel _searchEngineViewModel;
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            Main.Content = new SearchPage();
+            var bootstrapper = new Bootstrapper();
+            Autofac.IContainer container = bootstrapper.Bootstrap();
+            _searchEngineViewModel = container.Resolve<SearchEngineViewModel>();
+            _searchEngineViewModel.Load();
+            Main.Content = new SearchPage(_searchEngineViewModel);
         }
 
         void HelpCanExecute(object sender, CanExecuteRoutedEventArgs e)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HomeArchiveX.WpfUI.ViewModel.Search;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,17 @@ namespace HomeArchiveX.WpfUI.View.Search
     /// </summary>
     public partial class SearchPage : Page
     {
-        public SearchPage()
+        SearchEngineViewModel _searchEngineViewModel;
+
+        public SearchPage(SearchEngineViewModel searchEngineViewModel)
         {
             InitializeComponent();
+            _searchEngineViewModel = searchEngineViewModel;
+            DataContext = _searchEngineViewModel;
         }
+
+
+        
+
     }
 }

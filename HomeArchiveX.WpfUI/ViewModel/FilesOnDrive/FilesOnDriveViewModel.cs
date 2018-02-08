@@ -32,7 +32,6 @@ namespace HomeArchiveX.WpfUI.ViewModel
             _eventAggregator = eventAggregator;
             _messageDialogService = messageDialogService;
 
-
             _eventAggregator.GetEvent<SelectedItemChangedEvent>().Subscribe(OnSelectedItemChanged);
 
             FileOnDriveNavigationViewModel = fileOnDriveNavigationViewModel;

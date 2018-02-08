@@ -121,12 +121,16 @@
     <Compile Include="DataProvider\CategoryProvider\ICategoryDataProvider.cs" />
     <Compile Include="DataProvider\FilesOnDriveLookupProvider.cs" />
     <Compile Include="DataProvider\FilesOnDrive\FilesOnDriveDataProvider.cs" />
+    <Compile Include="DataProvider\TagDataProvider\ITagDataProvider.cs" />
     <Compile Include="DataProvider\Lookups\DriveLookupProvider.cs" />
     <Compile Include="DataProvider\Driver\DriversDataProvider.cs" />
     <Compile Include="DataProvider\Driver\IDriversDataProvider.cs" />
     <Compile Include="DataProvider\FilesOnDrive\IFilesOnDriveDataProvider.cs" />
     <Compile Include="DataProvider\Lookups\ILookupProvider.cs" />
     <Compile Include="DataProvider\Lookups\LookupItem.cs" />
+    <Compile Include="DataProvider\TagDataProvider\TagDataProvider.cs" />
+    <Compile Include="DataProvider\TagLookupProvider.cs" />
+    <Compile Include="Event\AddTagToConditionCommandEvent.cs" />
     <Compile Include="Event\Driver\DriverSavedEvent.cs" />
     <Compile Include="Event\Driver\DriverDeletedEvent.cs" />
     <Compile Include="Event\Driver\OpenDriverEditViewEvent.cs" />
@@ -155,7 +159,9 @@
     <Compile Include="ViewModel\FilesOnDrive\FilesOnDriveEditViewModel.cs" />
     <Compile Include="ViewModel\FilesOnDrive\FilesOnDriveNavigationViewModel.cs" />
     <Compile Include="ViewModel\FilesOnDrive\FilesOnDriveViewModel.cs" />
+    <Compile Include="ViewModel\FilesOnDrive\TagNavigationViewModel.cs" />
     <Compile Include="ViewModel\Observable.cs" />
+    <Compile Include="ViewModel\Search\SearchEngineViewModel.cs" />
     <Compile Include="ViewModel\Search\SearchResultViewModel.cs" />
     <Compile Include="ViewModel\Search\SearchNavigationViewModel.cs" />
     <Compile Include="ViewModel\Security\AuthenticationViewModel.cs" />

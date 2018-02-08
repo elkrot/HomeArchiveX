@@ -50,6 +50,7 @@ namespace HomeArchiveX.DataAccess
         #endregion
 
         #region Метки
+        IEnumerable<Tag> GetAllTags();
         Tag GetTagById(int TagId);
         Tag GetTagToEntityById(int EntityId, int TagId);
         MethodResult<int> AddTagToEntity(int ArchiveEntityKey, string Tag);

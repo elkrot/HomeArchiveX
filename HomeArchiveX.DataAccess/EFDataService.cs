@@ -339,6 +339,15 @@ namespace HomeArchiveX.DataAccess
                 return new MethodResult<int>(tag.TagKey);
             }
         }
+
+        public IEnumerable<Tag> GetAllTags()
+        {
+            using (var uofw = new UnitOfWork(new HmeArhXContext()))
+            {
+                var repo = uofw.GetRepository<Tag>();
+                return repo.GetAll();
+            }
+        }
         #endregion
 
         #region Категории
@@ -490,6 +499,8 @@ namespace HomeArchiveX.DataAccess
                 return uofw.Complete();
             }
         }
+
+       
         #endregion
 
     }

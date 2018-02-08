@@ -7,6 +7,7 @@ using HomeArchiveX.WpfUI.DataProvider;
 using HomeArchiveX.WpfUI.View.Services;
 using HomeArchiveX.WpfUI.ViewModel;
 using HomeArchiveX.WpfUI.ViewModel.FilesOnDrive;
+using HomeArchiveX.WpfUI.ViewModel.Search;
 using Microsoft.Practices.Prism.PubSubEvents;
 using System;
 using System.Collections.Generic;
@@ -42,16 +43,25 @@ namespace HomeArchiveX.WpfU.Startup
 
             builder.RegisterType<CategoryLookupProvider>().As<ITreeViewLookupProvider<Category>>();
 
+            builder.RegisterType<TagLookupProvider>().As<ILookupProvider<Tag>>();
+            
+
             builder.RegisterType<FilesOnDriveDataProvider>().As<IFilesOnDriveDataProvider>();
             builder.RegisterType<CategoryDataProvider>().As<ICategoryDataProvider>();
-            
+            builder.RegisterType<TagDataProvider>().As<ITagDataProvider>();
+
 
             builder.RegisterType<FilesOnDriveEditViewModel>().As<IFilesOnDriveEditViewModel>();
             builder.RegisterType<FilesOnDriveNavigationViewModel>().As<IFilesOnDriveNavigationViewModel>();
             builder.RegisterType<CategoryNavigationViewModel>().As<ICategoryNavigationViewModel>();
+            builder.RegisterType<TagNavigationViewModel>().As<ITagNavigationViewModel>();
+            builder.RegisterType<SearchNavigationViewModel>().As<ISearchNavigationViewModel>();
 
-        
+
             builder.RegisterType<FilesOnDriveViewModel>().AsSelf();
+            builder.RegisterType<SearchNavigationViewModel>().AsSelf();
+            builder.RegisterType<SearchEngineViewModel>().AsSelf(); 
+
             #endregion
 
 
