@@ -75,7 +75,23 @@
         </StackPanel>
         <StackPanel Background="Ivory" Grid.Row="3" Grid.ColumnSpan="2">
             <GroupBox Header="Метки" Padding="5">
-                <Button Content="+"/>
+                
+                <StackPanel>
+                    <ListBox ItemsSource="{Binding TagNavigationViewModel.NavigationItems}">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                    <TextBlock Text="{Binding Path=DisplayValue}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Button Content="+"/>
+                </StackPanel>
+                
             </GroupBox>
         </StackPanel>
         <StackPanel Background="Silver" Grid.Row="4" Grid.ColumnSpan="2">
