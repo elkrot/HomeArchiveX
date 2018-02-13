@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HomeArchiveX.WpfUI.View.Search"
              mc:Ignorable="d" 
-             d:DesignHeight="350" d:DesignWidth="300">
+             d:DesignHeight="350" d:DesignWidth="500">
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -13,7 +13,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition  Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -22,7 +22,9 @@
             <GroupBox Header="Поиск" Padding="5">
                 <StackPanel>
                     <StackPanel>
-                        
+                        <ListBox Name="SearchCondition">
+                            
+                        </ListBox>
                     </StackPanel>
                      <Button Content="Поиск"/>
                 </StackPanel>
@@ -32,8 +34,8 @@
         <StackPanel Background="Aquamarine" Grid.Row="1" Grid.ColumnSpan="2">
             <GroupBox Header="Содержимое" Padding="5">
                 <StackPanel Orientation="Horizontal">
-                <TextBox Width="200"/>
-                <Button Content="+"/>                    
+                <TextBox Name="StringContent" Width="200"/>
+                    <Button Content="+" Command="{Binding AddSearchByStringConditionCommand}" CommandParameter="{Binding ElementName=StringContent,Path=Text}"/>                    
                 </StackPanel>
 
 

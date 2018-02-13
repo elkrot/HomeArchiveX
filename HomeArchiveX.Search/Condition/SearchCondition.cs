@@ -13,15 +13,21 @@ namespace HomeArchiveX.Search.Condition
     {
         public List<ISearchConditionItem> Items
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get;
 
-            set
-            {
-                throw new NotImplementedException();
-            }
+            set;
+        }
+
+        private Dictionary<string, SearchWidget<SearchWidgetItem>> _widgets;
+        public SearchCondition(Dictionary<string, SearchWidget<SearchWidgetItem>> widgets)
+        {
+            _widgets = widgets;
+        }
+        public Dictionary<string, SearchWidget<SearchWidgetItem>> Widgets
+        {
+            get { return _widgets; }
+
+            set { _widgets = value; }
         }
 
         private void test() {

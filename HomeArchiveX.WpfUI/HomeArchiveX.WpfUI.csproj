@@ -616,6 +616,10 @@
       <Project>{3b0639d8-648a-4e6c-aa33-ebcc1aa12aa4}</Project>
       <Name>HomeArchiveX.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HomeArchiveX.Search\HomeArchiveX.Search.csproj">
+      <Project>{2442d4c1-7a89-4fb9-868f-06d203da1863}</Project>
+      <Name>HomeArchiveX.Search</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HomeArchiveX.Security\HomeArchiveX.Security.csproj">
       <Project>{4ec0bdfb-3efc-4d97-b8ab-5b02d0520579}</Project>
       <Name>HomeArchiveX.Security</Name>
