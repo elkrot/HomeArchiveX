@@ -1,7 +1,9 @@
 ﻿using HomeArchiveX.Model;
+using HomeArchiveX.Search;
 using LinqSpecs;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -11,11 +13,22 @@ namespace HomeArchiveX.Search.Condition
 {
     public class SearchCondition: ISearchCondition
     {
-        public List<ISearchConditionItem> Items
+        public ObservableCollection<ISearchConditionItem> Items
         {
-            get;
+            get {
+                var ret = new ObservableCollection<ISearchConditionItem>();
+                foreach (var wiget in Widgets)
+                {
+                    foreach (var item in wiget.Value.Items)
+                    {
+                        ret.Add(new SearchConditionItem(item.Title));
+                        
+                    }
+                }
+                return ret;
+            }
 
-            set;
+            
         }
 
         private Dictionary<string, SearchWidget<SearchWidgetItem>> _widgets;

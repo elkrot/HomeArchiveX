@@ -8,5 +8,16 @@ namespace HomeArchiveX.Search
 {
     public interface ISearchConditionItem
     {
+         string Title { get; }
+    }
+
+    public class SearchConditionItem:ISearchConditionItem
+    {
+        private string _title;
+        public SearchConditionItem(string title)
+        {
+            _title = title;
+        }
+        public string Title { get { return _title; } }
     }
 }

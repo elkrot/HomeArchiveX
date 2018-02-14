@@ -22,7 +22,7 @@
             <GroupBox Header="Поиск" Padding="5">
                 <StackPanel>
                     <StackPanel>
-                        <ListBox Name="SearchCondition">
+                        <ListBox Name="SearchCondition" ItemsSource="{Binding SearchCondition.Items}">
                             
                         </ListBox>
                     </StackPanel>
@@ -97,7 +97,7 @@
             </GroupBox>
         </StackPanel>
         <StackPanel Background="Silver" Grid.Row="4" Grid.ColumnSpan="2">
-            <GroupBox Header="Размер" Padding="5">
+            <GroupBox Header="Размер" Padding="5" Height="119">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>

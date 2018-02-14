@@ -15,11 +15,11 @@ using System.Windows.Input;
 namespace HomeArchiveX.WpfUI.ViewModel
 {
 
-public interface ISearchNavigationViewModel
-        {
-            void Load();
-           
-        }
+    public interface ISearchNavigationViewModel
+    {
+        void Load();
+
+    }
 
     public class SearchNavigationViewModel : Observable, ISearchNavigationViewModel
     {
@@ -30,9 +30,9 @@ public interface ISearchNavigationViewModel
         private readonly ITagDataProvider _tagDataProvider;
         private ICategoryNavigationViewModel _categoryNavigationViewModel;
         private ITagNavigationViewModel _tagNavigationViewModel;
-        public SearchCondition SearchCondition;
+        public SearchCondition SearchCondition { get; set; }
 
-       
+
 
         public SearchNavigationViewModel(IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService
@@ -43,22 +43,22 @@ public interface ISearchNavigationViewModel
         {
             _eventAggregator = eventAggregator;
             _messageDialogService = messageDialogService;
-           
+
             _categoryDataProvider = categoryDataProvider;
             _tagNavigationViewModel = tagNavigationViewModel;
 
             _tagDataProvider = tagDataProvider;
 
             _categoryNavigationViewModel = categoryNavigationViewModel;
-           
 
-            var SearchWidgets = new Dictionary<string,SearchWidget<SearchWidgetItem>>();
-            SearchWidgets[nameof(SearchByStringWidget)]=(new SearchByStringWidget());
+
+            var SearchWidgets = new Dictionary<string, SearchWidget<SearchWidgetItem>>();
+            SearchWidgets[nameof(SearchByStringWidget)] = (new SearchByStringWidget());
             SearchWidgets[nameof(SearchByCategoryWidget)] = (new SearchByCategoryWidget());
             SearchWidgets[nameof(SearchByFileSizeWiget)] = (new SearchByFileSizeWiget());
             SearchWidgets[nameof(SearchByTagWidget)] = (new SearchByTagWidget());
 
- SearchCondition = new SearchCondition(SearchWidgets);
+            SearchCondition = new SearchCondition(SearchWidgets);
 
             AddSearchByStringConditionCommand = new DelegateCommand(OnAddSearchByStringConditionExecute, OnAddSearchByStringConditionCanExecute);
             AddSearchByCategoryConditionCommand = new DelegateCommand(OnAddSearchByConditionConditionExecute, OnAddSearchByConditionConditionCanExecute);
@@ -111,7 +111,7 @@ public interface ISearchNavigationViewModel
                     (SearchCondition.Widgets[nameof(SearchByStringWidget)] as SearchByStringWidget).AddQuery(obj.ToString());
                 }
             }
-//            _messageDialogService.ShowMessageDialog("", obj.ToString());
+            //            _messageDialogService.ShowMessageDialog("", obj.ToString());
         }
 
         public ICommand AddSearchByStringConditionCommand { get; private set; }
