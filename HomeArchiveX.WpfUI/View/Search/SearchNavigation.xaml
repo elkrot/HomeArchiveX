@@ -23,7 +23,16 @@
                 <StackPanel>
                     <StackPanel>
                         <ListBox Name="SearchCondition" ItemsSource="{Binding SearchCondition.Items}">
-                            
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Title}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
                         </ListBox>
                     </StackPanel>
                      <Button Content="Поиск"/>

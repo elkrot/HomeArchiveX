@@ -8,38 +8,41 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace HomeArchiveX.Search.Condition
 {
-    public class SearchCondition: ISearchCondition
+    public class SearchCondition:DependencyObject, ISearchCondition
     {
+        ObservableCollection<ISearchConditionItem> _items;
         public ObservableCollection<ISearchConditionItem> Items
         {
-            get {
-                var ret = new ObservableCollection<ISearchConditionItem>();
-                foreach (var wiget in Widgets)
-                {
-                    foreach (var item in wiget.Value.Items)
-                    {
-                        ret.Add(new SearchConditionItem(item.Title));
-                        
-                    }
-                }
-                return ret;
-            }
+            get {  return _items;  }
+        }
 
-            
+        public void LoadItems() {
+        _items.Clear();
+        foreach (var wiget in Widgets)
+            {
+                foreach (var item in wiget.Value.Items)
+                {
+                    _items.Add(new SearchConditionItem(item.Title));
+                }
+            }
         }
 
         private Dictionary<string, SearchWidget<SearchWidgetItem>> _widgets;
+
         public SearchCondition(Dictionary<string, SearchWidget<SearchWidgetItem>> widgets)
         {
+            _items = new ObservableCollection<ISearchConditionItem>();
             _widgets = widgets;
+             
         }
+
         public Dictionary<string, SearchWidget<SearchWidgetItem>> Widgets
         {
             get { return _widgets; }
-
             set { _widgets = value; }
         }
 

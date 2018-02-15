@@ -109,6 +109,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
                 if (SearchCondition.Widgets.ContainsKey(nameof(SearchByStringWidget)))
                 {
                     (SearchCondition.Widgets[nameof(SearchByStringWidget)] as SearchByStringWidget).AddQuery(obj.ToString());
+                    SearchCondition.LoadItems();
                 }
             }
             //            _messageDialogService.ShowMessageDialog("", obj.ToString());
