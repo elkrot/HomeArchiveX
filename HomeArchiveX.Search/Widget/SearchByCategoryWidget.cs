@@ -12,13 +12,13 @@ namespace HomeArchiveX.Search
 
     public class SearchByCategoryWidget :  SearchWidget<SearchWidgetItem>
     {
-        public void AddQuery(string CategoryTitle)
+        public void AddQuery(int CategoryKey)
         {
 
-            var specification = new AdHocSpecification<ArchiveEntity>(x => x.Categories.Where(t => t.CategoryTitle == CategoryTitle).Count() > 0);
+            var specification = new AdHocSpecification<ArchiveEntity>(x => x.Categories.Where(t => t.CategoryKey == CategoryKey).Count() > 0);
             AddItem(new SearchWidgetItem()
             {
-                Title = string.Format(@"{0}", CategoryTitle)
+                Title = string.Format(@"{0}", CategoryKey)
                 ,
                 Specification = specification
             });

@@ -61,7 +61,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             SearchCondition = new SearchCondition(SearchWidgets);
 
             AddSearchByStringConditionCommand = new DelegateCommand(OnAddSearchByStringConditionExecute, OnAddSearchByStringConditionCanExecute);
-            AddSearchByCategoryConditionCommand = new DelegateCommand(OnAddSearchByConditionConditionExecute, OnAddSearchByConditionConditionCanExecute);
+            AddSearchByCategoryConditionCommand = new DelegateCommand(OnAddSearchByCategoryConditionExecute, OnAddSearchByCategoryConditionCanExecute);
             AddSearchByFileSizeConditionCommand = new DelegateCommand(OnAddSearchByFileSizeConditionExecute, OnAddSearchByFileSizeConditionCanExecute);
             AddSearchByTagConditionCommand = new DelegateCommand(OnAddSearchByTagConditionExecute, OnAddSearchByTagConditionCanExecute);
 
@@ -74,7 +74,16 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
         private void OnAddSearchByTagConditionExecute(object obj)
         {
-            throw new NotImplementedException();
+            var tag = obj as HomeArchiveX.WpfUI.ViewModel.FilesOnDrive.NavigationTagItemViewModel;
+          
+            if (tag!=null)
+            {
+                    if (SearchCondition.Widgets.ContainsKey(nameof(SearchByTagWidget)))
+                    {
+                        (SearchCondition.Widgets[nameof(SearchByTagWidget)] as SearchByTagWidget).AddQuery(tag.DisplayValue);
+                        SearchCondition.LoadItems();
+                    }
+            }
         }
 
         private bool OnAddSearchByFileSizeConditionCanExecute(object arg)
@@ -87,14 +96,27 @@ namespace HomeArchiveX.WpfUI.ViewModel
             throw new NotImplementedException();
         }
 
-        private bool OnAddSearchByConditionConditionCanExecute(object arg)
+        private bool OnAddSearchByCategoryConditionCanExecute(object arg)
         {
             return true;
         }
 
-        private void OnAddSearchByConditionConditionExecute(object obj)
+        private void OnAddSearchByCategoryConditionExecute(object obj)
         {
-            throw new NotImplementedException();
+            var category =(int) obj ;
+            if (category >0 )
+            {
+                int categoryKey = category;
+                if (categoryKey > 0)
+                {
+                    if (SearchCondition.Widgets.ContainsKey(nameof(SearchByCategoryWidget)))
+                    {
+                        (SearchCondition.Widgets[nameof(SearchByCategoryWidget)] as SearchByCategoryWidget).AddQuery(categoryKey);
+                        SearchCondition.LoadItems();
+                    }
+                }
+            }
+
         }
 
         private bool OnAddSearchByStringConditionCanExecute(object arg)
@@ -114,11 +136,13 @@ namespace HomeArchiveX.WpfUI.ViewModel
             }
             //            _messageDialogService.ShowMessageDialog("", obj.ToString());
         }
-
+        
         public ICommand AddSearchByStringConditionCommand { get; private set; }
         public ICommand AddSearchByCategoryConditionCommand { get; private set; }
         public ICommand AddSearchByFileSizeConditionCommand { get; private set; }
         public ICommand AddSearchByTagConditionCommand { get; private set; }
+
+
 
         public ICategoryNavigationViewModel CategoryNavigationViewModel
         {
