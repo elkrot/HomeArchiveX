@@ -60,7 +60,10 @@ namespace HomeArchiveX.WpfU.Startup
 
             builder.RegisterType<FilesOnDriveViewModel>().AsSelf();
             builder.RegisterType<SearchNavigationViewModel>().AsSelf();
-            builder.RegisterType<SearchEngineViewModel>().AsSelf(); 
+            builder.RegisterType<SearchEngineViewModel>().AsSelf();
+
+            builder.RegisterType<ArchiveEntityDataProvider>().As<IArchiveEntityDataProvider>();
+            
 
             #endregion
 

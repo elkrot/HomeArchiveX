@@ -39,7 +39,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             _fileOnDriveEditViewModelCreator = fileOnDriveEditViewModelCreator;
             _fileOnDriveDataProvider = fileOnDriveDataProvider;
 
-
+            
         }
 
         private void OnSelectedItemChanged(int obj)

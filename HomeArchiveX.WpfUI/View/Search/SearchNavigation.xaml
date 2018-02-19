@@ -35,7 +35,7 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </StackPanel>
-                     <Button Content="Поиск"/>
+                    <Button Content="Поиск" Command="{Binding GoSearchCommand}"/>
                 </StackPanel>
                
             </GroupBox>
@@ -44,7 +44,8 @@
             <GroupBox Header="Содержимое" Padding="5">
                 <StackPanel Orientation="Horizontal">
                 <TextBox Name="StringContent" Width="200"/>
-                    <Button Content="+" Command="{Binding AddSearchByStringConditionCommand}" CommandParameter="{Binding ElementName=StringContent,Path=Text}"/>                    
+                    <Button Content="+" 
+                            Command="{Binding AddSearchByStringConditionCommand}" CommandParameter="{Binding ElementName=StringContent,Path=Text}"/>                    
                 </StackPanel>
 
 

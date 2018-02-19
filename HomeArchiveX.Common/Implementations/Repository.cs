@@ -5,6 +5,7 @@ using System.Text;
 using System.Linq.Expressions;
 using System.Data.Entity;
 using HomeArchiveX.Common.Interfaces;
+using LinqKit;
 
 namespace HomeArchiveX.Common.Implementations
 {

@@ -46,22 +46,40 @@ namespace HomeArchiveX.Search.Condition
             set { _widgets = value; }
         }
 
-        private void test() {
-
-            var startWithJ = new AdHocSpecification<ArchiveEntity>(n => n.Title.Contains("J"));
-            var endsWithE = new AdHocSpecification<ArchiveEntity>(n => n.Title.EndsWith("e"));
-            var specfication = new AndSpecification<ArchiveEntity>(startWithJ, endsWithE);
-
-            Expression<Func<ArchiveEntity, bool>> ex = specfication.IsSatisfiedBy();
-            /*			
-            TrueSpecification
-			DirectSpecification
-			NotSpecification
-			OrSpecification
-			CompositeSpecification
-			AndSpecification
-            */
-            //IEnumerable<ArchiveEntity> GetFilesOnDriveByCondition(Expression<Func<ArchiveEntity, bool>> where, Expression<Func<ArchiveEntity, object>> orderby)
+        public Expression<Func<ArchiveEntity, bool>> Condition
+        {
+            get
+            {
+                Specification<ArchiveEntity> specification = new  AdHocSpecification<ArchiveEntity>(n=>n.ArchiveEntityKey==n.ArchiveEntityKey);
+                Expression<Func<ArchiveEntity, bool>> Result;
+                foreach (var wiget in _widgets)
+                {
+                    foreach (var item in wiget.Value.Items)
+                    {
+                        specification = new AndSpecification<ArchiveEntity>(specification, item.Specification);
+                    }
+                }
+                Result = specification.IsSatisfiedBy();
+                return Result;
+            }
         }
+
+   //     private void test() {
+
+   //         var startWithJ = new AdHocSpecification<ArchiveEntity>(n => n.Title.Contains("J"));
+   //         var endsWithE = new AdHocSpecification<ArchiveEntity>(n => n.Title.EndsWith("e"));
+   //         var specfication = new AndSpecification<ArchiveEntity>(startWithJ, endsWithE);
+
+   //         Expression<Func<ArchiveEntity, bool>> ex = specfication.IsSatisfiedBy();
+   //         /*			
+   //         TrueSpecification
+			//DirectSpecification
+			//NotSpecification
+			//OrSpecification
+			//CompositeSpecification
+			//AndSpecification
+   //         */
+   //         //IEnumerable<ArchiveEntity> GetFilesOnDriveByCondition(Expression<Func<ArchiveEntity, bool>> where, Expression<Func<ArchiveEntity, object>> orderby)
+   //     }
     }
 }

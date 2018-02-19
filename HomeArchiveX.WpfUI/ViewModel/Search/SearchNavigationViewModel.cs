@@ -31,7 +31,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private ICategoryNavigationViewModel _categoryNavigationViewModel;
         private ITagNavigationViewModel _tagNavigationViewModel;
         public SearchCondition SearchCondition { get; set; }
-
+        private IArchiveEntityDataProvider _archiveEntityDataProvider;
 
 
         public SearchNavigationViewModel(IEventAggregator eventAggregator,
@@ -39,7 +39,8 @@ namespace HomeArchiveX.WpfUI.ViewModel
             , ICategoryNavigationViewModel categoryNavigationViewModel
             , ICategoryDataProvider categoryDataProvider
             , ITagDataProvider tagDataProvider
-            , ITagNavigationViewModel tagNavigationViewModel)
+            , ITagNavigationViewModel tagNavigationViewModel
+            , IArchiveEntityDataProvider archiveEntityDataProvider)
         {
             _eventAggregator = eventAggregator;
             _messageDialogService = messageDialogService;
@@ -51,6 +52,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
             _categoryNavigationViewModel = categoryNavigationViewModel;
 
+            _archiveEntityDataProvider = archiveEntityDataProvider;
 
             var SearchWidgets = new Dictionary<string, SearchWidget<SearchWidgetItem>>();
             SearchWidgets[nameof(SearchByStringWidget)] = (new SearchByStringWidget());
@@ -64,6 +66,21 @@ namespace HomeArchiveX.WpfUI.ViewModel
             AddSearchByCategoryConditionCommand = new DelegateCommand(OnAddSearchByCategoryConditionExecute, OnAddSearchByCategoryConditionCanExecute);
             AddSearchByFileSizeConditionCommand = new DelegateCommand(OnAddSearchByFileSizeConditionExecute, OnAddSearchByFileSizeConditionCanExecute);
             AddSearchByTagConditionCommand = new DelegateCommand(OnAddSearchByTagConditionExecute, OnAddSearchByTagConditionCanExecute);
+            GoSearchCommand = new DelegateCommand(OnSearchExecute, OnSearchCanExecute);
+            
+
+        }
+
+        private bool OnSearchCanExecute(object arg)
+        {
+            
+            return true;
+        }
+
+        private void OnSearchExecute(object obj)
+        {
+            var condition = SearchCondition.Condition;
+            _archiveEntityDataProvider.GetEntitiesByCondition(condition);
 
         }
 
@@ -141,8 +158,8 @@ namespace HomeArchiveX.WpfUI.ViewModel
         public ICommand AddSearchByCategoryConditionCommand { get; private set; }
         public ICommand AddSearchByFileSizeConditionCommand { get; private set; }
         public ICommand AddSearchByTagConditionCommand { get; private set; }
-
-
+        public ICommand GoSearchCommand { get; private set; }
+        
 
         public ICategoryNavigationViewModel CategoryNavigationViewModel
         {

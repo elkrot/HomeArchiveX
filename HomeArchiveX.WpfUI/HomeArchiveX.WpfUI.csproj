@@ -116,6 +116,7 @@
     <Compile Include="ConfigurationDTO.cs" />
     <Compile Include="Converters\ComboBoxOriginalValueConverter.cs" />
     <Compile Include="Converters\DatePickerOriginalValueConverter.cs" />
+    <Compile Include="DataProvider\ArchiveEntityDataProvider.cs" />
     <Compile Include="DataProvider\CategoryLookupProvider.cs" />
     <Compile Include="DataProvider\CategoryProvider\CategoryDataProvider.cs" />
     <Compile Include="DataProvider\CategoryProvider\ICategoryDataProvider.cs" />

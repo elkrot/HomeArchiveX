@@ -5,12 +5,12 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:HomeArchiveX.WpfUI.View.Search"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="450"
+      d:DesignHeight="300" d:DesignWidth="650"
       Title="SearchPage" Background="AntiqueWhite" FontSize="{StaticResource DefaultFontSize}">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="400"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
