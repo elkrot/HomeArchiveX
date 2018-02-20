@@ -29,9 +29,12 @@ namespace HomeArchiveX.Search
    var str2 = new AdHocSpecification<ArchiveEntity>(x => x.Description.Contains("searchString"));
 
 
-            var specification =new OrSpecification<ArchiveEntity>(str1, str2);
+            
+            //var specification =new OrSpecification<ArchiveEntity>(str1, str2);
+
+            var specification = new AdHocSpecification<ArchiveEntity>(x => x.Title.Contains(searchString));
             AddItem(new SearchWidgetItem() {
-                Title = string.Format(@"Содержимое содержит строку '{0}'", searchString)
+                Title = string.Format(@"'{0}'", searchString)
                 , Specification = specification });
         }
     }
