@@ -9,7 +9,7 @@ using System.IO;
 using System.Drawing;
 using HomeArchiveX.Common;
 using System.Data.SqlClient;
-
+using LinqKit;
 namespace HomeArchiveX.DataAccess
 {
     public class EFDataService : IDataService
@@ -164,6 +164,7 @@ namespace HomeArchiveX.DataAccess
         {
             using (var uofw = new UnitOfWork(new HmeArhXContext()))
             {
+              
                 var repo = uofw.GetRepository<ArchiveEntity>();
                 return repo.Find(x => x.DriveId == id).ToList();
             }

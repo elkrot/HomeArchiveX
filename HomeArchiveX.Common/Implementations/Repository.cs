@@ -40,7 +40,8 @@ namespace HomeArchiveX.Common.Implementations
         }
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
-            return Context.Set<TEntity>().Where(predicate);
+            
+            return Context.Set<TEntity>().AsExpandable().Where(predicate);
         }
 
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate

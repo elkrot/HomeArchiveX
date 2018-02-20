@@ -23,8 +23,11 @@ namespace HomeArchiveX.Search
     {
         public void AddQuery(string searchString)
         {
-            var str1 = new AdHocSpecification<ArchiveEntity>(x => x.Title.Contains(searchString));
-            var str2 = new AdHocSpecification<ArchiveEntity>(x => x.Description.Contains(searchString));
+            //   var str1 = new AdHocSpecification<ArchiveEntity>(x => x.Title.Contains(searchString));
+            //   var str2 = new AdHocSpecification<ArchiveEntity>(x => x.Description.Contains(searchString));
+   var str1 = new AdHocSpecification<ArchiveEntity>(x => x.Title.Contains("searchString"));
+   var str2 = new AdHocSpecification<ArchiveEntity>(x => x.Description.Contains("searchString"));
+
 
             var specification =new OrSpecification<ArchiveEntity>(str1, str2);
             AddItem(new SearchWidgetItem() {

@@ -60,6 +60,9 @@ namespace HomeArchiveX.Search.Condition
                     }
                 }
                 Result = specification.IsSatisfiedBy();
+
+                var expression = Result.Compile();
+
                 return Result;
             }
         }
