@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Condition\SearchCondition.cs" />
+    <Compile Include="Result\SearchResult.cs" />
+    <Compile Include="Result\SearchResultItem.cs" />
     <Compile Include="Widget\SearchByFileSizeWiget.cs" />
     <Compile Include="Widget\SearchByCategoryWidget.cs" />
     <Compile Include="Condition\ISearchCondition.cs" />
