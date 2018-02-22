@@ -139,6 +139,7 @@
     <Compile Include="Event\FileOnDrive\FileOnDriveSavedEvent.cs" />
     <Compile Include="Event\FileOnDrive\OpenFileOnDriveEvent.cs" />
     <Compile Include="Event\FileOnDrive\SelectedItemChangedEvent.cs" />
+    <Compile Include="Event\ShowSearchResultEvent.cs" />
     <Compile Include="Icons.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

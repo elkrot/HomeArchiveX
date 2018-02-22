@@ -1,5 +1,6 @@
 ﻿using HomeArchiveX.Search;
 using HomeArchiveX.Search.Condition;
+using HomeArchiveX.Search.Result;
 using HomeArchiveX.WpfU.Command;
 using HomeArchiveX.WpfUI.DataProvider;
 using HomeArchiveX.WpfUI.View.Services;
@@ -31,6 +32,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private ICategoryNavigationViewModel _categoryNavigationViewModel;
         private ITagNavigationViewModel _tagNavigationViewModel;
         public SearchCondition SearchCondition { get; set; }
+        public SearchResult SearchResult { get; set; }
         private IArchiveEntityDataProvider _archiveEntityDataProvider;
 
 
@@ -80,7 +82,9 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private void OnSearchExecute(object obj)
         {
             var condition = SearchCondition.Condition;
-            _archiveEntityDataProvider.GetEntitiesByCondition(condition);
+            var searchItems = _archiveEntityDataProvider.GetEntitiesByCondition(condition);
+            SearchResult = new SearchResult(searchItems);
+
 
         }
 

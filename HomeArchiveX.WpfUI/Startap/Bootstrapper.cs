@@ -56,10 +56,11 @@ namespace HomeArchiveX.WpfU.Startup
             builder.RegisterType<CategoryNavigationViewModel>().As<ICategoryNavigationViewModel>();
             builder.RegisterType<TagNavigationViewModel>().As<ITagNavigationViewModel>();
             builder.RegisterType<SearchNavigationViewModel>().As<ISearchNavigationViewModel>();
-
+            builder.RegisterType<SearchResultViewModel>().As<ISearchResultViewModel>();
+            
 
             builder.RegisterType<FilesOnDriveViewModel>().AsSelf();
-            builder.RegisterType<SearchNavigationViewModel>().AsSelf();
+            
             builder.RegisterType<SearchEngineViewModel>().AsSelf();
 
             builder.RegisterType<ArchiveEntityDataProvider>().As<IArchiveEntityDataProvider>();

@@ -1,4 +1,5 @@
 ﻿using HomeArchiveX.WpfUI.View.Services;
+using HomeArchiveX.WpfUI.ViewModel;
 using Microsoft.Practices.Prism.PubSubEvents;
 using System;
 using System.Collections.Generic;
@@ -15,20 +16,24 @@ namespace HomeArchiveX.WpfUI.ViewModel.Search
         private readonly IMessageDialogService _messageDialogService;
 
         public ISearchNavigationViewModel SearchNavigationViewModel { get; private set; }
+        public ISearchResultViewModel SearchResultViewModel { get; private set; }
 
-        
+
         public SearchEngineViewModel(IEventAggregator eventAggregator
             , IMessageDialogService messageDialogService
-            , ISearchNavigationViewModel searchNavigationViewModel)
+            , ISearchNavigationViewModel searchNavigationViewModel
+            , ISearchResultViewModel searchResultViewModel)
         {
             _eventAggregator = eventAggregator;
             _messageDialogService = messageDialogService;
-            SearchNavigationViewModel = searchNavigationViewModel;
 
+            SearchNavigationViewModel = searchNavigationViewModel;
+            SearchResultViewModel = searchResultViewModel;
         }
 
         public void Load() {
             SearchNavigationViewModel.Load();
+            SearchResultViewModel.Load();
         }
     }
 }
