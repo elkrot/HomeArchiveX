@@ -20,7 +20,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         private readonly IEventAggregator _eventAggregator;
         private readonly IMessageDialogService _messageDialogService;
 
-        private SearchResult _searchResult;
+        
 
         public SearchResultViewModel(IEventAggregator eventAggregator
             , IMessageDialogService messageDialogService)
@@ -30,14 +30,14 @@ namespace HomeArchiveX.WpfUI.ViewModel
 
             SearchResult = new SearchResult(new List<ArchiveEntity>());
 
-
+            
         }
 
         public SearchResult SearchResult    { get;set;   }
 
         public void Load()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

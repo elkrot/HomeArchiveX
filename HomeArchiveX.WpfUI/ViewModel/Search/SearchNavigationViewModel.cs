@@ -3,6 +3,7 @@ using HomeArchiveX.Search.Condition;
 using HomeArchiveX.Search.Result;
 using HomeArchiveX.WpfU.Command;
 using HomeArchiveX.WpfUI.DataProvider;
+using HomeArchiveX.WpfUI.Event;
 using HomeArchiveX.WpfUI.View.Services;
 using HomeArchiveX.WpfUI.ViewModel.FilesOnDrive;
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -19,7 +20,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
     public interface ISearchNavigationViewModel
     {
         void Load();
-
+        SearchResult SearchResult { get; set; }
     }
 
     public class SearchNavigationViewModel : Observable, ISearchNavigationViewModel
@@ -85,7 +86,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
             var searchItems = _archiveEntityDataProvider.GetEntitiesByCondition(condition);
             SearchResult = new SearchResult(searchItems);
 
-
+            _eventAggregator.GetEvent<ShowSearchResultEvent>().Publish(0);
         }
 
         private bool OnAddSearchByTagConditionCanExecute(object arg)

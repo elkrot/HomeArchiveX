@@ -1,4 +1,5 @@
-﻿using HomeArchiveX.WpfUI.View.Services;
+﻿using HomeArchiveX.WpfUI.Event;
+using HomeArchiveX.WpfUI.View.Services;
 using HomeArchiveX.WpfUI.ViewModel;
 using Microsoft.Practices.Prism.PubSubEvents;
 using System;
@@ -27,8 +28,17 @@ namespace HomeArchiveX.WpfUI.ViewModel.Search
             _eventAggregator = eventAggregator;
             _messageDialogService = messageDialogService;
 
+            _eventAggregator.GetEvent<ShowSearchResultEvent>().Subscribe(OnShowSearchResult);
+            
+
             SearchNavigationViewModel = searchNavigationViewModel;
             SearchResultViewModel = searchResultViewModel;
+        }
+
+        private void OnShowSearchResult(int obj)
+        {
+            SearchResultViewModel.SearchResult = SearchNavigationViewModel.SearchResult;
+            SearchResultViewModel.Load();
         }
 
         public void Load() {
