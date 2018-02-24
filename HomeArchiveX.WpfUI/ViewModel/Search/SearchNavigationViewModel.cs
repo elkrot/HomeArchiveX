@@ -70,8 +70,10 @@ namespace HomeArchiveX.WpfUI.ViewModel
             AddSearchByFileSizeConditionCommand = new DelegateCommand(OnAddSearchByFileSizeConditionExecute, OnAddSearchByFileSizeConditionCanExecute);
             AddSearchByTagConditionCommand = new DelegateCommand(OnAddSearchByTagConditionExecute, OnAddSearchByTagConditionCanExecute);
             GoSearchCommand = new DelegateCommand(OnSearchExecute, OnSearchCanExecute);
-            
 
+           
+
+           
         }
 
         private bool OnSearchCanExecute(object arg)

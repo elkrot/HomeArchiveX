@@ -14,7 +14,7 @@ namespace HomeArchiveX.Search.Result
 
         public SearchResultItem(ArchiveEntity archiveEntity)
         {
-            archiveEntity = _archiveEntity;
+            _archiveEntity = archiveEntity;
         }
 
         

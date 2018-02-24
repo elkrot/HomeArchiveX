@@ -1,5 +1,6 @@
 ﻿using HomeArchiveX.Model;
 using HomeArchiveX.Search.Result;
+using HomeArchiveX.WpfUI.DataProvider;
 using HomeArchiveX.WpfUI.View.Services;
 using Microsoft.Practices.Prism.PubSubEvents;
 using System;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace HomeArchiveX.WpfUI.ViewModel
 {
@@ -15,7 +17,7 @@ namespace HomeArchiveX.WpfUI.ViewModel
         void Load();
         SearchResult SearchResult { get; set; }
     }
-    public class SearchResultViewModel : Observable, ISearchResultViewModel
+    public class SearchResultViewModel : DependencyObject, ISearchResultViewModel
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IMessageDialogService _messageDialogService;
@@ -23,21 +25,30 @@ namespace HomeArchiveX.WpfUI.ViewModel
         
 
         public SearchResultViewModel(IEventAggregator eventAggregator
-            , IMessageDialogService messageDialogService)
+            , IMessageDialogService messageDialogService
+            )
         {
             _eventAggregator = eventAggregator;
             _messageDialogService = messageDialogService;
-
+           
             SearchResult = new SearchResult(new List<ArchiveEntity>());
 
-            
+           // SearchResult.MyProperty = 0;
         }
 
-        public SearchResult SearchResult    { get;set;   }
+
+        public SearchResult SearchResult
+        {
+            get { return (SearchResult)GetValue(SearchResultProperty); }
+            set { SetValue(SearchResultProperty, value); }
+        }
+
+        public static readonly DependencyProperty SearchResultProperty =
+           DependencyProperty.Register("SearchResult", typeof(SearchResult), typeof(SearchResultViewModel), new PropertyMetadata(null));
 
         public void Load()
         {
-            
+          
         }
     }
 }
