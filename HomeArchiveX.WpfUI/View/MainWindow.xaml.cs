@@ -39,7 +39,8 @@ namespace HomeArchiveX.WpfUI
     ///[PrincipalPermission(SecurityAction.Demand, Role = "Administrators")]
     public partial class MainWindow : Window, IView
     {
-        DrivesViewModel _drivesViewModel;
+        
+           DrivesViewModel _drivesViewModel;
         //  FilesOnDriveViewModel _filesOnDriveViewModel;
         CancellationTokenSource cancelTokenSource;
         CancellationToken token;
